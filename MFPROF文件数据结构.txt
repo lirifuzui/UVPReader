@@ -1,0 +1,72 @@
+
+在文件开头，采用二进制字符表示，需要用对应数据格式进行解读
+
+长度	名称	数据类型
+64	signum	char[64]		//名称
+4	measParamsOffset1	unsigned long	//
+4	measParamsOffset2	unsigned long	//
+4	nProfiles	unsigned long	//速度剖面数量
+4	reserved1	unsigned long	//
+4	flags	unsigned long	//是否有回声数据？具体不太清楚什么意思
+4	recordsize	unsigned long	//
+4	nChannels	unsigned long	//取样点数量
+4	reserved2	unsigned long	//
+4	startTime1	unsigned long	//
+4	startTime2	unsigned long	//
+
+=================================================
+
+16	vel		//速度数据
+
+=================================================
+在文件末尾，直接采用ARCII字符形式[str]表示，一个字符占一个长度
+
+[UVP_PARAMAETER]
+
+长度	名称	数据类型
+-	Frequency	int	//频率
+-	StartChannel	double	//
+-	ChannelDistance	double	//
+-	ChannelWidth	double	//
+-	MaximumDepth	double	//
+-	SoundSpeed	int	//声速
+-	Angle	double	//
+-	GainStart	unsigned long	//
+-	GainEnd	unsigned long	//
+-	Voltage		//
+-	Iterations		//
+-	NoiseLevel		//
+-	CyclesPerPulse		//
+-	TriggerMode		//
+-	TriggerModeName		//
+-	ProfileLength		//
+-	ProfilesPerBlock		//
+-	Blocks		//
+-	AmplitudeStored		//
+-	DoNotStoreDoppler		//
+-	RawDataMin	int	//
+-	RawDataMax	int	//
+-	RawDataRange		//
+-	AmplDataMin		//
+-	AmplDataMax		//
+-	VelocityInterpretingMode		//
+-	UserSampleTime		//
+-	SampleTime	int	//
+-	UseMultiplexer	int	//0 or 1
+-	FlowMapping	bool	//
+-	FirstValidChannel		//
+-	LastValidChannel		//
+-	FlowRateType	bool	//
+-	PeriodEnhOffset	unsigned long	//
+-	PeriodEnhPeriod	unsigned long	//
+-	PeriodEnhNCycles	unsigned long	//
+-	Comment		//	
+-	MeasurementProtocol		//
+
+[MUX_PARAMETER]
+-	NumberOfCycles	unsigned long	//
+-	CycleDelay	unsigned long	//
+-	Version	unsigned long	//
+-	Table	int[-][9]	//[0]:On or Off, [1]:channel#, [2]:nProfiles, [3]:Angle, [6]:Delay
+
+
