@@ -5,33 +5,36 @@ from DuoParameters import *
 
 
 class ReadData:
-    def __init__(self, file_path):
+    def __init__(self, file_path, th=1):
         self.file_path = file_path  # file path
         self._headparam = None  # Initialize a structure variable,'HeadParameter'
         self._footparam = FootParameter  # Initialize a structure variable,'FootParameter'
         self._muxparam = MultiplexerParameter  # Initialize a structure variable,'MultiplexerParameter'
-        
+        self._th = th  # Thereshold for overflow treatment
         self._vel_data = None
         self._echo_data = None
-        
+
         # Run the internal method, read the file
         self._read_data()
         self.showparam = self.ShowParam(self)
-        
 
     # ----------------------------------------------------------------------------
     @property
     def headparam(self):
         return self._headparam
+
     @property
     def footparam(self):
         return self._footparam
+
     @property
     def muxparam(self):
         return self._muxparam
+
     @property
     def velarray(self):
         return np.array(self._vel_data)
+
     @property
     def echoarray(self):
         return np.array(self._echo_data)
@@ -59,8 +62,6 @@ class ReadData:
                     data = f.read(2 * positions)
                     _raw_echo_data[i] = struct.unpack(datatype, data)
 
-            print(_raw_vel_data)
-            print()
             # read parameters at foot
             # Stored in a list named "lines" in binary format, containing two parts "UVP PARAMETER" and "[MUX PARAMETER]"
             f.seek(0)
@@ -73,8 +74,8 @@ class ReadData:
             temp_uvp_parameter = lines[:index]
             del temp_uvp_parameter[0]
             temp_multiplexer_parameter = lines[index + 1:]
-            uvp_parameter = [value.decode('utf-8', 'ignore') for value in temp_uvp_parameter]
-            multiplexer_parameter = [value.decode('utf-8', 'ignore') for value in temp_multiplexer_parameter]
+            uvp_parameter = [value.decode('utf-8', errors='replace') for value in temp_uvp_parameter]
+            multiplexer_parameter = [value.decode('utf-8', errors='replace') for value in temp_multiplexer_parameter]
             foot_parameters_values = []
             flag = 0
 
@@ -123,7 +124,7 @@ class ReadData:
             temp_TDX_TABLE = TDX_TABLE.copy()
             for time in range(64 - len(temp_TDX_TABLE)):
                 TDX_TABLE.append([0, 0, 0, 0, 0, 0, 0, 0, 0])
-            #TDX_TABLE_tuple = tuple(TDX_TABLE)
+            # TDX_TABLE_tuple = tuple(TDX_TABLE)
             # 向结构体中赋值
             # 这不是个好方法，未来可以优化一下
             self._footparam.Frequency = int(foot_parameters_values[0])
@@ -146,6 +147,18 @@ class ReadData:
             self._muxparam.nSet = int(mux_parameters_values[3])
             self._muxparam.Table = TDX_TABLE
 
+            # Overflow treatment
+            if self._th > 0:
+                _raw_vel_data[_raw_vel_data > self._th * self._footparam.RawDataMax] \
+                    = _raw_vel_data[_raw_vel_data > self._th * self._footparam.RawDataMax] \
+                    - self._footparam.RawDataMax + self._footparam.RawDataMin
+            if self._th < 0:
+                _raw_vel_data[_raw_vel_data < self._th * self._footparam.RawDataMin] \
+                    = _raw_vel_data[_raw_vel_data < self._th * self._footparam.RawDataMin] \
+                    - self._footparam.RawDataMax + self._footparam.RawDataMin
+
+            _raw_echo_data[(_raw_echo_data < 0) | (_raw_echo_data > 500)] = 0
+
             # 处理数据
             _doppler_coefficient = self._footparam.SoundSpeed / (self._footparam.MaximumDepth * 2.0) / 256.0 * 1000.0
             _sounds_speed_coefficient = self._footparam.SoundSpeed / (self._footparam.Frequency * 2.0)
@@ -160,8 +173,6 @@ class ReadData:
                         nPinCycle += self._muxparam.Table[tdx][2]
                         for n in range(self._muxparam.Table[tdx][2]):
                             onlist.append(tdx)
-                print(nPinCycle)
-                print(onlist)
 
                 self._vel_data = []
                 self._echo_data = []
@@ -169,10 +180,10 @@ class ReadData:
                     veltemplist = []
                     echotemplist = []
 
-                    AngleCoefficient = 1.0 / np.sin(self._muxparam.Table[onlist[n-1]][3] * np.pi / 180)
+                    AngleCoefficient = 1.0 / np.sin(self._muxparam.Table[onlist[n - 1]][3] * np.pi / 180)
                     VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * AngleCoefficient
                     while n <= self._headparam.nProfiles - 1:
-                        veltemplist.append(_raw_vel_data[n]*VelResolustion)
+                        veltemplist.append(_raw_vel_data[n] * VelResolustion)
                         echotemplist.append(_raw_echo_data[n])
                         n += nPinCycle
                     self._vel_data.append(veltemplist)
@@ -181,7 +192,7 @@ class ReadData:
                 AngleCoefficient = 1.0 / np.sin(self._footparam.Angle * np.pi / 180)
                 VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * AngleCoefficient
                 self._vel_data = _raw_vel_data * VelResolustion
-                self._echo_data =_raw_echo_data 
+                self._echo_data = _raw_echo_data
 
     class ShowParam:
         def __init__(self, readdata):
@@ -196,3 +207,5 @@ data = ReadData(r'C:\Users\zheng\Desktop\Silicon oil\15rpm.mfprof')
 data.headparam.show()
 vel = data.velarray
 echo = data.echoarray
+print(vel)
+print(echo)
