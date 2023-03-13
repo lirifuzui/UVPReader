@@ -1,5 +1,6 @@
 from struct import unpack
 from re import search
+import numpy as np
 
 
 class ReadData:
@@ -25,18 +26,19 @@ class ReadData:
 
         uvp_datafile.seek(64)
         head_datas = [unpack('L', uvp_datafile.read(4)) for _ in range(10)]
-        self.__nums_profiles = head_datas[2]
-        self.__flag = head_datas[4]
-        self.__nums_channels = [6]
+        self.__nums_profiles = int(head_datas[2][0])
+        self.__flag = int(head_datas[4][0])
+        self.__nums_channels = int(head_datas[6][0])
 
+    # noinspection PyTypeChecker
     def __read_params_part_II(self, uvp_datafile):
         # Read parameter information at the bottom of the file.
         # Including 'UVP PARAMETER' and 'MUX PARAMETER' two parts.
         uvp_datafile.seek(0)
         foot_datas = uvp_datafile.read()
         uvp_params_begin = foot_datas.find(b"[UVP_PARAMETER]")
-        foot_datas.seek(uvp_params_begin)
-        lines = foot_datas.readlines()
+        uvp_datafile.seek(uvp_params_begin)
+        lines = uvp_datafile.readlines()
         # Divide the data list into two lists, 'uvp parameter' and 'multiplexer parameter'.
         index = lines.index(b'[MUX_PARAMETER]\n')
         temp_uvp_params = lines[:index]
@@ -45,10 +47,8 @@ class ReadData:
         uvp_params = [value.decode('utf-8', errors='replace') for value in temp_uvp_params]
         mux_params = [value.decode('utf-8', errors='replace') for value in temp_mux_params]
         foot_parameters_values = []
-        flag = 0
 
-        # To process the data of ‘uvp_parameter’, ‘Comment’ item needs to be raised separately
-        begin_location = None
+        '''# To process the data of ‘uvp_parameter’, ‘Comment’ item needs to be raised separately
         for i, value in enumerate(uvp_params):
             if 'Comment=' in value:
                 flag = 1
@@ -67,9 +67,15 @@ class ReadData:
                     comment.append(n)
                 nums_comment = len(comment)
                 foot_parameters_values.append(nums_comment)
-                foot_parameters_values.append(search(r"=(.*)\n", value).group(1))
+                foot_parameters_values.append(search(r"=(.*)\n", value).group(1))'''
+        # To process the data of ‘uvp_parameter’, 'Comment' can be ignored
+        for value in uvp_params:
+            if 'Comment=' in value:
+                break
+            foot_parameters_values.append(search(r"=(.*)\n", value).group(1))
 
         # To process the data of ‘mux_parameter’, ‘Table’ item needs to be raised separately
+        begin_location = 0
         mux_parameters_values = []
         for i, value in enumerate(mux_params):
             if 'Table=' in value:
@@ -81,50 +87,101 @@ class ReadData:
                 break
             mux_parameters_values.append(search(r"=(.*)\n", value).group(1))
         table = mux_params[begin_location + 1:]
-        TDX_TABLE = []
-        for TDX in table:
-            if '\\\n' in TDX:
-                TDX = TDX.replace('\\\n', '')
+        tdx_table = []
+        for tdx in table:
+            if '\\\n' in tdx:
+                tdx = tdx.replace('\\\n', '')
             else:
-                TDX = TDX.replace('\n', '')
-            tdx_temp = TDX.split(' ')
+                tdx = tdx.replace('\n', '')
+            tdx_temp = tdx.split(' ')
             del tdx_temp[0]
             tdx_list = [int(x) for x in tdx_temp]
-            TDX_TABLE.append(tdx_list)
-        temp_TDX_TABLE = TDX_TABLE.copy()
-        for time in range(64 - len(temp_TDX_TABLE)):
-            TDX_TABLE.append([0, 0, 0, 0, 0, 0, 0, 0, 0])
-        # TDX_TABLE_tuple = tuple(TDX_TABLE)
-        # 向结构体中赋值
-        # 这不是个好方法，未来可以优化一下
-        self._footparam.Frequency = int(foot_parameters_values[0])
+            tdx_table.append(tdx_list)
+
+        self.__frequency = int(foot_parameters_values[0])
         self._footparam.StartChannel = float(foot_parameters_values[1])
         self._footparam.ChannelDistance = float(foot_parameters_values[2])
         self._footparam.ChannelWidth = float(foot_parameters_values[3])
-        self._footparam.MaximumDepth = float(foot_parameters_values[4])
-        self._footparam.SoundSpeed = int(foot_parameters_values[5])
+        self.__max_depth = float(foot_parameters_values[4])
+        self.__sound_speed = int(foot_parameters_values[5])
         self._footparam.Angle = int(foot_parameters_values[6])
         self._footparam.GainStart = int(foot_parameters_values[7])
         self._footparam.GainEnd = int(foot_parameters_values[8])
-        self._footparam.RawDataMin = int(foot_parameters_values[20])
-        self._footparam.RawDataMax = int(foot_parameters_values[21])
+        self.__raw_data_min = int(foot_parameters_values[20])
+        self.__raw_data_max = int(foot_parameters_values[21])
         self._footparam.SampleTime = int(foot_parameters_values[27])
-        self._footparam.UseMultiplexer = int(foot_parameters_values[28])
-        self._footparam.Comment = ''.join(comment)
+        self.__use_multiplexer = int(foot_parameters_values[28])
 
-        self._muxparam.nCycles = int(mux_parameters_values[0])
-        self._muxparam.Delay = int(mux_parameters_values[1])
-        self._muxparam.nSet = int(mux_parameters_values[3])
-        self._muxparam.Table = TDX_TABLE
+        self.__nums_cycles = int(mux_parameters_values[0])
+        self.__delay = int(mux_parameters_values[1])
+        self.__nums_set = int(mux_parameters_values[3])
+        self.__table = tdx_table
+
     def __read_data(self):
         with open(self.__path, 'rb') as uvpDatafile:
             self.__read_params_part_I(uvpDatafile)
             self.__read_params_part_II(uvpDatafile)
 
+            # read velocity data and echo data
+            self.__raw_vel_data = np.zeros((self.__nums_profiles, self.__nums_channels))
+            self.__raw_echo_data = np.zeros((self.__nums_profiles, self.__nums_channels))
+            uvpDatafile.seek(104)
+            for i in range(self.__nums_profiles):
+                uvpDatafile.seek(16, 1)
+                encode_vel_data = uvpDatafile.read(self.__nums_channels * 2)
+                datatype = '{}h'.format(self.__nums_channels)
+                self.__raw_vel_data[i] = unpack(datatype, encode_vel_data)
+                if self.__flag:
+                    encode_echo_data = uvpDatafile.read(self.__nums_channels * 2)
+                    self.__raw_echo_data[i] = unpack(datatype, encode_echo_data)
+
+        # Overflow treatment
+        if self.__th > 0:
+            self.__raw_vel_data[self.__raw_vel_data > self.__th * self.__raw_data_max] \
+                = self.__raw_vel_data[self.__raw_vel_data > self.__th * self.__raw_data_max] \
+                - self.__raw_data_max + self.__raw_data_min
+        if self.__th < 0:
+            self.__raw_vel_data[self.__raw_vel_data < self.__th * self.__raw_data_min] \
+                = self.__raw_vel_data[self.__raw_vel_data < self.__th * self.__raw_data_min] \
+                - self.__raw_data_max + self.__raw_data_min
+        self.__raw_echo_data[(self.__raw_echo_data < 0) | (self.__raw_echo_data > 500)] = 0
+
+        if self.__use_multiplexer:
+            nums_tdx = self.__nums_set
+            nPinCycle = 0
+            online_tdx_list = []
+            for tdx in range(nums_tdx):
+                if self.__table[tdx][0]:
+                    nPinCycle += self.__table[tdx][2]
+                    for n in range(self.__table[tdx][2]):
+                        online_tdx_list.append(tdx)
+
+            self._vel_data = []
+            self._echo_data = []
+            for n in range(nPinCycle):
+                veltemplist = []
+                echotemplist = []
+
+                AngleCoefficient = 1.0 / np.sin(self._muxparam.Table[online_tdx_list[n - 1]][3] * np.pi / 180)
+                VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * AngleCoefficient
+                while n <= self._headparam.nProfiles - 1:
+                    veltemplist.append(_raw_vel_data[n] * VelResolustion)
+                    echotemplist.append(_raw_echo_data[n])
+                    n += nPinCycle
+                self._vel_data.append(veltemplist)
+                self._echo_data.append(echotemplist)
+        else:
+            AngleCoefficient = 1.0 / np.sin(self._footparam.Angle * np.pi / 180)
+            VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * AngleCoefficient
+            self._vel_data = _raw_vel_data * VelResolustion
+            self._echo_data = _raw_echo_data
+
     def showinfo(self):
         None
+
     def statistic(self):
         None
+
     def getlog(self):
         None
 
@@ -132,19 +189,26 @@ class ReadData:
 class Analysis:
     def __init__(self, being_read_data):
         self._data = being_read_data
+
     def cutdata(self):
         None
+
     def FFT(self):
         None
+
     def doanaylsis(self):
         None
+
 
 class CutData(Analysis):
     def __init__(self):
         None
+
     def fromtime(self):
         None
+
     def fromlocation(self):
         None
+
 
 data = ReadData(r'C:\Users\zheng\Desktop\Silicon oil\15rpm.mfprof')
