@@ -32,3 +32,7 @@ w
 G.idea/sonarlint/issuestore/9/f/9fe84ebb15faf917b7def6236dba604453cc61e0,f\0\f0e0f9cec86fe4b939ae22be5264c758801eb28f
 O
 UVP_LIST/.obsidian/hotkeys.json,a\7\a783b56a0d6073767fc83a897f8cc276c881e19d
+H
+UVP_LIST/readdata.canvas,8\d\8dff7f20f606118c7f2508b31ec11a57bc33a3e0
+Q
+!UVP_LIST/.obsidian/workspace.json,6\e\6e7fb1368bd6d76bad1d8f2804638c9b7c0936b3

@@ -99,17 +99,17 @@ class ReadData:
             tdx_table.append(tdx_list)
 
         self.__frequency = int(foot_parameters_values[0])
-        self._footparam.StartChannel = float(foot_parameters_values[1])
-        self._footparam.ChannelDistance = float(foot_parameters_values[2])
-        self._footparam.ChannelWidth = float(foot_parameters_values[3])
+        # self.__StartChannel = float(foot_parameters_values[1])
+        # self.__ChannelDistance = float(foot_parameters_values[2])
+        # self.__ChannelWidth = float(foot_parameters_values[3])
         self.__max_depth = float(foot_parameters_values[4])
         self.__sound_speed = int(foot_parameters_values[5])
-        self._footparam.Angle = int(foot_parameters_values[6])
-        self._footparam.GainStart = int(foot_parameters_values[7])
-        self._footparam.GainEnd = int(foot_parameters_values[8])
+        self.__angle = int(foot_parameters_values[6])
+        # self.__GainStart = int(foot_parameters_values[7])
+        # self.__GainEnd = int(foot_parameters_values[8])
         self.__raw_data_min = int(foot_parameters_values[20])
         self.__raw_data_max = int(foot_parameters_values[21])
-        self._footparam.SampleTime = int(foot_parameters_values[27])
+        # self.__SampleTime = int(foot_parameters_values[27])
         self.__use_multiplexer = int(foot_parameters_values[28])
 
         self.__nums_cycles = int(mux_parameters_values[0])
@@ -145,36 +145,39 @@ class ReadData:
                 = self.__raw_vel_data[self.__raw_vel_data < self.__th * self.__raw_data_min] \
                 - self.__raw_data_max + self.__raw_data_min
         self.__raw_echo_data[(self.__raw_echo_data < 0) | (self.__raw_echo_data > 500)] = 0
-
+        '''
+        # 处理数据
+        _doppler_coefficient = self.__se / (self._footparam.MaximumDepth * 2.0) / 256.0 * 1000.0
+        _sounds_speed_coefficient = self._footparam.SoundSpeed / (self._footparam.Frequency * 2.0)
+        '''
         if self.__use_multiplexer:
             nums_tdx = self.__nums_set
-            nPinCycle = 0
+            nums_pincycles = 0
             online_tdx_list = []
             for tdx in range(nums_tdx):
                 if self.__table[tdx][0]:
-                    nPinCycle += self.__table[tdx][2]
+                    nums_pincycles += self.__table[tdx][2]
                     for n in range(self.__table[tdx][2]):
                         online_tdx_list.append(tdx)
 
-            self._vel_data = []
-            self._echo_data = []
-            for n in range(nPinCycle):
-                veltemplist = []
-                echotemplist = []
-
-                AngleCoefficient = 1.0 / np.sin(self._muxparam.Table[online_tdx_list[n - 1]][3] * np.pi / 180)
-                VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * AngleCoefficient
-                while n <= self._headparam.nProfiles - 1:
-                    veltemplist.append(_raw_vel_data[n] * VelResolustion)
-                    echotemplist.append(_raw_echo_data[n])
-                    n += nPinCycle
-                self._vel_data.append(veltemplist)
-                self._echo_data.append(echotemplist)
+            self.__vel_data = []
+            self.__echo_data = []
+            for n in range(nums_pincycles):
+                temp_vel_list = []
+                temp_echo_list = []
+                angle_coefficient = 1.0 / np.sin(self.__table[online_tdx_list[n - 1]][3] * np.pi / 180)
+                # VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * AngleCoefficient
+                while n <= self.__nums_profiles - 1:
+                    temp_vel_list.append(self.__raw_vel_data[n] * VelResolustion)
+                    temp_echo_list.append(self.__raw_echo_data[n])
+                    n += nums_pincycles
+                self.__vel_data.append(temp_vel_list)
+                self.__echo_data.append(temp_echo_list)
         else:
-            AngleCoefficient = 1.0 / np.sin(self._footparam.Angle * np.pi / 180)
-            VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * AngleCoefficient
-            self._vel_data = _raw_vel_data * VelResolustion
-            self._echo_data = _raw_echo_data
+            angle_coefficient = 1.0 / np.sin(self.__angle * np.pi / 180)
+            #VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * angle_coefficient
+            self.__vel_data = self.__raw_vel_data * VelResolustion
+            self.__echo_data = self.__raw_echo_data
 
     def showinfo(self):
         None
