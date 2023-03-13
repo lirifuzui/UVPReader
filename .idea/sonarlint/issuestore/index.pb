@@ -18,8 +18,6 @@ R
 "UVP_LIST/.obsidian/appearance.json,2\2\224b64d281f4337b5f4beb240b2fbd6aa7554e78
 K
 UVP_LIST/.obsidian/app.json,7\3\732e86f4fbcab6d96e8365b94d8fe7464a43b9b9
-H
-UVP_LIST/readdata.canvas,8\d\8dff7f20f606118c7f2508b31ec11a57bc33a3e0
 Å
 Q.idea/sonarlint/securityhotspotstore/8/8/88a9255124c95bdc913197c120a8d560edc59c8e,9\0\909762385fc6eb20f922a91c6865741308b57f2c
 w
@@ -32,7 +30,5 @@ Q.idea/sonarlint/securityhotspotstore/9/f/9fe84ebb15faf917b7def6236dba604453cc61
 Q.idea/sonarlint/securityhotspotstore/3/6/36753c3159eeff964f7cabef273b4b9bdefb2150,c\e\ce488a0bfbfe68d166de70ebb8cf2c85403d8d0f
 w
 G.idea/sonarlint/issuestore/9/f/9fe84ebb15faf917b7def6236dba604453cc61e0,f\0\f0e0f9cec86fe4b939ae22be5264c758801eb28f
-Q
-!UVP_LIST/.obsidian/workspace.json,6\e\6e7fb1368bd6d76bad1d8f2804638c9b7c0936b3
 O
 UVP_LIST/.obsidian/hotkeys.json,a\7\a783b56a0d6073767fc83a897f8cc276c881e19d
