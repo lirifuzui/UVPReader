@@ -103,14 +103,12 @@ class ReadData:
             tdx_table.append(tdx_list)
 
         self.__frequency = int(foot_parameters_values[0])
-        # self.__StartChannel = float(foot_parameters_values[1])
-        # self.__ChannelDistance = float(foot_parameters_values[2])
+        self.__start_channel = float(foot_parameters_values[1])
+        self.__channel_distance = float(foot_parameters_values[2])
         # self.__ChannelWidth = float(foot_parameters_values[3])
         self.__max_depth = float(foot_parameters_values[4])
         self.__sound_speed = int(foot_parameters_values[5])
         self.__angle = int(foot_parameters_values[6])
-        # self.__GainStart = int(foot_parameters_values[7])
-        # self.__GainEnd = int(foot_parameters_values[8])
         self.__raw_data_min = int(foot_parameters_values[20])
         self.__raw_data_max = int(foot_parameters_values[21])
         # self.__SampleTime = int(foot_parameters_values[27])
@@ -150,9 +148,9 @@ class ReadData:
                   - self.__raw_data_max + self.__raw_data_min
         self.__raw_echo_data[(self.__raw_echo_data < 0) | (self.__raw_echo_data > 500)] = 0
 
-        self.redefinesoundspeed(self.__sound_speed)
+        self.resetsoundspeed(self.__sound_speed)
 
-    def redefinesoundspeed(self, new_sound_speed) -> None:
+    def resetsoundspeed(self, new_sound_speed) -> None:
         if new_sound_speed != self.__sound_speed:
             self.__new_sound_speed = new_sound_speed
 
@@ -168,7 +166,7 @@ class ReadData:
             for tdx in range(nums_tdx):
                 if self.__table[tdx][0]:
                     nums_cycles_is_on += self.__table[tdx][2]
-                    for n in range(self.__table[tdx][2]):
+                    for _ in range(self.__table[tdx][2]):
                         online_tdx_list.append(tdx)
             for n in range(nums_cycles_is_on):
                 temp_vel_list = []
@@ -189,7 +187,12 @@ class ReadData:
 
     @property
     def showtdxinfo(self) -> None:
+        None
 
+    def show_echo_data(self):
+        return self.__echo_data
+    def show_vel_data(self):
+        return self.__vel_data
 
     def showinfo(self):
         None
@@ -230,3 +233,5 @@ class CutData(Analysis):
 
 
 data = ReadData(r'C:\Users\zheng\Desktop\Silicon oil\15rpm.mfprof')
+vel_data = data.show_vel_data()
+echo_data = data.show_echo_data()
