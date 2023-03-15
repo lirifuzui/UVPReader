@@ -5,11 +5,15 @@ import numpy as np
 
 class ReadData:
     def __init__(self, file_path, threshold=1):
+        self.__vel_data = None
+        self.__echo_data = None
+        self.__new_sound_speed = None
+
         self.__path = file_path
         self.__th = threshold
         self.__read_data()
 
-    def __read_params_part_I(self, uvp_datafile):
+    def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
         # The data structure is as follows:
         """ signum, c char [64]
@@ -31,7 +35,7 @@ class ReadData:
         self.__nums_channels = int(head_datas[6][0])
 
     # noinspection PyTypeChecker
-    def __read_params_part_II(self, uvp_datafile):
+    def __read_params_part_II(self, uvp_datafile) -> None:
         # Read parameter information at the bottom of the file.
         # Including 'UVP PARAMETER' and 'MUX PARAMETER' two parts.
         uvp_datafile.seek(0)
@@ -117,7 +121,7 @@ class ReadData:
         self.__nums_set = int(mux_parameters_values[3])
         self.__table = tdx_table
 
-    def __read_data(self):
+    def __read_data(self) -> None:
         with open(self.__path, 'rb') as uvpDatafile:
             self.__read_params_part_I(uvpDatafile)
             self.__read_params_part_II(uvpDatafile)
@@ -139,45 +143,53 @@ class ReadData:
         if self.__th > 0:
             self.__raw_vel_data[self.__raw_vel_data > self.__th * self.__raw_data_max] \
                 = self.__raw_vel_data[self.__raw_vel_data > self.__th * self.__raw_data_max] \
-                - self.__raw_data_max + self.__raw_data_min
+                  - self.__raw_data_max + self.__raw_data_min
         if self.__th < 0:
             self.__raw_vel_data[self.__raw_vel_data < self.__th * self.__raw_data_min] \
                 = self.__raw_vel_data[self.__raw_vel_data < self.__th * self.__raw_data_min] \
-                - self.__raw_data_max + self.__raw_data_min
+                  - self.__raw_data_max + self.__raw_data_min
         self.__raw_echo_data[(self.__raw_echo_data < 0) | (self.__raw_echo_data > 500)] = 0
-        '''
-        # 处理数据
-        _doppler_coefficient = self.__se / (self._footparam.MaximumDepth * 2.0) / 256.0 * 1000.0
-        _sounds_speed_coefficient = self._footparam.SoundSpeed / (self._footparam.Frequency * 2.0)
-        '''
+
+        self.redefinesoundspeed(self.__sound_speed)
+
+    def redefinesoundspeed(self, new_sound_speed) -> None:
+        if new_sound_speed != self.__sound_speed:
+            self.__new_sound_speed = new_sound_speed
+
+        doppler_coefficient = new_sound_speed / (self.__max_depth * 2.0) / 256.0 * 1000.0
+        sounds_speed_coefficient = new_sound_speed / (self.__frequency * 2.0)
+
+        self.__vel_data = []
+        self.__echo_data = []
         if self.__use_multiplexer:
             nums_tdx = self.__nums_set
-            nums_pincycles = 0
+            nums_cycles_is_on = 0
             online_tdx_list = []
             for tdx in range(nums_tdx):
                 if self.__table[tdx][0]:
-                    nums_pincycles += self.__table[tdx][2]
+                    nums_cycles_is_on += self.__table[tdx][2]
                     for n in range(self.__table[tdx][2]):
                         online_tdx_list.append(tdx)
-
-            self.__vel_data = []
-            self.__echo_data = []
-            for n in range(nums_pincycles):
+            for n in range(nums_cycles_is_on):
                 temp_vel_list = []
                 temp_echo_list = []
                 angle_coefficient = 1.0 / np.sin(self.__table[online_tdx_list[n - 1]][3] * np.pi / 180)
-                # VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * AngleCoefficient
+                vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
                 while n <= self.__nums_profiles - 1:
-                    temp_vel_list.append(self.__raw_vel_data[n] * VelResolustion)
+                    temp_vel_list.append(self.__raw_vel_data[n] * vel_resolution)
                     temp_echo_list.append(self.__raw_echo_data[n])
-                    n += nums_pincycles
+                    n += nums_cycles_is_on
                 self.__vel_data.append(temp_vel_list)
                 self.__echo_data.append(temp_echo_list)
         else:
             angle_coefficient = 1.0 / np.sin(self.__angle * np.pi / 180)
-            #VelResolustion = _doppler_coefficient * _sounds_speed_coefficient * 1000 * angle_coefficient
-            self.__vel_data = self.__raw_vel_data * VelResolustion
+            vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
+            self.__vel_data = self.__raw_vel_data * vel_resolution
             self.__echo_data = self.__raw_echo_data
+
+    @property
+    def showtdxinfo(self) -> None:
+
 
     def showinfo(self):
         None
@@ -188,10 +200,13 @@ class ReadData:
     def getlog(self):
         None
 
+class Statistic:
+    def __init__(self, being_read_data):
+        self.__data = being_read_data
 
 class Analysis:
     def __init__(self, being_read_data):
-        self._data = being_read_data
+        self.__data = being_read_data
 
     def cutdata(self):
         None
