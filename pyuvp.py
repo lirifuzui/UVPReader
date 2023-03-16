@@ -8,6 +8,9 @@ class ReadData:
         self.__vel_data = None
         self.__echo_data = None
         self.__new_sound_speed = None
+        self.__time_series = None
+        self.__position_series = None
+        self.__coordinate_series = None
 
         self.__path = file_path
         self.__th = threshold
@@ -111,13 +114,17 @@ class ReadData:
         self.__angle = int(foot_parameters_values[6])
         self.__raw_data_min = int(foot_parameters_values[20])
         self.__raw_data_max = int(foot_parameters_values[21])
-        # self.__SampleTime = int(foot_parameters_values[27])
+        self.__sample_time = int(foot_parameters_values[27])
         self.__use_multiplexer = int(foot_parameters_values[28])
 
         self.__nums_cycles = int(mux_parameters_values[0])
         self.__delay = int(mux_parameters_values[1])
         self.__nums_set = int(mux_parameters_values[3])
         self.__table = tdx_table
+
+    def __times_and_coordinates(self):
+        self.__time_series = [n*self.__sample_time*0.001 for n in range(self.__nums_profiles)]
+        self.__coordinate_series = [self.__start_channel + n*self.__channel_distance for n in range(self.__nums_channels)]
 
     def __read_data(self) -> None:
         with open(self.__path, 'rb') as uvpDatafile:
@@ -137,7 +144,10 @@ class ReadData:
                     encode_echo_data = uvpDatafile.read(self.__nums_channels * 2)
                     self.__raw_echo_data[i] = unpack(datatype, encode_echo_data)
 
-        # Overflow treatment
+        # Calculate the time and coordinates.
+        self.__times_and_coordinates()
+
+        # Overflow treatment.
         if self.__th > 0:
             self.__raw_vel_data[self.__raw_vel_data > self.__th * self.__raw_data_max] \
                 = self.__raw_vel_data[self.__raw_vel_data > self.__th * self.__raw_data_max] \
@@ -193,6 +203,10 @@ class ReadData:
         return self.__echo_data
     def show_vel_data(self):
         return self.__vel_data
+    def show_times(self):
+        return self.__time_series
+    def show_coordinates(self):
+        return self.__coordinate_series
 
     def showinfo(self):
         None
@@ -232,6 +246,8 @@ class CutData(Analysis):
         None
 
 
-data = ReadData(r'C:\Users\ZHENG WENQING\Desktop\Zheng\20230315cilliononly\0.5hz90deg.mfprof')
+data = ReadData(r'E:\Zheng\20230316\1hz60deg.mfprof')
 vel_data = data.show_vel_data()
 echo_data = data.show_echo_data()
+times = data.show_times()
+coordinates = data.show_coordinates()
