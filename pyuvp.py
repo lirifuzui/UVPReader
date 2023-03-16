@@ -4,10 +4,11 @@ import numpy as np
 
 
 class ReadData:
+
     def __init__(self, file_path, threshold=1):
         self.__vel_data = None
         self.__echo_data = None
-        self.__new_sound_speed = None
+        self.__reset_sound_speed = None
         self.__time_series = None
         self.__position_series = None
         self.__coordinate_series = None
@@ -15,6 +16,8 @@ class ReadData:
         self.__path = file_path
         self.__th = threshold
         self.__read_data()
+
+        self.statistic = Statistic(None, self.__vel_data, self.__echo_data, self.__time_series, self.__coordinate_series)
 
     def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
@@ -122,9 +125,45 @@ class ReadData:
         self.__nums_set = int(mux_parameters_values[3])
         self.__table = tdx_table
 
+    def resetsoundspeed(self, new_sound_speed) -> None:
+        if new_sound_speed != self.__sound_speed:
+            self.__reset_sound_speed = new_sound_speed
+
+        doppler_coefficient = new_sound_speed / (self.__max_depth * 2.0) / 256.0 * 1000.0
+        sounds_speed_coefficient = new_sound_speed / (self.__frequency * 2.0)
+
+        self.__vel_data = []
+        self.__echo_data = []
+        if self.__use_multiplexer:
+            nums_tdx = self.__nums_set
+            nums_cycles_is_on = 0
+            online_tdx_list = []
+            for tdx in range(nums_tdx):
+                if self.__table[tdx][0]:
+                    nums_cycles_is_on += self.__table[tdx][2]
+                    for _ in range(self.__table[tdx][2]):
+                        online_tdx_list.append(tdx)
+            for n in range(nums_cycles_is_on):
+                temp_vel_list = []
+                temp_echo_list = []
+                angle_coefficient = 1.0 / np.sin(self.__table[online_tdx_list[n - 1]][3] * np.pi / 180)
+                vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
+                while n <= self.__nums_profiles - 1:
+                    temp_vel_list.append(self.__raw_vel_data[n] * vel_resolution)
+                    temp_echo_list.append(self.__raw_echo_data[n])
+                    n += nums_cycles_is_on
+                self.__vel_data.append(temp_vel_list)
+                self.__echo_data.append(temp_echo_list)
+        else:
+            angle_coefficient = 1.0 / np.sin(self.__angle * np.pi / 180)
+            vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
+            self.__vel_data = self.__raw_vel_data * vel_resolution
+            self.__echo_data = self.__raw_echo_data
+
     def __times_and_coordinates(self):
-        self.__time_series = [n*self.__sample_time*0.001 for n in range(self.__nums_profiles)]
-        self.__coordinate_series = [self.__start_channel + n*self.__channel_distance for n in range(self.__nums_channels)]
+        self.__time_series = [n * self.__sample_time * 0.001 for n in range(self.__nums_profiles)]
+        self.__coordinate_series = [self.__start_channel + n * self.__channel_distance for n in
+                                    range(self.__nums_channels)]
 
     def __read_data(self) -> None:
         with open(self.__path, 'rb') as uvpDatafile:
@@ -160,66 +199,60 @@ class ReadData:
 
         self.resetsoundspeed(self.__sound_speed)
 
-    def resetsoundspeed(self, new_sound_speed) -> None:
-        if new_sound_speed != self.__sound_speed:
-            self.__new_sound_speed = new_sound_speed
-
-        doppler_coefficient = new_sound_speed / (self.__max_depth * 2.0) / 256.0 * 1000.0
-        sounds_speed_coefficient = new_sound_speed / (self.__frequency * 2.0)
-
-        self.__vel_data = []
-        self.__echo_data = []
-        if self.__use_multiplexer:
-            nums_tdx = self.__nums_set
-            nums_cycles_is_on = 0
-            online_tdx_list = []
-            for tdx in range(nums_tdx):
-                if self.__table[tdx][0]:
-                    nums_cycles_is_on += self.__table[tdx][2]
-                    for _ in range(self.__table[tdx][2]):
-                        online_tdx_list.append(tdx)
-            for n in range(nums_cycles_is_on):
-                temp_vel_list = []
-                temp_echo_list = []
-                angle_coefficient = 1.0 / np.sin(self.__table[online_tdx_list[n - 1]][3] * np.pi / 180)
-                vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
-                while n <= self.__nums_profiles - 1:
-                    temp_vel_list.append(self.__raw_vel_data[n] * vel_resolution)
-                    temp_echo_list.append(self.__raw_echo_data[n])
-                    n += nums_cycles_is_on
-                self.__vel_data.append(temp_vel_list)
-                self.__echo_data.append(temp_echo_list)
-        else:
-            angle_coefficient = 1.0 / np.sin(self.__angle * np.pi / 180)
-            vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
-            self.__vel_data = self.__raw_vel_data * vel_resolution
-            self.__echo_data = self.__raw_echo_data
-
-    @property
-    def showtdxinfo(self) -> None:
-        None
-
     def show_echo_data(self):
         return self.__echo_data
+
     def show_vel_data(self):
         return self.__vel_data
+
     def show_times(self):
         return self.__time_series
+
     def show_coordinates(self):
         return self.__coordinate_series
 
     def showinfo(self):
         None
 
-    def statistic(self):
-        None
-
     def getlog(self):
         None
 
+
 class Statistic:
-    def __init__(self, being_read_data):
-        self.__data = being_read_data
+    def __init__(self, datas=None, vel_data=None, echo_data=None, times=None, coordinates=None):
+        self.__data = datas
+        self.__vel_data = self.__data.__vel_data if self.__data is not None else vel_data
+        self.__echo_data = self.__data.__echo_data if self.__data is not None else echo_data
+        self.__times = self.__data.__time_series if self.__data is not None else times
+        self.__coordinates = self.__data.__coordinate_series if self.__data is not None else coordinates
+
+        self.__average = None
+        self.__max = None
+        self.__min = None
+        self.__movvar = None
+
+    def average(self):
+        if isinstance(self.__vel_data[0][0], list):
+            self.__average = [signal_tdx_data.mean(axis=0) for signal_tdx_data in self.__vel_data]
+            self.__max = [signal_tdx_data.max(axis=0) for signal_tdx_data in self.__vel_data]
+            self.__min = [signal_tdx_data.min(axis=0) for signal_tdx_data in self.__vel_data]
+        else:
+            self.__average = self.__vel_data.mean(axis=0)
+            self.__max = self.__vel_data.max(axis=0)
+            self.__min = self.__vel_data.min(axis=0)
+
+    def movvar(self):
+        if isinstance(self.__vel_data[0][0], list):
+            sqd = []
+            mean = []
+            self.__movvar = []
+            for signal_tdx_data in self.__vel_data:
+                sqd.append(np.apply_along_axis(lambda m: np.convolve(m ** 2, np.repeat(1.0, 3) / 3, 'valid'), axis=0,
+                                               arr=signal_tdx_data))
+                mean.append(np.apply_along_axis(lambda m: np.convolve(m, np.repeat(1.0, 3) / 3, 'valid'), axis=0, arr=data))
+                movvar = sqd - mean ** 2
+                self.__movvar.append(movvar)
+
 
 class Analysis:
     def __init__(self, being_read_data):
@@ -251,3 +284,4 @@ vel_data = data.show_vel_data()
 echo_data = data.show_echo_data()
 times = data.show_times()
 coordinates = data.show_coordinates()
+data.statistic.prooo()

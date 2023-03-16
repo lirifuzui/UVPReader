@@ -28,8 +28,8 @@
 		{"type":"text","text":"FFT","id":"5df254c03495083c","x":-10,"y":760,"width":250,"height":60,"color":"2"},
 		{"type":"text","text":"doanaylsis","id":"17bd3e97bc9de5b6","x":10,"y":930,"width":250,"height":60,"color":"2"},
 		{"type":"text","text":"CutData","id":"57bcdbdfad261091","x":-330,"y":490,"width":250,"height":60,"color":"3"},
-		{"type":"text","text":"time","id":"438755f190153401","x":190,"y":460,"width":250,"height":60,"color":"2"},
-		{"type":"text","text":"position","id":"1c6c85a02d48c409","x":190,"y":550,"width":250,"height":60,"color":"2"},
+		{"type":"text","text":"times","id":"438755f190153401","x":190,"y":460,"width":250,"height":60,"color":"2"},
+		{"type":"text","text":"coordinates","id":"1c6c85a02d48c409","x":190,"y":550,"width":250,"height":60,"color":"2"},
 		{"type":"text","text":"Statistic","id":"9a3282a7d95509db","x":-285,"y":240,"width":250,"height":60,"color":"3"},
 		{"type":"text","text":"getlog","id":"d1c7df0d45a45563","x":75,"y":-45,"width":250,"height":60,"color":"2"},
 		{"type":"text","text":"statistic","id":"1a58dd7497ad8c47","x":75,"y":50,"width":250,"height":60,"color":"2"},
@@ -45,7 +45,7 @@
 		{"id":"8a02111f94db6999","x":180,"y":-498,"width":250,"height":57,"color":"5","type":"text","text":"self.__time_series"},
 		{"id":"b6e8301404bb2122","x":-160,"y":-471,"width":250,"height":60,"type":"text","text":"__times_and_coordinates"},
 		{"id":"d308553157098451","x":180,"y":-430,"width":250,"height":60,"color":"5","type":"text","text":"self.__coordinate_series"},
-		{"type":"text","text":"self.__new_sound_speed","id":"f063e0c6c0925f23","x":480,"y":-580,"width":250,"height":60,"color":"5"}
+		{"type":"text","text":"self.__reset_sound_speed","id":"f063e0c6c0925f23","x":480,"y":-580,"width":250,"height":60,"color":"6"}
 	],
 	"edges":[
 		{"id":"f42f4431510f2d43","fromNode":"53ef1924384c0fdd","fromSide":"right","toNode":"6e1f9d76cb9fe75c","toSide":"left"},
