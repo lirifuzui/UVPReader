@@ -24,18 +24,18 @@
 [UVP_PARAMAETER]
 
 长度	名称	数据类型
--	Frequency	int	//频率
--	StartChannel	double	//
--	ChannelDistance	double	//
+-	Frequency	int	//频率, hz
+-	StartChannel	double	//数据记录起点通道位置, mm
+-	ChannelDistance	double	//相邻通道间距, mm
 -	ChannelWidth	double	//
--	MaximumDepth	double	//
--	SoundSpeed	int	//声速
--	Angle	double	//
+-	MaximumDepth	double	//最大可测量测长度, mm
+-	SoundSpeed	int	//声速, m/s
+-	Angle	double	//角度
 -	GainStart	unsigned long	//
 -	GainEnd	unsigned long	//
--	Voltage		//
+-	Voltage		//电压
 -	Iterations		//
--	NoiseLevel		//
+-	NoiseLevel		//降噪等级
 -	CyclesPerPulse		//
 -	TriggerMode		//
 -	TriggerModeName		//
@@ -44,14 +44,14 @@
 -	Blocks		//
 -	AmplitudeStored		//
 -	DoNotStoreDoppler		//
--	RawDataMin	int	//
--	RawDataMax	int	//
+-	RawDataMin	int	//原始数据最小值
+-	RawDataMax	int	//原始数据最大值
 -	RawDataRange		//
 -	AmplDataMin		//
 -	AmplDataMax		//
 -	VelocityInterpretingMode		//
 -	UserSampleTime		//
--	SampleTime	int	//
+-	SampleTime	int	//取样间隔时间, ms
 -	UseMultiplexer	int	//0 or 1
 -	FlowMapping	bool	//
 -	FirstValidChannel		//

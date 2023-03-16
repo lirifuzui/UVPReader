@@ -22,7 +22,7 @@ Ang = 90  # [deg] Oscillation amplitude in degree
 
 Nosc = 20.0   # number of oscillation periods
 
-nuset = 5.0e2 #[mm^2/s] Kinematic viscosity of test fluid
+nuset = 1000 #[mm^2/s] Kinematic viscosity of test fluid
 
 nlev = 0.03    # Noise level relative to the wall velocity
 

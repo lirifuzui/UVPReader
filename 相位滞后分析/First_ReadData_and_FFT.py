@@ -18,12 +18,12 @@ import matplotlib.pyplot as plt
 #定义容器尺寸
 cylinder_r :float = 72.5
 #定于测量线的位置
-Delta_y : float = 15
+Delta_y : float = 16
 
 #===========================================================
 #读取文件
 #一定注意可以正确读取的文件的书写格式
-data :pd.DataFrame = pd.read_csv('1000minvel.csv')
+data :pd.DataFrame = pd.read_csv('u_xi500cSt1Hz90deg_vel.csv')
 
 #===========================================================
 #提取时间序列    

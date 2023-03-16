@@ -232,6 +232,6 @@ class CutData(Analysis):
         None
 
 
-data = ReadData(r'C:\Users\zheng\Desktop\Silicon oil\15rpm.mfprof')
+data = ReadData(r'C:\Users\ZHENG WENQING\Desktop\Zheng\20230315cilliononly\0.5hz90deg.mfprof')
 vel_data = data.show_vel_data()
 echo_data = data.show_echo_data()
