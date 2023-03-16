@@ -15,8 +15,12 @@
 4	startTime2	unsigned long	//
 
 =================================================
+数据按照时间序列循环存储
+例如，存入第一个时间点的n个vel数据，然后存入同一时间点的n个echo数据
+然后接着写入下一个时间点的n个vel和echo数据
 
-16	vel		//速度数据
+2	vel		//速度数据
+2   echo    //反射回声数据
 
 =================================================
 在文件末尾，直接采用ARCII字符形式[str]表示，一个字符占一个长度
@@ -30,7 +34,7 @@
 -	ChannelWidth	double	//
 -	MaximumDepth	double	//最大可测量测长度, mm
 -	SoundSpeed	int	//声速, m/s
--	Angle	double	//角度
+-	Angle	double	//传感器与流动垂直方向的角度，0°时与流速方向垂直，90°时与流速方向平行
 -	GainStart	unsigned long	//
 -	GainEnd	unsigned long	//
 -	Voltage		//电压
