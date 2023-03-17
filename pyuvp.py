@@ -8,18 +8,21 @@ import Tools
 class ReadData:
 
     def __init__(self, file_path, threshold=1):
+        # Velocity data and echo data may be two-dimensional arrays or three-dimensional arrays.
+        # If the multiplexer is enabled, they will be stored as three-dimensional arrays.
+        # The structure is [tdxs][position][times], or [position][times]
         self.__vel_data = None
         self.__echo_data = None
-        self.__reset_sound_speed = None
+
         self.__time_series = None
-        self.__position_series = None
         self.__coordinate_series = None
 
         self.__path = file_path
         self.__th = threshold
         self.__read_data()
 
-        self.statistic = Statistic(None, self.__vel_data, self.__echo_data, self.__time_series, self.__coordinate_series)
+        self.statistic = Statistic(None, self.__vel_data, self.__echo_data, self.__time_series,
+                                   self.__coordinate_series)
 
     def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
@@ -127,14 +130,11 @@ class ReadData:
         self.__nums_set = int(mux_parameters_values[3])
         self.__table = tdx_table
 
-    def reset_soundspeed(self, new_sound_speed) -> None:
-        reset_sound_speed = new_sound_speed != self.__sound_speed
-        if reset_sound_speed:
-            self.__reset_sound_speed = new_sound_speed
-
+    def reset_soundspeed(self, sound_speed) -> None:
+        self.__sound_speed = sound_speed
         max_depth = self.__max_depth * 2.0
-        doppler_coefficient = new_sound_speed / max_depth / 256.0 * 1000.0
-        sounds_speed_coefficient = new_sound_speed / (self.__frequency * 2.0)
+        doppler_coefficient = sound_speed / max_depth / 256.0 * 1000.0
+        sounds_speed_coefficient = sound_speed / (self.__frequency * 2.0)
 
         if self.__use_multiplexer:
             nums_tdx = self.__nums_set
@@ -149,7 +149,9 @@ class ReadData:
             vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * 1.0 / np.sin(
                 self.__table[online_tdx_list[0]][3] * np.pi / 180)
             self.__vel_data = self.__raw_vel_data[slice_range] * vel_resolution
+            self.__vel_data = self.__vel_data.transpose((0, 2, 1))
             self.__echo_data = self.__raw_echo_data[slice_range]
+            self.__echo_data = self.__echo_data.transpose((0, 2, 1))
         else:
             angle_coefficient = 1.0 / np.sin(self.__angle * np.pi / 180)
             vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
@@ -194,48 +196,48 @@ class ReadData:
 
         self.reset_soundspeed(self.__sound_speed)
 
-    def show_echo_data(self):
+    @property
+    def echo_table(self):
         return self.__echo_data
 
-    def show_vel_data(self):
+    @property
+    def vel_table(self):
         return self.__vel_data
 
-    def show_times(self):
+    @property
+    def time_series(self):
         return self.__time_series
 
-    def show_coordinates(self):
+    @property
+    def coordinate_series(self):
         return self.__coordinate_series
 
-    def showinfo(self):
+    @property
+    def summary_data(self):
+        return self.__vel_data, self.__echo_data, self.__time_series, self.__coordinate_series
+
+    def show_info(self):
         None
 
-    def getlog(self):
+    def get_log(self):
         None
 
 
 class Statistic:
     def __init__(self, datas=None, vel_data=None, echo_data=None, times=None, coordinates=None):
-        self.__data = np.array(datas)
-        self.__vel_data = np.array(datas.__vel_data if datas else vel_data)
-        self.__echo_data = np.array(datas.__echo_data if datas else echo_data)
-        self.__times = np.array(datas.__time_series if datas else times)
-        self.__coordinates = np.array(datas.__coordinate_series if datas else coordinates)
+        self.__vel_data = np.array(datas.vel_table if datas else vel_data)
+        self.__echo_data = np.array(datas.echo_table if datas else echo_data)
+        self.__times = np.array(datas.time_series if datas else times)
+        self.__coordinates = np.array(datas.coordinate_series if datas else coordinates)
 
-        # Declare output parameters
-        self.__average = np.empty(0)
-        self.__max = np.empty(0)
-        self.__min = np.empty(0)
-        self.__movvar = np.empty(0)
-
-    def average(self):
-        if vel_data.ndim == 2:
-            self.__average = np.mean(vel_data, axis=1)
-            self.__max = np.max(vel_data, axis=1)
-            self.__min = np.min(vel_data, axis=1)
-        elif vel_data.ndim == 3:
-            self.__average = np.mean(vel_data, axis=2)
-            self.__max = np.max(vel_data, axis=2)
-            self.__min = np.min(vel_data, axis=2)
+    # Return the average, maximum, and minimum values of the speed at different positions.
+    # The structure is three one-dimensional arrays.
+    @property
+    def vel_average(self):
+        vel_average = np.mean(self.__vel_data, axis=0)
+        vel_max = np.max(self.__vel_data, axis=0)
+        vel_min = np.min(self.__vel_data, axis=0)
+        return vel_average, vel_max, vel_min
 
     def movvar(self):
         if isinstance(self.__vel_data[0][0], list):
@@ -273,9 +275,9 @@ class CutData(Analysis):
         None
 
 
-data = ReadData(r'E:\Zheng\20230316\1hz60deg.mfprof')
-vel_data = data.show_vel_data()
-echo_data = data.show_echo_data()
-times = data.show_times()
-coordinates = data.show_coordinates()
-data.statistic.prooo()
+data = ReadData(r'UVPdatas/0.5hz150deg.mfprof')
+vel_data = data.vel_table
+echo_data = data.echo_table
+times = data.time_series
+coordinates = data.coordinate_series
+average = data.statistic.vel_average[0]

@@ -24,19 +24,22 @@ def summary_statistic(data, axis=0):
     return mean, std
 
 
-# 定义参数
-A = 2.0  # 振幅
-w = 2 * np.pi / 20  # 角频率
-phase_shift = 5  # 相位移动
-dx = 0.5  # 横向平移步长
-dy = 0.5  # 纵向平移步长
+if __name__ == '__main__' :
+    # 定义参数
+    A = 2.0  # 振幅
+    w = 2 * np.pi / 20  # 角频率
+    phase_shift = 5  # 相位移动
+    dx = 0.5  # 横向平移步长
+    dy = 0.5  # 纵向平移步长
 
-# 生成横向和纵向的网格坐标
-x = np.arange(0, 20, dx)
-y = np.arange(0, 20, dy)
-xx, yy = np.meshgrid(x, y)
+    # 生成横向和纵向的网格坐标
+    x = np.arange(0, 40, dx)
+    y = np.arange(0, 20, dy)
+    xx, yy = np.meshgrid(x, y)
 
-# 生成平移的sin函数值的二维数组
-z = A * np.sin(w * (xx - phase_shift) + w * (yy - phase_shift))
+    # 生成平移的sin函数值的二维数组
+    z = A * np.sin(w * (xx - phase_shift) + w * (yy - phase_shift))
 
-aver = moving_std(z, 6)
+    movstd = moving_std(z, 6,1)
+    sum_stat = summary_statistic(movstd,1)[1]
+    average = summary_statistic(z,1)[0]
