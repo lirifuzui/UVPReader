@@ -2,6 +2,8 @@ from struct import unpack
 from re import search
 import numpy as np
 
+import Tools
+
 
 class ReadData:
 
@@ -125,15 +127,15 @@ class ReadData:
         self.__nums_set = int(mux_parameters_values[3])
         self.__table = tdx_table
 
-    def resetsoundspeed(self, new_sound_speed) -> None:
-        if new_sound_speed != self.__sound_speed:
+    def reset_soundspeed(self, new_sound_speed) -> None:
+        reset_sound_speed = new_sound_speed != self.__sound_speed
+        if reset_sound_speed:
             self.__reset_sound_speed = new_sound_speed
 
-        doppler_coefficient = new_sound_speed / (self.__max_depth * 2.0) / 256.0 * 1000.0
+        max_depth = self.__max_depth * 2.0
+        doppler_coefficient = new_sound_speed / max_depth / 256.0 * 1000.0
         sounds_speed_coefficient = new_sound_speed / (self.__frequency * 2.0)
 
-        self.__vel_data = []
-        self.__echo_data = []
         if self.__use_multiplexer:
             nums_tdx = self.__nums_set
             nums_cycles_is_on = 0
@@ -143,17 +145,11 @@ class ReadData:
                     nums_cycles_is_on += self.__table[tdx][2]
                     for _ in range(self.__table[tdx][2]):
                         online_tdx_list.append(tdx)
-            for n in range(nums_cycles_is_on):
-                temp_vel_list = []
-                temp_echo_list = []
-                angle_coefficient = 1.0 / np.sin(self.__table[online_tdx_list[n - 1]][3] * np.pi / 180)
-                vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
-                while n <= self.__nums_profiles - 1:
-                    temp_vel_list.append(self.__raw_vel_data[n] * vel_resolution)
-                    temp_echo_list.append(self.__raw_echo_data[n])
-                    n += nums_cycles_is_on
-                self.__vel_data.append(temp_vel_list)
-                self.__echo_data.append(temp_echo_list)
+            slice_range = slice(None, self.__nums_profiles, nums_cycles_is_on)
+            vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * 1.0 / np.sin(
+                self.__table[online_tdx_list[0]][3] * np.pi / 180)
+            self.__vel_data = self.__raw_vel_data[slice_range] * vel_resolution
+            self.__echo_data = self.__raw_echo_data[slice_range]
         else:
             angle_coefficient = 1.0 / np.sin(self.__angle * np.pi / 180)
             vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
@@ -187,17 +183,16 @@ class ReadData:
         self.__times_and_coordinates()
 
         # Overflow treatment.
-        if self.__th > 0:
-            self.__raw_vel_data[self.__raw_vel_data > self.__th * self.__raw_data_max] \
-                = self.__raw_vel_data[self.__raw_vel_data > self.__th * self.__raw_data_max] \
-                  - self.__raw_data_max + self.__raw_data_min
-        if self.__th < 0:
-            self.__raw_vel_data[self.__raw_vel_data < self.__th * self.__raw_data_min] \
-                = self.__raw_vel_data[self.__raw_vel_data < self.__th * self.__raw_data_min] \
-                  - self.__raw_data_max + self.__raw_data_min
+        if self.__th != 0:
+            th_max = self.__th * self.__raw_data_max
+            th_min = self.__th * self.__raw_data_min
+            self.__raw_vel_data[(self.__th > 0) & (self.__raw_vel_data > th_max)] \
+                -= self.__raw_data_max - self.__raw_data_min
+            self.__raw_vel_data[(self.__th < 0) & (self.__raw_vel_data < th_min)] \
+                += self.__raw_data_min - self.__raw_data_max
         self.__raw_echo_data[(self.__raw_echo_data < 0) | (self.__raw_echo_data > 500)] = 0
 
-        self.resetsoundspeed(self.__sound_speed)
+        self.reset_soundspeed(self.__sound_speed)
 
     def show_echo_data(self):
         return self.__echo_data
@@ -220,38 +215,37 @@ class ReadData:
 
 class Statistic:
     def __init__(self, datas=None, vel_data=None, echo_data=None, times=None, coordinates=None):
-        self.__data = datas
-        self.__vel_data = self.__data.__vel_data if self.__data is not None else vel_data
-        self.__echo_data = self.__data.__echo_data if self.__data is not None else echo_data
-        self.__times = self.__data.__time_series if self.__data is not None else times
-        self.__coordinates = self.__data.__coordinate_series if self.__data is not None else coordinates
+        self.__data = np.array(datas)
+        self.__vel_data = np.array(datas.__vel_data if datas else vel_data)
+        self.__echo_data = np.array(datas.__echo_data if datas else echo_data)
+        self.__times = np.array(datas.__time_series if datas else times)
+        self.__coordinates = np.array(datas.__coordinate_series if datas else coordinates)
 
-        self.__average = None
-        self.__max = None
-        self.__min = None
-        self.__movvar = None
+        # Declare output parameters
+        self.__average = np.empty(0)
+        self.__max = np.empty(0)
+        self.__min = np.empty(0)
+        self.__movvar = np.empty(0)
 
     def average(self):
-        if isinstance(self.__vel_data[0][0], list):
-            self.__average = [signal_tdx_data.mean(axis=0) for signal_tdx_data in self.__vel_data]
-            self.__max = [signal_tdx_data.max(axis=0) for signal_tdx_data in self.__vel_data]
-            self.__min = [signal_tdx_data.min(axis=0) for signal_tdx_data in self.__vel_data]
-        else:
-            self.__average = self.__vel_data.mean(axis=0)
-            self.__max = self.__vel_data.max(axis=0)
-            self.__min = self.__vel_data.min(axis=0)
+        if vel_data.ndim == 2:
+            self.__average = np.mean(vel_data, axis=1)
+            self.__max = np.max(vel_data, axis=1)
+            self.__min = np.min(vel_data, axis=1)
+        elif vel_data.ndim == 3:
+            self.__average = np.mean(vel_data, axis=2)
+            self.__max = np.max(vel_data, axis=2)
+            self.__min = np.min(vel_data, axis=2)
 
     def movvar(self):
         if isinstance(self.__vel_data[0][0], list):
-            sqd = []
-            mean = []
-            self.__movvar = []
-            for signal_tdx_data in self.__vel_data:
-                sqd.append(np.apply_along_axis(lambda m: np.convolve(m ** 2, np.repeat(1.0, 3) / 3, 'valid'), axis=0,
-                                               arr=signal_tdx_data))
-                mean.append(np.apply_along_axis(lambda m: np.convolve(m, np.repeat(1.0, 3) / 3, 'valid'), axis=0, arr=data))
-                movvar = sqd - mean ** 2
-                self.__movvar.append(movvar)
+            kernel = np.repeat(1.0, 3) / 3
+            self.__movvar = np.array(
+                [(np.array(signal_tdx_data) ** 2 - np.convolve(signal_tdx_data, kernel, 'valid') ** 2)
+                 for signal_tdx_data in self.__vel_data])
+        else:
+            kernel = np.repeat(1.0, 3) / 3
+            self.__movvar = np.array(self.__vel_data) ** 2 - np.convolve(self.__vel_data, kernel, 'valid') ** 2
 
 
 class Analysis:
