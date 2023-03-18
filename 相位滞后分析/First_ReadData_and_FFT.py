@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 #定义容器尺寸
 cylinder_r :float = 72.5
 #定于测量线的位置
-Delta_y : float = 16
+delta_y : float = 16
 
 #===========================================================
 #读取文件

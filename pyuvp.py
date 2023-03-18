@@ -1,5 +1,6 @@
 from struct import unpack
 from re import search
+
 import numpy as np
 
 import Tools
@@ -9,8 +10,8 @@ class ReadData:
 
     def __init__(self, file_path, threshold=1):
         # Velocity data and echo data may be two-dimensional arrays or three-dimensional arrays.
-        # If the multiplexer is enabled, they will be stored as three-dimensional arrays.
-        # The structure is [tdxs][position][times], or [position][times]
+        # If the multiplexer is on, they will be stored as three-dimensional arrays.
+        # The structure is [tdxs[times[position]]], or [times[position]]
         self.__vel_data = None
         self.__echo_data = None
 
@@ -137,7 +138,7 @@ class ReadData:
         sounds_speed_coefficient = sound_speed / (self.__frequency * 2.0)
 
         if self.__use_multiplexer:
-            nums_tdx = self.__nums_set
+            '''nums_tdx = self.__nums_set
             nums_cycles_is_on = 0
             online_tdx_list = []
             for tdx in range(nums_tdx):
@@ -151,7 +152,8 @@ class ReadData:
             self.__vel_data = self.__raw_vel_data[slice_range] * vel_resolution
             self.__vel_data = self.__vel_data.transpose((0, 2, 1))
             self.__echo_data = self.__raw_echo_data[slice_range]
-            self.__echo_data = self.__echo_data.transpose((0, 2, 1))
+            self.__echo_data = self.__echo_data.transpose((0, 2, 1))'''
+            None
         else:
             angle_coefficient = 1.0 / np.sin(self.__angle * np.pi / 180)
             vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
@@ -184,7 +186,7 @@ class ReadData:
         # Calculate the time and coordinates.
         self.__times_and_coordinates()
 
-        # Overflow treatment.
+        '''# Overflow treatment.
         if self.__th != 0:
             th_max = self.__th * self.__raw_data_max
             th_min = self.__th * self.__raw_data_min
@@ -192,7 +194,7 @@ class ReadData:
                 -= self.__raw_data_max - self.__raw_data_min
             self.__raw_vel_data[(self.__th < 0) & (self.__raw_vel_data < th_min)] \
                 += self.__raw_data_min - self.__raw_data_max
-        self.__raw_echo_data[(self.__raw_echo_data < 0) | (self.__raw_echo_data > 500)] = 0
+        self.__raw_echo_data[(self.__raw_echo_data < 0) | (self.__raw_echo_data > 500)] = 0'''
 
         self.reset_soundspeed(self.__sound_speed)
 
@@ -253,9 +255,7 @@ class Statistic:
 class Analysis:
     def __init__(self, being_read_data):
         self.__data = being_read_data
-
-    def cutdata(self):
-        None
+        self.cutdata = CutData(being_read_data)
 
     def FFT(self):
         None
@@ -264,14 +264,17 @@ class Analysis:
         None
 
 
-class CutData(Analysis):
-    def __init__(self):
-        None
+class CutData:
+    def __init__(self, being_read_data):
+        self.__data = being_read_data
 
-    def fromtime(self):
-        None
+    def from_time(self, min_index, max_index):
+        if self.__data.vel_table.ndim == 3:
+            return self.__data.vel_table[:, min_index:max_index, :]
+        else:
+            return self.__data.vel_table[min_index:max_index, :]
 
-    def fromlocation(self):
+    def from_coordinate(self, min_coordinate, max_coordinate):
         None
 
 
