@@ -1,6 +1,4 @@
 from struct import unpack
-from re import search
-
 import numpy as np
 
 import Tools
@@ -12,23 +10,27 @@ OFF = 0
 class ReadData:
 
     def __init__(self, file_path, read_as_mux=OFF):
-        self.__data_rw_params = {}
-        self.__uvp_operational_params = {}
+        self.__measurement_info = {}
         self.__mux_config_params = {}
 
         # Velocity data and echo data may be two-dimensional arrays or three-dimensional arrays.
-        # If the multiplexer is on, they will be stored as three-dimensional arrays.
-        # The structure is [tdxs[times[position]]], or [times[position]]
+        # 如果没有开多传感器的话存在这里，是一个numpy的二维数组
         self.__vel_data = None
         self.__echo_data = None
-
         self.__time_series = None
         self.__coordinate_series = None
+        # 如果开了多传感器的话存在这里，是一个一维列表，里面的每一项对应一个传感器的数据，是一个numpy的二维数组。
+        self.__mux_vel_data_list = None
+        self.__mux_echo_data_list = None
+        self.__mux_time_series_list = None
+        self.__mux_coordinate_series_list = None
 
-        self.__read_data(file_path, read_as_mux)
+        self.__read_data(file_path)
 
         self.statistic = Statistic(None, self.__vel_data, self.__echo_data, self.__time_series,
                                    self.__coordinate_series)
+
+        print(self.__mux_config_params)
 
     def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
@@ -46,10 +48,9 @@ class ReadData:
         startTime2, c unsigned long """
 
         uvp_datafile.seek(64)
-        head_datas = [unpack('L', uvp_datafile.read(4)) for _ in range(10)]
-        self.__nums_profiles = int(head_datas[2][0])
-        self.__flag = int(head_datas[4][0])
-        self.__nums_channels = int(head_datas[6][0])
+        head_params = [unpack('L', uvp_datafile.read(4)) for _ in range(10)]
+        self.__measurement_info['NumberOfChannels'] = int(head_params[6][0])
+        self.__measurement_info['NumberOfProfiles'] = int(head_params[2][0])
 
     # noinspection PyTypeChecker
     def __read_params_part_II(self, uvp_datafile) -> None:
@@ -69,8 +70,8 @@ class ReadData:
         mux_config_params_list = [item.replace('\\', '') for item in mux_config_params_list]
 
         index_1 = [i for i, line in enumerate(uvp_operational_params_list) if line.startswith('Comment=')][0]
-        index_2 = [i for i, line in enumerate(uvp_operational_params_list) if line.startswith('MeasurementProtocol=')][
-            0]
+        index_2 = [i for i, line in enumerate(uvp_operational_params_list) if
+                   line.startswith('MeasurementProtocol=')][0]
         index_3 = [i for i, line in enumerate(mux_config_params_list) if line.startswith('Table=')][0]
         for item in uvp_operational_params_list[:index_1]:
             if not item:
@@ -80,13 +81,13 @@ class ReadData:
             value = None if parts[1].strip() == '' else parts[1].strip()
             if value.replace('.', '').replace('-', '').isdigit():
                 value = float(value)
-            self.__uvp_operational_params[name] = value
+            self.__measurement_info[name] = value
         comment_value = "\n".join(uvp_operational_params_list[index_1:index_2]).replace("Comment=", "")
-        self.__uvp_operational_params["Comment"] = None if comment_value == '' else comment_value
+        self.__measurement_info["Comment"] = None if comment_value == '' else comment_value
         protocol_value = "\n".join(uvp_operational_params_list[index_2:]).replace("MeasurementProtocol=", "")
-        self.__uvp_operational_params["MeasurementProtocol"] = None if protocol_value == '' else protocol_value
+        self.__measurement_info["MeasurementProtocol"] = None if protocol_value == '' else protocol_value
 
-        for item in mux_config_params_list[:index_3+1]:
+        for item in mux_config_params_list[:index_3 + 1]:
             if not item:
                 continue
             parts = item.split("=")
@@ -95,78 +96,90 @@ class ReadData:
             if value.replace('.', '').replace('-', '').isdigit():
                 value = float(value)
             self.__mux_config_params[name] = value
-        mux_config = [list(map(float, item.split())) for item in mux_config_params_list[index_3+1:]]
+        mux_config = [list(map(float, item.split())) for item in mux_config_params_list[index_3 + 1:]]
         self.__mux_config_params['MultiplexerConfiguration'] = mux_config
-        print(self.__uvp_operational_params)
 
-    def reset_soundspeed(self, sound_speed, read_as_mux) -> None:
-        self.__uvp_operational_params['SoundSpeed'] = sound_speed
-        max_depth = self.__uvp_operational_params['MaximumDepth']
+    def resetSoundSpeed(self, sound_speed) -> None:
+        self.__measurement_info['SoundSpeed'] = sound_speed
+        max_depth = self.__measurement_info['MaximumDepth']
         doppler_coefficient = sound_speed / (max_depth * 2.0) / 256.0 * 1000.0
-        sounds_speed_coefficient = sound_speed / (self.__uvp_operational_params['Frequency'] * 2.0)
+        sounds_speed_coefficient = sound_speed / (self.__measurement_info['Frequency'] * 2.0)
 
-        if self.__uvp_operational_params['UseMultiplexer'] and read_as_mux:
-            '''nums_tdx = self.__number_of_tdxs_on
-            nums_cycles_is_on = 0
-            online_tdx_list = []
-            for tdx in range(nums_tdx):
-                if self.__mux_config[tdx][0]:
-                    nums_cycles_is_on += self.__mux_config[tdx][2]
-                    for _ in range(self.__mux_config[tdx][2]):
-                        online_tdx_list.append(tdx)
-            slice_range = slice(None, self.__nums_profiles, nums_cycles_is_on)
-            vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * 1.0 / np.sin(
-                self.__mux_config[online_tdx_list[0]][3] * np.pi / 180)
-            self.__vel_data = self.__raw_vel_data[slice_range] * vel_resolution
-            self.__vel_data = self.__vel_data.transpose((0, 2, 1))
-            self.__echo_data = self.__raw_echo_data[slice_range]
-            self.__echo_data = self.__echo_data.transpose((0, 2, 1))'''
-            None
+        if self.__measurement_info['UseMultiplexer']:
+            self.__mux_vel_data_list = [[]] * int(self.__mux_config_params['Table'])
+            self.__mux_echo_data_list = [[]] * int(self.__mux_config_params['Table'])
+            temp_vel_data = self.__raw_vel_data
+            temp_echo_data = self.__raw_echo_data
+            while list(temp_vel_data):
+                now_index = 0
+                for tdx in range(int(self.__mux_config_params['Table'])):
+                    if self.__mux_config_params['MultiplexerConfiguration'][tdx][0]:
+                        number_of_read_lines = int(self.__mux_config_params['MultiplexerConfiguration'][tdx][2])
+                        self.__mux_vel_data_list[tdx].extend(
+                            temp_vel_data[now_index:now_index + number_of_read_lines])
+                        self.__mux_echo_data_list[tdx].extend(
+                            temp_echo_data[now_index:now_index + number_of_read_lines])
+                        now_index += number_of_read_lines
+                    else:
+                        continue
+                temp_vel_data = temp_vel_data[now_index:]
+                temp_echo_data = temp_echo_data[now_index:]
+            self.__mux_vel_data_list = [np.array(item) for item in self.__mux_vel_data_list]
+            self.__mux_echo_data_list = [np.array(item) for item in self.__mux_echo_data_list]
+
         else:
-            angle_coefficient = 1.0 / np.sin(self.__uvp_operational_params['Angle'] * np.pi / 180)
+            angle_coefficient = 1.0 / np.sin(self.__measurement_info['Angle'] * np.pi / 180)
             vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
             self.__vel_data = self.__raw_vel_data * vel_resolution
             self.__echo_data = self.__raw_echo_data
+            self.__time_series = [n * self.__measurement_info['SampleTime'] * 0.001 for n in
+                                  range(self.__measurement_info['NumberOfProfiles'])]
+        self.__coordinate_series = [
+            self.__measurement_info['StartChannel'] + n * self.__measurement_info['ChannelDistance']
+            for n in range(self.__measurement_info['NumberOfChannels'])]
 
     def __times_and_coordinates(self):
-        self.__time_series = [n * self.__uvp_operational_params['UserSampleTime'] * 0.001 for n in range(self.__nums_profiles)]
-        self.__coordinate_series = [self.__uvp_operational_params['StartChannel'] + n * self.__uvp_operational_params['ChannelDistance']
-                                    for n in range(self.__nums_channels)]
+        self.__time_series = [n * self.__measurement_info['SampleTime'] * 0.001 for n in
+                              range(self.__measurement_info['NumberOfProfiles'])]
+        self.__coordinate_series = [self.__measurement_info['StartChannel'] + n * self.__measurement_info['ChannelDistance']
+                                    for n in range(self.__measurement_info['NumberOfChannels'])]
 
-    def __read_data(self, file_path, read_as_mux) -> None:
+    def __read_data(self, file_path) -> None:
         with open(file_path, 'rb') as uvpDatafile:
             self.__read_params_part_I(uvpDatafile)
             self.__read_params_part_II(uvpDatafile)
 
             # read velocity data and echo data
-            self.__raw_vel_data = np.zeros((self.__nums_profiles, self.__nums_channels))
-            self.__raw_echo_data = np.zeros((self.__nums_profiles, self.__nums_channels))
+            self.__raw_vel_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
+                                            self.__measurement_info['NumberOfChannels']))
+            self.__raw_echo_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
+                                             self.__measurement_info['NumberOfChannels']))
             uvpDatafile.seek(104)
-            for i in range(self.__nums_profiles):
+            for i in range(self.__measurement_info['NumberOfProfiles']):
                 uvpDatafile.seek(16, 1)
-                encode_vel_data = uvpDatafile.read(self.__nums_channels * 2)
-                datatype = '{}h'.format(self.__nums_channels)
-                self.__raw_vel_data[i] = unpack(datatype, encode_vel_data)
-                if self.__flag:
-                    encode_echo_data = uvpDatafile.read(self.__nums_channels * 2)
+                if self.__measurement_info['DoNotStoreDoppler']:
+                    None
+                else:
+                    encode_vel_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
+                    datatype = '{}h'.format(self.__measurement_info['NumberOfChannels'])
+                    self.__raw_vel_data[i] = unpack(datatype, encode_vel_data)
+                if self.__measurement_info['AmplitudeStored']:
+                    encode_echo_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
                     self.__raw_echo_data[i] = unpack(datatype, encode_echo_data)
-
-        # Calculate the time and coordinates.
-        self.__times_and_coordinates()
-        # Resolution the velocity data.
-        self.reset_soundspeed(self.__sound_speed)
+        # Resolution the velocity data, echo data, time series and coordinate series.
+        self.resetSoundSpeed(self.__measurement_info['SoundSpeed'])
 
     @property
     def mux_state(self):
-        return self.__use_multiplexer
+        return self.__measurement_info['UseMultiplexer']
 
     @property
     def echo_table(self):
-        return self.__echo_data
+        return self.__mux_echo_data_list if self.mux_state else self.__echo_data
 
     @property
     def vel_table(self):
-        return self.__vel_data
+        return self.__mux_vel_data_list if self.mux_state else self.__vel_data
 
     @property
     def time_series(self):
@@ -179,6 +192,10 @@ class ReadData:
     @property
     def summary_data(self):
         return self.__vel_data, self.__echo_data, self.__time_series, self.__coordinate_series
+    
+    @property
+    def return_raw_data(self):
+        return self.__raw_vel_data
 
     def show_info(self):
         None
@@ -217,7 +234,7 @@ class Statistic:
 class Analysis:
     def __init__(self, being_read_data):
         self.__data = being_read_data
-        self.cutdata = CutData(being_read_data)
+        self.cutData = CutData(being_read_data)
 
     def FFT(self):
         None
@@ -240,10 +257,11 @@ class CutData:
         None
 
 
-# data = ReadData(r'UVPdatas/0.5hz150deg.mfprof')
-data = ReadData(r"C:\Users\zheng\Desktop\UVPopener_64bit\UVPopener\uvp073008.mfprof")
-vel_data = data.vel_table
-echo_data = data.echo_table
-times = data.time_series
-coordinates = data.coordinate_series
-average = data.statistic.vel_average[0]
+#data = ReadData(r'UVPdatas/0.5hz150deg.mfprof')
+data = ReadData(r'E:\Zheng\20230320\60rpm0003.mfprof')
+vel_data = data.vel_table[0]
+echo_data = data.echo_table[0]
+velraw = data.return_raw_data
+# times = data.time_series
+# coordinates = data.coordinate_series
+

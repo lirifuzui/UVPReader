@@ -18,12 +18,13 @@ import matplotlib.pyplot as plt
 #定义容器尺寸
 cylinder_r :float = 72.5
 #定于测量线的位置
-delta_y : float = 16
+Delta_y : float = 16
 
 #===========================================================
 #读取文件
 #一定注意可以正确读取的文件的书写格式
-data :pd.DataFrame = pd.read_csv('u_xi500cSt1Hz90deg_vel.csv')
+data :pd.DataFrame = pd.read_csv(r'C:\Users\ZHENG WENQING\Desktop\u_xi500cSt1Hz90deg_vel.csv')
+# data :pd.DataFrame = pd.read_csv(r'E:\u盘备份\0.5hz120deg-svel.csv')
 
 #===========================================================
 #提取时间序列    
@@ -109,10 +110,6 @@ for vel in velocity_list:
 #将最大幅值和相位差的转换为array形式
 AmpMax_array :np.ndarray = np.array(AmpMax_list)
 ArgDelay_array :np.ndarray = np.array(ArgDelay_list)
-
-
-
-
 
 
 '''
