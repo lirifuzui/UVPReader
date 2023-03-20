@@ -7,7 +7,7 @@
 4	measParamsOffset2	unsigned long	//
 4	nProfiles	unsigned long	//速度剖面数量
 4	reserved1	unsigned long	//
-4	flags	unsigned long	//是否有回声数据？具体不太清楚什么意思
+4	flags	unsigned long	//选择记录什么数据，1速度和回声，2速度，3回声
 4	recordsize	unsigned long	//
 4	nChannels	unsigned long	//取样点数量
 4	reserved2	unsigned long	//
@@ -46,15 +46,15 @@
 -	ProfileLength		//
 -	ProfilesPerBlock		//
 -	Blocks		//
--	AmplitudeStored		//
--	DoNotStoreDoppler		//
+-	AmplitudeStored		//是否存储回声数据
+-	DoNotStoreDoppler		//是否不存储速度数据
 -	RawDataMin	int	//原始数据最小值
 -	RawDataMax	int	//原始数据最大值
 -	RawDataRange		//
 -	AmplDataMin		//
 -	AmplDataMax		//
 -	VelocityInterpretingMode		//
--	UserSampleTime		//
+-	UserSampleTime		//是否自定义取样间隔（是否采用最小取样间隔）
 -	SampleTime	int	//取样间隔时间, ms
 -	UseMultiplexer	int	//0 or 1
 -	FlowMapping	bool	//
@@ -64,7 +64,7 @@
 -	PeriodEnhOffset	unsigned long	//
 -	PeriodEnhPeriod	unsigned long	//
 -	PeriodEnhNCycles	unsigned long	//
--	Comment		//	
+-	Comment	str	//笔记
 -	MeasurementProtocol		//
 
 [MUX_PARAMETER]
