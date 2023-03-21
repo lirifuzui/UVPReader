@@ -30,7 +30,6 @@ data :pd.DataFrame = pd.read_csv(r'C:\Users\ZHENG WENQING\Desktop\u_xi500cSt1Hz9
 #提取时间序列    
 time_list :[float] = data['time'].values.tolist()
 time_array :np.ndarray = np.array(time_list)
-#
 #计算采样数
 N :int = len(time_list)
 #计算采样间隔
