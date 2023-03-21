@@ -13,7 +13,7 @@ class ReadData:
         self.__measurement_info = {}
         self.__mux_config_params = {}
 
-        # Velocity data and echo data may be two-dimensional arrays or three-dimensional arrays.
+        # Velocity file_data and echo file_data may be two-dimensional arrays or three-dimensional arrays.
         # 如果没有开多传感器的话存在这里，是一个numpy的二维数组
         self.__vel_data = None
         self.__echo_data = None
@@ -34,18 +34,18 @@ class ReadData:
 
     def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
-        # The data structure is as follows:
-        """signum, c char [64]
-        measParamsOffset1, c unsigned long
-        measParamsOffset2", c unsigned long
-        nProfiles, c unsigned long
-        reserved1, c unsigned long
-        flags, c unsigned long
-        recordsize, c unsigned long
-        nChannels, c unsigned long
-        reserved2, c unsigned long
-        startTime1, c unsigned long
-        startTime2, c unsigned long """
+        # The file_data structure is as follows:
+        """signum, line char [64]
+        measParamsOffset1, line unsigned long
+        measParamsOffset2", line unsigned long
+        nProfiles, line unsigned long
+        reserved1, line unsigned long
+        flags, line unsigned long
+        recordsize, line unsigned long
+        nChannels, line unsigned long
+        reserved2, line unsigned long
+        startTime1, line unsigned long
+        startTime2, line unsigned long """
 
         uvp_datafile.seek(64)
         head_params = [unpack('L', uvp_datafile.read(4)) for _ in range(10)]
@@ -61,7 +61,7 @@ class ReadData:
         uvp_params_begin = foot_datas.find(b"[UVP_PARAMETER]")
         uvp_datafile.seek(uvp_params_begin)
         lines = uvp_datafile.readlines()
-        # Divide the data list into two lists, 'uvp_operational_params_list' and 'mux_config_params_list'.
+        # Divide the file_data list into two lists, 'uvp_operational_params_list' and 'mux_config_params_list'.
         index = lines.index(b'[MUX_PARAMETER]\n')
         uvp_operational_params_list = [item.decode('utf-8', errors='replace') for item in lines[1:index]]
         mux_config_params_list = [item.decode('utf-8', errors='replace') for item in lines[index + 1:]]
@@ -149,7 +149,7 @@ class ReadData:
             self.__read_params_part_I(uvpDatafile)
             self.__read_params_part_II(uvpDatafile)
 
-            # read velocity data and echo data
+            # read velocity file_data and echo file_data
             self.__raw_vel_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
                                             self.__measurement_info['NumberOfChannels']))
             self.__raw_echo_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
@@ -166,7 +166,7 @@ class ReadData:
                 if self.__measurement_info['AmplitudeStored']:
                     encode_echo_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
                     self.__raw_echo_data[i] = unpack(datatype, encode_echo_data)
-        # Resolution the velocity data, echo data, time series and coordinate series.
+        # Resolution the velocity file_data, echo file_data, time series and coordinate series.
         self.resetSoundSpeed(self.__measurement_info['SoundSpeed'])
 
     @property
@@ -257,11 +257,11 @@ class CutData:
         None
 
 
-#data = ReadData(r'UVPdatas/0.5hz150deg.mfprof')
-data = ReadData(r'E:\Zheng\20230320\60rpm0003.mfprof')
+data = ReadData(r"C:\Users\zheng\Desktop\UVP\UVPopener_64bit\UVPopener\uvp073008.mfprof")
+# file_data = ReadData(r'E:\Zheng\20230320\60rpm0003.mfprof')
 vel_data = data.vel_table[0]
 echo_data = data.echo_table[0]
 velraw = data.return_raw_data
-# times = data.time_series
-# coordinates = data.coordinate_series
+# times = file_data.time_series
+# coordinates = file_data.coordinate_series
 

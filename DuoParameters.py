@@ -2,7 +2,7 @@ from ctypes import *
 
 
 # Definition of structure base on python.ctypes.Structure.
-# structure of Duo Parameter at the head of data file.
+# structure of Duo Parameter at the head of file_data file.
 class HeadParameter(Structure):
     head_parameters_format_string = "64sLLLLLLLLLL"
     _fields_ = [("signum", c_char * 64),

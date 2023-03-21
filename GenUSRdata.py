@@ -31,7 +31,7 @@ nlev = 0.03  # Noise level relative to the wall velocity
 omega0 = 2.0 * np.pi * f0  # [rad/s] Angular frequency of oscillation
 Uwall = (Ang * np.pi / 180.0) * omega0 * RR  # [mm/s] Wall velocity
 
-Nxi = int(np.trunc((DX0 - ws + np.sqrt(RR ** 2 - Dy ** 2)) / Dxi))  # Numer of spatial data point
+Nxi = int(np.trunc((DX0 - ws + np.sqrt(RR ** 2 - Dy ** 2)) / Dxi))  # Numer of spatial file_data point
 Nt = int(np.trunc(Nosc / f0 / Dt))
 
 # -- Output --------------------------------------------------------------------
@@ -65,7 +65,7 @@ Usin = Phir * PhiRR + Psir * PsiRR
 Ucos = PhiRR * Psir - Phir * PsiRR
 
 for ii in range(Nxi):
-    if xi[ii] > DX0:  # Remaining zero data out of cylinder
+    if xi[ii] > DX0:  # Remaining zero file_data out of cylinder
         ur[:, ii] = Usin[ii] * np.sin(omega0 * ti) + Ucos[ii] * np.cos(omega0 * ti)
 
 noise = nlev * Uwall * np.random.randn(Nt, Nxi)  # Created random noise
@@ -73,7 +73,7 @@ ur = ur * Uwall / (PhiRR ** 2 + PsiRR ** 2) + noise
 
 # alphar = np.arctan((Psir * PhiRR - Phir * PsiRR) / (Phir * PhiRR + Psir * PsiRR))
 
-# data output in csv frmat------------------------------------------------------
+# file_data output in csv frmat------------------------------------------------------
 
 uxi = ur * Dy / ri.reshape(Nxi, 1).T  # from u_r to u_xi
 data = np.insert(uxi, 0, ti, axis=1)  # inserting time stamp

@@ -24,7 +24,7 @@ Delta_y : float = 16
 #读取文件
 #一定注意可以正确读取的文件的书写格式
 data :pd.DataFrame = pd.read_csv(r'C:\Users\ZHENG WENQING\Desktop\u_xi500cSt1Hz90deg_vel.csv')
-# data :pd.DataFrame = pd.read_csv(r'E:\u盘备份\0.5hz120deg-svel.csv')
+# file_data :pd.DataFrame = pd.read_csv(r'E:\u盘备份\0.5hz120deg-svel.csv')
 
 #===========================================================
 #提取时间序列    
@@ -222,7 +222,7 @@ plt.show()
 #==================输出相位滞后位置函数的导数图像==============================
 #============================================================================
 plt.figure()
-plt.xlabel(r'$\frac{\mathrm{d} \phi}{\mathrm{d} r} $ ')
+plt.xlabel(r'$\frac{\mathrm{data} \phi}{\mathrm{data} r} $ ')
 plt.ylabel(r'r/R')
 plt.grid ()
 plt.plot(ArgDelay_deriv,position_r_for_ArgDelay_array/cylinder_r)
