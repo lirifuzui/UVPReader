@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 #=================================重点参数=========================================
-#time_array,采样时间序列;N,采样数;Delta_T,采样时间间隔(平均)
+#time_array,采样时间序列;nProfiles,采样数;Delta_T,采样时间间隔(平均)
 #velocity_list:[array],每个元素是表示某一固定采样点的时间速度序列;velocity_fit_array,时空二维速度序列
 #Amp_list:[array],
 #FFT_Freq_list:[array],

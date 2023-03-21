@@ -93,7 +93,7 @@ xj, tj = np.meshgrid(xi, ti)
 levels = MaxNLocator(nbins=64, integer=True).tick_values(-np.max(uxi), np.max(uxi))
 
 cmap = plt.get_cmap('seismic')
-norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
+norm = BoundaryNorm(levels, ncolors=cmap.nProfiles, clip=True)
 
 fig, ax1 = plt.subplots(figsize=(9, 3.4))
 

@@ -11,7 +11,8 @@ wall_coordinate = 0
 # ===========================================================
 # 提取时间序列
 time_series = np.array(file_data['time'].values.tolist())
-
+nProfiles = len(list(time_series))
+Delta_T = (time_series[-1] - time_series[0]) / nProfiles
 # ===========================================================
 # 提取并计算圆周速度序列
 velocity_list = []
@@ -25,12 +26,12 @@ for line in lines:
     velocity_list.append(np.array([i * float(line) / Delta_y for i in data]))
 
 # 将位置坐标转换为半径位置坐标
-xi_wall_to_center: float = np.sqrt(cylinder_r ** 2 - Delta_y ** 2)
-position_r_list = [np.sqrt((xi_wall_to_center - abs(position_xi_list[0] - position_xi_list[i])) ** 2 + Delta_y ** 2) for
-                   i in range(len(position_xi_list))]
+xi_wall_to_center = np.sqrt(cylinder_r ** 2 - Delta_y ** 2) # 计算测量线在圆筒内总长的一半
+position_r_list = [np.sqrt((xi_wall_to_center - abs(wall_coordinate - position_xi_list[i])) ** 2 + Delta_y ** 2) for
+                   i in range(len(position_xi_list))] # 计算数据点对应的半径位置，需要给出圆筒壁面坐标
 # 输出array形式的采样坐标和时空速度分布
-position_r_array: np.ndarray = np.array(position_r_list)
-velocity_array: np.ndarray = np.array(velocity_list)
+position_r_array = np.array(position_r_list)
+velocity_array = np.array(velocity_list)
 
 
 def _PhaseDelay_Continuity(front_data, target_data):
@@ -44,88 +45,54 @@ def _PhaseDelay_Continuity(front_data, target_data):
 
 # ===========================================================
 # 计算速度序列的傅里叶变换
-FFT_vel_list: [np.ndarray] = []
-FFT_Freq_list = []  # 傅里叶变换后的频率轴，绘图用
-Amp_list: [np.ndarray] = []
-AmpMax_list: float = []
-ArgDelay_list: float = []
-Velreal_list: float = []
-Velimag_list: float = []
-FFT_times: int = 1
+AmpMax_list = []
+ArgDelay_list = []
+Velreal_list = []
+Velimag_list = []
+FFT_times = 1
 for vel in velocity_list:
     # 对某一位置点的时间速度序列做FFT
-    FFT_vel = np.array(fft.fft(vel)[:int(N / 2)])
+    FFT_vel = np.fft.rfft(vel)
     # 计算某一位置点的幅频特性
-    Vel_Amp = np.abs(FFT_vel) / N
-    # 计算最大幅值
-    Amp_max: float = float(np.max(Vel_Amp))
-    # 确定最大幅值频率
-    n: int = int(np.where(Vel_Amp == Amp_max)[0][0])
-
+    Vel_Amp = np.abs(FFT_vel) / nProfiles
+    # 找到最大幅值和对应的频率
+    Amp_max, n = np.max(Vel_Amp), np.argmax(Vel_Amp)
     # 计算特征相位
-    Vel_Arg: float = np.angle(FFT_vel[n])
-    # 计算频率轴坐标
-    freq = np.array(fft.fftfreq(N, Delta_T)[:int(N / 2)])
-
-    # 记录结果
-    FFT_vel_list.append(FFT_vel)  # 记录不同位置点速度时间序列傅里叶变换后的列表
-    FFT_Freq_list.append(freq)  # 记录不同位置点的速度傅里叶变换后的频率轴
-    Amp_list.append(Vel_Amp)  # 记录不同位置点的幅频特性，频率的函数
-
+    Vel_Arg = np.angle(FFT_vel[n])
     # 记录速度的实部和虚部，用于计算实效剪切速率
-    Velreal_list.append(FFT_vel[n].real / N)
-    Velimag_list.append(FFT_vel[n].imag / N)
+    Velreal_list.append(FFT_vel[n].real / nProfiles)
+    Velimag_list.append(FFT_vel[n].imag / nProfiles)
 
     AmpMax_list.append(Amp_max)  # 记录不同位置点的最大幅频特征的列表，位置的函数
-    ArgDelay_list.append(Vel_Arg if len(ArgDelay_list) == 0 else _PhaseDelay_Continuity(ArgDelay_list[-1],
-                                                                                        Vel_Arg))  # 记录不同位置点的相位延迟特征的列表，位置的函数
+    ArgDelay_list.append(Vel_Arg if len(ArgDelay_list) == 0 else _PhaseDelay_Continuity(ArgDelay_list[-1],Vel_Arg))  # 记录不同位置点的相位延迟特征的列表，位置的函数
     print('\r傅里叶变换完成：' + str(FFT_times / (len(velocity_list) + 1) * 100) + '%', end="")
     FFT_times = FFT_times + 1
-
 # 将最大幅值和相位差的转换为array形式
 AmpMax_array: np.ndarray = np.array(AmpMax_list)
 ArgDelay_array: np.ndarray = np.array(ArgDelay_list)
 
-'''
-#===========================================================
-#输出相位滞后函数的导数序列ArgDelay_deriv_array，5点一线
-def deriv_of_func(array_y,array_x):
-    #计算并输出函数的导数序列
-    deriv_list = []
-    for i in range(2,len(array_x)-2):
-        Temp_array_y = array_y[i-2:i+3]
-        Temp_array_x = array_x[i-2:i+3]
-        formula_1 = sum([( Temp_array_y[j]-np.mean( Temp_array_y))*(Temp_array_x[j]-np.mean(Temp_array_x)) for j in range(5)])
-        formula_2 = sum([(Temp_array_x[j]-np.mean(Temp_array_x))**2 for j in range(5)])
-        deriv_list.append(formula_1/formula_2)
-    array_x_for_deriv_y_array = array_x[2:-2]
-    return np.array(deriv_list),array_x_for_deriv_y_array
-
-ArgDelay_deriv,position_r_for_ArgDelay_array = deriv_of_func(ArgDelay_array,position_r_array)
-'''
 
 
 # ===========================================================
 # 输出相位滞后函数的导数序列ArgDelay_deriv_array，7点一线
-def deriv_of_func(array_y, array_x):
-    # 计算并输出函数的导数序列
+def calculate_derivative(array_y, array_x, window_size=7):
     deriv_list = []
-    for i in range(3, len(array_x) - 3):
-        Temp_array_y = array_y[i - 3:i + 4]
-        Temp_array_x = array_x[i - 3:i + 4]
-        formula_1 = sum(
-            [(Temp_array_y[j] - np.mean(Temp_array_y)) * (Temp_array_x[j] - np.mean(Temp_array_x)) for j in range(7)])
-        formula_2 = sum([(Temp_array_x[j] - np.mean(Temp_array_x)) ** 2 for j in range(7)])
+    avg_y = np.mean(array_y)
+    avg_x = np.mean(array_x)
+    for i in range(window_size // 2, len(array_x) - window_size // 2):
+        temp_array_y = array_y[i - window_size // 2:i + window_size // 2 + 1]
+        temp_array_x = array_x[i - window_size // 2:i + window_size // 2 + 1]
+        formula_1 = np.dot(temp_array_y - avg_y, temp_array_x - avg_x)
+        formula_2 = np.dot(temp_array_x - avg_x, temp_array_x - avg_x)
         deriv_list.append(formula_1 / formula_2)
-    array_x_for_deriv_y_array = array_x[3:-3]
-    return np.array(deriv_list), array_x_for_deriv_y_array
+    return np.array(deriv_list), array_x[window_size//2:-window_size//2]
 
 
-ArgDelay_deriv, position_r_for_ArgDelay_array = deriv_of_func(ArgDelay_array, position_r_array)
+ArgDelay_deriv, position_r_for_ArgDelay_array = calculate_derivative(ArgDelay_array, position_r_array,7)
 
 # 计算实效剪切速率
-deriv_of_real, position_r_for_ShearRate_array = deriv_of_func(Velreal_list, position_r_array)
-deriv_of_imag = deriv_of_func(Velimag_list, position_r_array)[0]
+deriv_of_real, position_r_for_ShearRate_array = calculate_derivative(Velreal_list, position_r_array,7)
+deriv_of_imag = calculate_derivative(Velimag_list, position_r_array,7)[0]
 
 ShearRate_list: float = []
 for i in range(len(position_r_for_ShearRate_array)):
