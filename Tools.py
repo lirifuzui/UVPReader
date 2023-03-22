@@ -1,4 +1,8 @@
 import numpy as np
+from scipy.signal import savgol_filter
+
+ON = 1
+OFF = 0
 
 
 def moving_average(data, window_size, axis=0):
@@ -24,7 +28,16 @@ def summary_statistic(data, axis=0):
     return mean, std
 
 
-if __name__ == '__main__' :
+def deriv(array_y, array_x, smooth_level=OFF):
+    dy_dx = np.gradient(array_y, array_x)
+    if smooth_level == OFF:
+        return dy_dx
+    else:
+        dy_dx_smooth = savgol_filter(dy_dx, window_length=smooth_level[0], polyorder=smooth_level[1])
+        return dy_dx_smooth
+
+
+if __name__ == '__main__':
     # 定义参数
     A = 2.0  # 振幅
     w = 2 * np.pi / 20  # 角频率
@@ -40,6 +53,6 @@ if __name__ == '__main__' :
     # 生成平移的sin函数值的二维数组
     z = A * np.sin(w * (xx - phase_shift) + w * (yy - phase_shift))
 
-    movstd = moving_std(z, 6,1)
-    sum_stat = summary_statistic(movstd,1)[1]
-    average = summary_statistic(z,1)[0]
+    movstd = moving_std(z, 6, 1)
+    sum_stat = summary_statistic(movstd, 1)[1]
+    average = summary_statistic(z, 1)[0]

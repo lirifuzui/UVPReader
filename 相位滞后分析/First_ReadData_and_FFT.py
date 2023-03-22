@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 #=================================重点参数=========================================
-#time_array,采样时间序列;nProfiles,采样数;Delta_T,采样时间间隔(平均)
+#time_array,采样时间序列;nProfiles,采样数;sampleTimes,采样时间间隔(平均)
 #velocity_list:[array],每个元素是表示某一固定采样点的时间速度序列;velocity_fit_array,时空二维速度序列
 #Amp_list:[array],
 #FFT_Freq_list:[array],
@@ -23,7 +23,7 @@ Delta_y : float = 16
 #===========================================================
 #读取文件
 #一定注意可以正确读取的文件的书写格式
-data :pd.DataFrame = pd.read_csv(r'C:\Users\ZHENG WENQING\Desktop\u_xi500cSt1Hz90deg_vel.csv')
+data :pd.DataFrame = pd.read_csv(r'C:\Users\ZHENG WENQING\Desktop\UVPReader\0.5hz120deg-svel.csv')
 # file_data :pd.DataFrame = pd.read_csv(r'E:\u盘备份\0.5hz120deg-svel.csv')
 
 #===========================================================
@@ -126,7 +126,7 @@ def deriv_of_func(array_y,array_x):
     array_x_for_deriv_y_array = array_x[2:-2]
     return np.array(deriv_list),array_x_for_deriv_y_array
 
-ArgDelay_deriv,position_r_for_ArgDelay_array = deriv_of_func(ArgDelay_array,position_r_array)
+phase_dalay_deriv,position_r_for_ArgDelay_array = deriv_of_func(ArgDelay_array,position_r_array)
 '''
 
 
@@ -194,7 +194,7 @@ f5_deriv = f5.deriv() #对上式求导数
 #=====================最终目标==============================
 #获得拟合序列和导数序列
 ArgDelay_fit_array = f5(position_r_array)
-ArgDelay_deriv = f5_deriv(position_r_array[1:-1])
+phase_dalay_deriv = f5_deriv(position_r_array[1:-1])
 position_r_for_ArgDelay_array = position_r_array[1:-1]
 '''
 

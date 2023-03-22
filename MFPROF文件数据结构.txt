@@ -1,7 +1,7 @@
 
 在文件开头，采用二进制字符表示，需要用对应数据格式进行解读
 
-长度	名称	数据类型
+数据长度	名称	数据类型
 64	signum	char[64]		//名称
 4	measParamsOffset1	unsigned long	//
 4	measParamsOffset2	unsigned long	//
