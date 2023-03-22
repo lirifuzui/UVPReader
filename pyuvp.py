@@ -227,11 +227,10 @@ class Analysis:
         self.__wall_position = None
         self.__delta_y = None
 
-    def define_out_cylinder_params(self, cylinder_r, wall_position_in_axis_xi,delta_y):
-        self.__cylinder_r = cylinder_r
-        self.__wall_position = wall_position_in_axis_xi
-        self.__delta_y = delta_y
-        self.__coordinate_series =
+    def define_out_cylinder_params(self, cylinder_r, wall_position_in_axis_xi, delta_y):
+        self.__cylinder_r = None
+        length_in_cylinder_in_axis_xi = np.sqrt(cylinder_r ** 2 - delta_y ** 2)
+        self.__coordinate_series = np.sqrt((length_in_cylinder_in_axis_xi - abs(wall_position_in_axis_xi - self.__coordinate_series)) ** 2 + delta_y ** 2)
 
 
     def do_fft(self, deriv_smooth_level = [7,1]):
