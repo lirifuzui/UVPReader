@@ -107,8 +107,8 @@ class ReadData:
         sounds_speed_coefficient = sound_speed / (self.__measurement_info['Frequency'] * 2.0)
 
         if self.__measurement_info['UseMultiplexer']:
-            self.__mux_vel_data_list = [[]] * int(self.__mux_config_params['Table'])
-            self.__mux_echo_data_list = [[]] * int(self.__mux_config_params['Table'])
+            self.__mux_vel_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
+            self.__mux_echo_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
             temp_vel_data = self.__raw_vel_data
             temp_echo_data = self.__raw_echo_data
             while list(temp_vel_data):
@@ -168,12 +168,12 @@ class ReadData:
         return self.__measurement_info['UseMultiplexer']
 
     @property
-    def echoTable(self):
-        return self.__echo_data
+    def velTable(self):
+        return self.__mux_vel_data_list if self.muxState else self.__vel_data
 
     @property
-    def velTable(self):
-        return self.__vel_data
+    def echoTable(self):
+        return self.__mux_echo_data_list if self.muxState else self.__echo_data
 
     @property
     def sampleTime(self):
@@ -224,50 +224,42 @@ class Analysis:
         self.__coordinate_series = np.array(datas.coordinateSeries if datas else coordinate_series)
 
         self.__cylinder_r = None
-        self.__wall_position = None
         self.__delta_y = None
 
-    def define_out_cylinder_params(self, cylinder_r, wall_position_in_axis_xi, delta_y):
+    # Update the variable self.__coordinate_series to store the data in the radial coordinate system.
+    # If you don't execute these two functions, the variable will store the coordinates in the xi coordinate system.
+    # Running this function will modify the data in self.__coordinate_series to represent the coordinates in the radial coordinate system.
+    def outer_cylinder_dimensions(self, cylinder_r, wall_coordinates_xi, delta_y):
         self.__cylinder_r = None
         length_in_cylinder_in_axis_xi = np.sqrt(cylinder_r ** 2 - delta_y ** 2)
-        self.__coordinate_series = np.sqrt((length_in_cylinder_in_axis_xi - abs(wall_position_in_axis_xi - self.__coordinate_series)) ** 2 + delta_y ** 2)
 
+        # Update the variable self.__coordinate_series
+        self.__coordinate_series = np.sqrt((length_in_cylinder_in_axis_xi - abs(
+            wall_coordinates_xi - self.__coordinate_series)) ** 2 + delta_y ** 2)
 
-    def do_fft(self, deriv_smooth_level = [7,1]):
+    def inner_cylinder_dimensions(self, cylinder_r, wall_coordinates_xi, delta_y):
+        None
+
+    def do_fft(self, derivative_smoother_factor_1=7, derivative_smoother_factor_2=1):
         my_axis = 0
         fft_result = np.fft.rfft(self.__vel_data, axis=my_axis)
         magnitude = np.abs(fft_result) / self.__number_of_profile
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
-        phase_dalay_deriv = Tools.deriv(phase_delay,self.__coordinate_series)
+        derivative_smoother_factor = [derivative_smoother_factor_1, derivative_smoother_factor_2]
+        phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
         real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real
         imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag
 
-        return max_magnitude, phase_delay, phase_dalay_deriv, real_part, imag_part
+        return max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     def calculate_effective_shear_rate(self):
-        _,_,_,real_part,imag_part = self.do_fft(deriv_smooth_level=OFF)
-        realpart_deriv = np.gradient(real_part, position_r_array)
-        imagpart_deriv = np.gradient(imag_part, position_r_array)
-
-
+        _, _, _, real_part, imag_part = self.do_fft(derivative_smoother_factor=OFF)
+        real_part_derivative = np.gradient(real_part, self.__coordinate_series)
+        imag_part_derivative = np.gradient(imag_part, self.__coordinate_series)
 
     def doanaylsis(self):
-        None
-
-
-class CutData:
-    def __init__(self, being_read_data):
-        self.__data = being_read_data
-
-    def from_time(self, min_index, max_index):
-        if self.__data.vel_table.ndim == 3:
-            return self.__data.vel_table[:, min_index:max_index, :]
-        else:
-            return self.__data.vel_table[min_index:max_index, :]
-
-    def from_coordinate(self, min_coordinate, max_coordinate):
         None
 
 
@@ -275,7 +267,5 @@ data = ReadData(r'C:\Users\ZHENG WENQING\Desktop\UVPReader\UVPdatas\0.5hz90deg.m
 # file_data = ReadData(r'E:\Zheng\20230320\60rpm0003.mfprof')
 FFTresult = data.analysis.do_fft()
 
-
 # times = file_data.sampleTime
 # coordinates = file_data.coordinate_series
-
