@@ -269,14 +269,14 @@ class Analysis:
     def do_fft(self, derivative_smoother_factor_1=7, derivative_smoother_factor_2=1):
         my_axis = 0
         fft_result = np.fft.rfft(self.__vel_data, axis=my_axis)
-        magnitude = np.abs(fft_result) / len(self.__time_series)
+        magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
-        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
+        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / len(self.__time_series)
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         derivative_smoother_factor = [derivative_smoother_factor_1, derivative_smoother_factor_2]
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
-        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real
-        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag
+        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / len(self.__time_series)
+        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / len(self.__time_series)
 
         return max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
