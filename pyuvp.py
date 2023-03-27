@@ -8,30 +8,28 @@ OFF = 0
 
 
 class ReadData:
-
-    def __init__(self, file_path, read_as_mux=OFF):
+    def __init__(self, file_path):
+        # To store the important UVP configuration parameters
         self.__measurement_info = {}
         self.__mux_config_params = {}
 
-        # Velocity file_data and echo file_data may be two-dimensional arrays or three-dimensional arrays.
-        # 如果没有开多传感器的话存在这里，是一个numpy的二维数组
-        self.__vel_data = None
-        self.__echo_data = None
-        # 如果开了多传感器的话存在这里，是一个一维列表，里面的每一项对应一个传感器的数据，是一个numpy的二维数组。
-        self.__mux_vel_data_list = None
-        self.__mux_echo_data_list = None
-        # 不管有没有开mux，都会坐标序列存储在一个numpy数组中
-        self.__coordinate_series = None
+        # Velocity file_data, echo_data file_data and time series are each stored in a list.
+        # Each item in the list corresponds to data from a tdx.
+        # Notice! ! !
+        # When using mux, due to the physical conversion of the signal output of tdx,
+        # The time delay set by the user should meet at least 200 ms.
+        self.__vel_data_list = []
+        self.__echo_data_list = []
+        self.__time_series_list = []
+        # Although the coordinate series of each tdx data is the same, it is still stored in a list for ease of use.
+        # Each item of the list is the same coordinate series.
+        self.__coordinate_series_list = []
 
-        # 运行内部函数，读取数据，将结果分散存储在类变量中。
+        # Run the function “__read_data”, and store the data in the corresponding class variables respectively.
         self.__read_data(file_path)
 
         # 实例化统计和分析数据类。
-        self.statistic = Statistic(vel_data=self.velTable, echo_data=self.echoTable)
-        self.analysis = Analysis(vel_data=self.velTable, sample_time=self.sampleTime, nprofile=self.numberOfProfile,
-                                 coordinate_series=self.coordinateSeries)
-
-        print(self.__mux_config_params)
+        # self.statistic = Statistic(vel_data=self.velTable, echo_data=self.echoTable)
 
     def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
@@ -107,8 +105,13 @@ class ReadData:
         sounds_speed_coefficient = sound_speed / (self.__measurement_info['Frequency'] * 2.0)
 
         if self.__measurement_info['UseMultiplexer']:
-            self.__mux_vel_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
-            self.__mux_echo_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
+            self.__vel_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
+            self.__echo_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
+            self.__time_series_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
+
+            time_series = np.arange(0, self.__measurement_info['NumberOfProfiles'] *
+                                    self.__measurement_info['SampleTime'], self.__measurement_info['SampleTime'])
+            time_plus = 0
             temp_vel_data = self.__raw_vel_data
             temp_echo_data = self.__raw_echo_data
             while list(temp_vel_data):
@@ -116,34 +119,53 @@ class ReadData:
                 for tdx in range(int(self.__mux_config_params['Table'])):
                     if self.__mux_config_params['MultiplexerConfiguration'][tdx][0]:
                         number_of_read_lines = int(self.__mux_config_params['MultiplexerConfiguration'][tdx][2])
-                        self.__mux_vel_data_list[tdx].extend(
+                        self.__vel_data_list[tdx].extend(
                             temp_vel_data[now_index:now_index + number_of_read_lines])
-                        self.__mux_echo_data_list[tdx].extend(
+                        self.__echo_data_list[tdx].extend(
                             temp_echo_data[now_index:now_index + number_of_read_lines])
                         now_index += number_of_read_lines
+                        self.__time_series_list[tdx].extend(
+                            time_series[now_index:now_index + number_of_read_lines] + time_plus)
+                        if tdx + 1 < int(self.__mux_config_params['Table']):
+                            time_plus += self.__mux_config_params['MultiplexerConfiguration'][tdx + 1][3]
+                        else:
+                            time_plus += self.__mux_config_params['MultiplexerConfiguration'][0][3]
                     else:
                         continue
                 temp_vel_data = temp_vel_data[now_index:]
                 temp_echo_data = temp_echo_data[now_index:]
-            self.__mux_vel_data_list = [np.array(item) for item in self.__mux_vel_data_list]
-            self.__mux_echo_data_list = [np.array(item) for item in self.__mux_echo_data_list]
+                time_series = time_series[now_index:]
+                time_plus += self.__mux_config_params['CycleDelay']
+            self.__vel_data_list = [np.array(item) for item in self.__vel_data_list]
+            self.__echo_data_list = [np.array(item) for item in self.__echo_data_list]
 
         else:
             angle_coefficient = 1.0 / np.sin(self.__measurement_info['Angle'] * np.pi / 180)
             vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
-            self.__vel_data = self.__raw_vel_data * vel_resolution
-            self.__echo_data = self.__raw_echo_data
+            vel_data = self.__raw_vel_data * vel_resolution
+            echo_data = self.__raw_echo_data
+            self.__vel_data_list.append(vel_data)
+            self.__echo_data_list.append(echo_data)
 
-        self.__coordinate_series = [
-            self.__measurement_info['StartChannel'] + n * self.__measurement_info['ChannelDistance']
-            for n in range(self.__measurement_info['NumberOfChannels'])]
+            time_series = np.arange(0, self.__measurement_info['NumberOfProfiles'] *
+                                    self.__measurement_info['SampleTime'], self.__measurement_info['SampleTime'])
+            self.__time_series_list.append(time_series * 0.001)
+
+        # Store multiple coordinate series of tdx data into a list
+        coordinate_series = np.arange(self.__measurement_info['StartChannel'], self.__measurement_info['StartChannel'] +
+                                      self.__measurement_info['NumberOfChannels'] * self.__measurement_info['ChannelDistance'],
+                                      self.__measurement_info['ChannelDistance'])
+        if int(self.__mux_config_params['Table']):
+            self.__coordinate_series_list = [coordinate_series for _ in range(int(self.__mux_config_params['Table']))]
+        else:
+            self.__coordinate_series_list.append(coordinate_series)
 
     def __read_data(self, file_path) -> None:
         with open(file_path, 'rb') as uvpDatafile:
             self.__read_params_part_I(uvpDatafile)
             self.__read_params_part_II(uvpDatafile)
 
-            # read velocity file_data and echo file_data
+            # read velocity file_data and echo_data file_data
             self.__raw_vel_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
                                             self.__measurement_info['NumberOfChannels']))
             self.__raw_echo_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
@@ -160,36 +182,37 @@ class ReadData:
                 if self.__measurement_info['AmplitudeStored']:
                     encode_echo_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
                     self.__raw_echo_data[i] = unpack(datatype, encode_echo_data)
-        # Resolution the velocity file_data, echo file_data, time series and coordinate series.
+        # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
         self.resetSoundSpeed(self.__measurement_info['SoundSpeed'])
+
+    def createAnalysis(self, tdx_num=0):
+        return Analysis(vel_data=self.velTables, tdx_num=tdx_num, time_series=self.timeSeries,
+                        coordinate_series=self.coordinateSeries)
 
     @property
     def muxState(self):
         return self.__measurement_info['UseMultiplexer']
 
     @property
-    def velTable(self):
-        return self.__mux_vel_data_list if self.muxState else self.__vel_data
+    def velTables(self):
+        return self.__vel_data_list
 
     @property
-    def echoTable(self):
-        return self.__mux_echo_data_list if self.muxState else self.__echo_data
+    def echoTables(self):
+        return self.__echo_data_list
 
     @property
-    def sampleTime(self):
-        return self.__measurement_info['SampleTime']
-
-    @property
-    def numberOfProfile(self):
-        return self.__measurement_info['NumberOfProfiles']
+    def timeSeries(self):
+        return self.__time_series_list
 
     @property
     def coordinateSeries(self):
-        return self.__coordinate_series
+        return self.__coordinate_series_list
 
     @property
-    def summaryData(self):
-        return self.velTable, self.echoTable, self.sampleTime, self.numberOfProfile, self.coordinateSeries
+    def datas(self):
+        return {"vel_data": self.velTables, "echo_data": self.echoTables, "times": self.timeSeries,
+                "coords": self.coordinateSeries}
 
     def show_info(self):
         None
@@ -201,7 +224,7 @@ class ReadData:
 class Statistic:
     def __init__(self, datas=None, vel_data=None, echo_data=None):
         self.__vel_data = np.array(datas.vel_table if datas else vel_data)
-        self.__echo_data = np.array(datas.echoTable if datas else echo_data)
+        self.__echo_data = np.array(datas.echoTables if datas else echo_data)
 
     # Return the average, maximum, and minimum values of the speed at different positions.
     # The structure is three one-dimensional arrays.
@@ -217,33 +240,36 @@ class Statistic:
 
 
 class Analysis:
-    def __init__(self, datas=None, vel_data=None, sample_time=None, nprofile=None, coordinate_series=None):
-        self.__vel_data = np.array(datas.vel_table if datas else vel_data)
-        self.__sample_time = np.array(datas.sampleTime if datas else sample_time)
-        self.__number_of_profile = np.array(datas.numberOfProfile if datas else nprofile)
-        self.__coordinate_series = np.array(datas.coordinateSeries if datas else coordinate_series)
+    def __init__(self, datas=None, tdx_num=0, vel_data=None, time_series=None, coordinate_series=None):
+        self.__vel_data = datas.velTables[tdx_num] if datas else vel_data[tdx_num]
+        self.__time_series = datas.timeSeries[tdx_num] if datas else time_series[tdx_num]
+        self.__coordinate_series = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
 
         self.__cylinder_r = None
         self.__delta_y = None
 
-    # Update the variable self.__coordinate_series to store the data in the radial coordinate system.
+    # Update the variable self.__coordinate_series and self.__vel_data,
+    # to store the data in the radial coordinate system.
     # If you don't execute these two functions, the variable will store the coordinates in the xi coordinate system.
-    # Running this function will modify the data in self.__coordinate_series to represent the coordinates in the radial coordinate system.
-    def outer_cylinder_dimensions(self, cylinder_r, wall_coordinates_xi, delta_y):
-        self.__cylinder_r = None
-        length_in_cylinder_in_axis_xi = np.sqrt(cylinder_r ** 2 - delta_y ** 2)
-
+    # Running this function will modify the data in self.__coordinate_series and self.__vel_data,
+    # to represent the coordinates in the radial coordinate system.
+    def settingOuterCylinder(self, cylinder_r, wall_coordinates_in_xi, delta_y):
+        self.__cylinder_r = cylinder_r
+        self.__delta_y = delta_y
         # Update the variable self.__coordinate_series
-        self.__coordinate_series = np.sqrt((length_in_cylinder_in_axis_xi - abs(
-            wall_coordinates_xi - self.__coordinate_series)) ** 2 + delta_y ** 2)
+        half_chord = np.sqrt(cylinder_r ** 2 - delta_y ** 2)
+        self.__coordinate_series = np.sqrt((wall_coordinates_in_xi + half_chord -
+                                            self.__coordinate_series) ** 2 + delta_y ** 2)
+        # Update the variable self.__vel_data
 
-    def inner_cylinder_dimensions(self, cylinder_r, wall_coordinates_xi, delta_y):
+
+    def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
         None
 
     def do_fft(self, derivative_smoother_factor_1=7, derivative_smoother_factor_2=1):
         my_axis = 0
         fft_result = np.fft.rfft(self.__vel_data, axis=my_axis)
-        magnitude = np.abs(fft_result) / self.__number_of_profile
+        magnitude = np.abs(fft_result) / len(self.__time_series)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
@@ -255,9 +281,9 @@ class Analysis:
         return max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     def calculate_effective_shear_rate(self):
-        _, _, _, real_part, imag_part = self.do_fft(derivative_smoother_factor=OFF)
-        real_part_derivative = np.gradient(real_part, self.__coordinate_series)
-        imag_part_derivative = np.gradient(imag_part, self.__coordinate_series)
+        _, _, _, real_part, imag_part = self.do_fft()
+        real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
+        imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
 
     def doanaylsis(self):
         None
@@ -265,7 +291,6 @@ class Analysis:
 
 data = ReadData(r'C:\Users\ZHENG WENQING\Desktop\UVPReader\UVPdatas\0.5hz90deg.mfprof')
 # file_data = ReadData(r'E:\Zheng\20230320\60rpm0003.mfprof')
-FFTresult = data.analysis.do_fft()
 
 # times = file_data.sampleTime
 # coordinates = file_data.coordinate_series
