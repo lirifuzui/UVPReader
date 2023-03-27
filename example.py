@@ -24,8 +24,6 @@ analysis = uvp.Analysis(data)
 # do fft
 max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = anaylsis.do_fft()
 
-
-
 plt.figure()
 plt.plot(coordinate_series, phase_delay)
 plt.show()

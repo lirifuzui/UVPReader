@@ -261,7 +261,9 @@ class Analysis:
         self.__coordinate_series = np.sqrt((wall_coordinates_in_xi + half_chord -
                                             self.__coordinate_series) ** 2 + delta_y ** 2)
         # Update the variable self.__vel_data
-
+        trans_arr = delta_y * np.reciprocal(self.__coordinate_series)
+        self.__vel_data = np.multiply(self.__vel_data, trans_arr)
+        return self.__vel_data,self.__coordinate_series
 
     def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
         None
