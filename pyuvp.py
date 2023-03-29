@@ -254,7 +254,7 @@ class Analysis:
         # Update the variable self.__vel_data
         trans_arr = delta_y * np.reciprocal(self.__coordinate_series)
         self.__vel_data = np.multiply(self.__vel_data, trans_arr)
-        return self.__vel_data,self.__coordinate_series
+        return self.__vel_data, self.__coordinate_series
 
     def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
         None
@@ -282,9 +282,9 @@ class Analysis:
         None
 
     @property
-    def velTables(self):
+    def velTable_theta(self):
         return self.__vel_data
 
     @property
-    def coordinateSeries(self):
+    def coordinates_R(self):
         return self.__coordinate_series
