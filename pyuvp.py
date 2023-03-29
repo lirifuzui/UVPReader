@@ -190,29 +190,20 @@ class ReadData:
                         coordinate_series=self.coordinateSeries)
 
     @property
-    def muxState(self):
-        return self.__measurement_info['UseMultiplexer']
+    def muxStatus(self):
+        return 'On' if self.__measurement_info['UseMultiplexer'] else 'Off'
 
-    @property
-    def velTables(self):
-        return self.__vel_data_list
+    def velTables(self, tdx_num=0):
+        return self.__vel_data_list[tdx_num]
 
-    @property
-    def echoTables(self):
-        return self.__echo_data_list
+    def echoTables(self, tdx_num=0):
+        return self.__echo_data_list[tdx_num]
 
-    @property
-    def timeSeries(self):
-        return self.__time_series_list
+    def timeSeries(self, tdx_num=0):
+        return self.__time_series_list[tdx_num]
 
-    @property
-    def coordinateSeries(self):
-        return self.__coordinate_series_list
-
-    @property
-    def datas(self):
-        return {"vel_data": self.velTables, "echo_data": self.echoTables, "times": self.timeSeries,
-                "coords": self.coordinateSeries}
+    def coordinateSeries(self, tdx_num=0):
+        return self.__coordinate_series_list[tdx_num]
 
     def show_info(self):
         None
@@ -241,9 +232,9 @@ class Statistic:
 
 class Analysis:
     def __init__(self, datas=None, tdx_num=0, vel_data=None, time_series=None, coordinate_series=None):
-        self.__vel_data = datas.velTables[tdx_num] if datas else vel_data[tdx_num]
-        self.__time_series = datas.timeSeries[tdx_num] if datas else time_series[tdx_num]
-        self.__coordinate_series = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
+        self.__vel_data = datas.velTables(tdx_num) if datas else vel_data(tdx_num)
+        self.__time_series = datas.timeSeries(tdx_num) if datas else time_series(tdx_num)
+        self.__coordinate_series = datas.coordinateSeries(tdx_num) if datas else coordinate_series(tdx_num)
 
         self.__cylinder_r = None
         self.__delta_y = None
@@ -290,9 +281,10 @@ class Analysis:
     def doanaylsis(self):
         None
 
+    @property
+    def velTables(self):
+        return self.__vel_data
 
-data = ReadData(r'C:\Users\ZHENG WENQING\Desktop\UVPReader\UVPdatas\0.5hz90deg.mfprof')
-# file_data = ReadData(r'E:\Zheng\20230320\60rpm0003.mfprof')
-
-# times = file_data.sampleTime
-# coordinates = file_data.coordinate_series
+    @property
+    def coordinateSeries(self):
+        return self.__coordinate_series
