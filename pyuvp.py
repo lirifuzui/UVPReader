@@ -191,7 +191,7 @@ class ReadData:
 
     @property
     def muxStatus(self):
-        return 'On' if self.__measurement_info['UseMultiplexer'] else 'Off'
+        return 'On' if self.__measurement_info['UseMultiplexer'] else 'OFF'
 
     def velTables(self, tdx_num=0):
         return self.__vel_data_list[tdx_num]
@@ -232,8 +232,14 @@ class Statistic:
 
 class Analysis:
     def __init__(self, datas=None, tdx_num=0, vel_data=None, time_series=None, coordinate_series=None):
-        self.__vel_data = datas.velTables(tdx_num) if datas else vel_data(tdx_num)
-        self.__time_series = datas.timeSeries(tdx_num) if datas else time_series(tdx_num)
+        # Considering that the speed data will be time-sliced later,
+        # self.__vel data and self.__time series are stored in a list,
+        # and each item corresponds to a slice.
+        # self.__vel data and self.__time series should be equal in length.
+        self.__vel_data = [datas.velTables(tdx_num) if datas else vel_data(tdx_num)]
+        self.__time_series = [datas.timeSeries(tdx_num) if datas else time_series(tdx_num)]
+        # number of slices.
+        self.__num_slices = 1
         self.__coordinate_series = datas.coordinateSeries(tdx_num) if datas else coordinate_series(tdx_num)
 
         self.__cylinder_r = None
@@ -253,24 +259,25 @@ class Analysis:
                                             self.__coordinate_series) ** 2 + delta_y ** 2)
         # Update the variable self.__vel_data
         trans_arr = delta_y * np.reciprocal(self.__coordinate_series)
-        self.__vel_data = np.multiply(self.__vel_data, trans_arr)
+        for i in range(self.__num_slices):
+            self.__vel_data[i] = np.multiply(self.__vel_data[i], trans_arr)
         return self.__vel_data, self.__coordinate_series
 
     def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
         None
 
-    def do_fft(self, derivative_smoother_factor_1=7, derivative_smoother_factor_2=1):
+    # sclice_num
+    def do_fft(self, sclice_num=0, derivative_smoother_factor_1=7, derivative_smoother_factor_2=1):
         my_axis = 0
-        fft_result = np.fft.rfft(self.__vel_data, axis=my_axis)
+        fft_result = np.fft.rfft(self.__vel_data[sclice_num], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
-        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / len(self.__time_series)
+        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / len(self.__time_series[sclice_num])
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         derivative_smoother_factor = [derivative_smoother_factor_1, derivative_smoother_factor_2]
-        phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
-        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / len(self.__time_series)
-        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / len(self.__time_series)
-
+        phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series,derivative_smoother_factor)
+        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / len(self.__time_series[sclice_num])
+        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / len(self.__time_series[sclice_num])
         return max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     def calculate_effective_shear_rate(self):
@@ -288,3 +295,7 @@ class Analysis:
     @property
     def coordinates_R(self):
         return self.__coordinate_series
+
+    @property
+    def geometry(self):
+        return self.__cylinder_r, self.__delta_y
