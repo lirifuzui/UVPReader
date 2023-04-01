@@ -49,8 +49,6 @@ B
 1.0Hz_60deg.mfprof,f\e\fe034210acab8832f2a7113793b45bc2743d17a6
 ^
 .相位滞后分析/Second_Anaylsis_the_Data.py,2\3\239c3fa244ad652d6d0f8bf4f5a375684ff87b2c
-\
-,相位滞后分析/First_ReadData_and_FFT.py,3\3\33d198fd44393668209331e648575946f3f9e659
 @
 uvp073008.mfprof,7\4\7474b9fb667d1e98c0e5161e0d2a202a01480d64
 ;
