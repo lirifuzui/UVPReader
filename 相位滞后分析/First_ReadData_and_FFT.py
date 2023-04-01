@@ -23,7 +23,7 @@ Delta_y : float = 16
 #===========================================================
 #读取文件
 #一定注意可以正确读取的文件的书写格式
-data :pd.DataFrame = pd.read_csv(r'C:\Users\ZHENG WENQING\Desktop\UVPReader\0.5hz120deg-svel.csv')
+data :pd.DataFrame = pd.read_csv(r"C:\Work file\Now_Pros\UVPReader\UVPdatas\1hz60degvel.csv")
 # file_data :pd.DataFrame = pd.read_csv(r'E:\u盘备份\0.5hz120deg-svel.csv')
 
 #===========================================================

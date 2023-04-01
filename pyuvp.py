@@ -153,7 +153,8 @@ class ReadData:
 
         # Store multiple coordinate series of tdx data into a list
         coordinate_series = np.arange(self.__measurement_info['StartChannel'], self.__measurement_info['StartChannel'] +
-                                      self.__measurement_info['NumberOfChannels'] * self.__measurement_info['ChannelDistance'],
+                                      self.__measurement_info['NumberOfChannels'] * self.__measurement_info[
+                                          'ChannelDistance'],
                                       self.__measurement_info['ChannelDistance'])
         if int(self.__mux_config_params['Table']):
             self.__coordinate_series_list = [coordinate_series for _ in range(int(self.__mux_config_params['Table']))]
@@ -213,7 +214,7 @@ class ReadData:
 
 
 class Statistic:
-    def __init__(self, datas=None, vel_data=None, echo_data=None):
+    def __init__(self, datas=None, tdx_num=0, vel_data=None, echo_data=None):
         self.__vel_data = np.array(datas.vel_table if datas else vel_data)
         self.__echo_data = np.array(datas.echoTables if datas else echo_data)
 
@@ -234,16 +235,18 @@ class Analysis:
     def __init__(self, datas=None, tdx_num=0, vel_data=None, time_series=None, coordinate_series=None):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
-        # and each item corresponds to a slice.
-        # self.__vel data and self.__time series should be equal in length.
-        self.__vel_data = [datas.velTables(tdx_num) if datas else vel_data(tdx_num)]
+        # and each item corresponds to a window.
+        # self.__analyzable_vel_data and self.__time series should be equal in length.
+        # self.__analyzable_vel_data store the pruned analyzable data, and initialize to store the complete data.
+        self.__analyzable_vel_data = [datas.velTables(tdx_num) if datas else vel_data(tdx_num)]
         self.__time_series = [datas.timeSeries(tdx_num) if datas else time_series(tdx_num)]
-        # number of slices.
-        self.__num_slices = 1
         self.__coordinate_series = datas.coordinateSeries(tdx_num) if datas else coordinate_series(tdx_num)
-
+        # Store the pruned analyzable data, and initialize to store the complete data.
+        # number of windows, default 1.
+        self.__number_of_windows = 1
         self.__cylinder_r = None
         self.__delta_y = None
+        self.__shear_rate = None
 
     # Update the variable self.__coordinate_series and self.__vel_data,
     # to store the data in the radial coordinate system.
@@ -259,43 +262,67 @@ class Analysis:
                                             self.__coordinate_series) ** 2 + delta_y ** 2)
         # Update the variable self.__vel_data
         trans_arr = delta_y * np.reciprocal(self.__coordinate_series)
-        for i in range(self.__num_slices):
-            self.__vel_data[i] = np.multiply(self.__vel_data[i], trans_arr)
-        return self.__vel_data, self.__coordinate_series
+        for i in range(self.__number_of_windows):
+            self.__analyzable_vel_data[i] = np.multiply(self.__analyzable_vel_data[i], trans_arr)
+        return self.__analyzable_vel_data, self.__coordinate_series
 
     def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
         None
 
-    # sclice_num
-    def do_fft(self, sclice_num=0, derivative_smoother_factor_1=7, derivative_smoother_factor_2=1):
+    def extract_analyzable_data(self, extract_range=[0,-1]):
+        for i in range(self.__number_of_windows):
+            self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, extract_range[0]:extract_range[1]]
+        self.__coordinate_series = self.__coordinate_series[extract_range[0]:extract_range[1]]
+
+    # slice_num
+    def do_fft(self, window_num=0, derivative_smoother_factor_1=7, derivative_smoother_factor_2=1):
         my_axis = 0
-        fft_result = np.fft.rfft(self.__vel_data[sclice_num], axis=my_axis)
+        fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
-        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / len(self.__time_series[sclice_num])
+        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / len(
+            self.__time_series[window_num])
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
+        for i in range(1, len(phase_delay)):
+            dphase = phase_delay[i] - phase_delay[i - 1]
+            condition1 = dphase > np.pi
+            condition2 = dphase < -np.pi
+            phase_delay[i:] -= np.where(condition1, 2 * np.pi, np.where(condition2, -2 * np.pi, 0))
+
         derivative_smoother_factor = [derivative_smoother_factor_1, derivative_smoother_factor_2]
-        phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series,derivative_smoother_factor)
-        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / len(self.__time_series[sclice_num])
-        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / len(self.__time_series[sclice_num])
+        phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
+        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / len(
+            self.__time_series[window_num])
+        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / len(
+            self.__time_series[window_num])
         return max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
-    def calculate_effective_shear_rate(self):
-        _, _, _, real_part, imag_part = self.do_fft()
+    def calculate_effective_shear_rate(self, window_num=0):
+        _, _, _, real_part, imag_part = self.do_fft(window_num=window_num)
         real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
         imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
+        param_1 = real_part_derivative - (real_part / self.__coordinate_series)
+        param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
+        self.__shear_rate = np.sqrt(param_1 ** 2 + param_2 ** 2)
+        return self.__shear_rate
 
     def doanaylsis(self):
         None
 
-    @property
-    def velTable_theta(self):
-        return self.__vel_data
+    def velTableTheta(self, window_num=0):
+        return self.__analyzable_vel_data[window_num]
 
-    @property
-    def coordinates_R(self):
+    def timeSlice(self, window_num=0):
+        return self.__time_series[window_num]
+
+    def coordinatesR(self, window_num=0):
+        window_num = window_num
         return self.__coordinate_series
 
     @property
     def geometry(self):
         return self.__cylinder_r, self.__delta_y
+
+    @property
+    def shearRate(self):
+        return self.__shear_rate
