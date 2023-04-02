@@ -45,11 +45,21 @@ G.idea/sonarlint/issuestore/b/4/b4a0b63ce8560bbc5de0f9995c20cc861dc2adb3,b\0\b0
 GenUSRdata.py,1\f\1f6988ae3432a82a8f31daaa048869525ef05226
 @
 DuoParameters.py,9\3\93785987c457d4a5ba68b2b8209be758a4773229
-B
-1.0Hz_60deg.mfprof,f\e\fe034210acab8832f2a7113793b45bc2743d17a6
 ^
 .相位滞后分析/Second_Anaylsis_the_Data.py,2\3\239c3fa244ad652d6d0f8bf4f5a375684ff87b2c
 @
 uvp073008.mfprof,7\4\7474b9fb667d1e98c0e5161e0d2a202a01480d64
 ;
 anaylsis.py,6\4\6421f68457974abb1fb4023468ee26d3fb22d306
+A
+10Hz_60deg.mfprof,7\1\715ad7bea4d660c6826fdaafbf67edcb812950f8
+I
+UVPdatas/1hz60degstat.csv,3\0\30516142ed91aa469a91f556ba102cd6088c93d6
+H
+UVPdatas/1hz60degFFT.csv,f\e\fe57c71fcf0e18517b2633995bed201f53d590c4
+H
+UVPdatas/1hz60degvel.csv,9\5\957239832a63e0723b42dcc2caf5fd08c711a989
+\
+,相位滞后分析/First_ReadData_and_FFT.py,3\3\33d198fd44393668209331e648575946f3f9e659
+I
+UVPdatas/1hz60degecho.csv,a\8\a841878a1eb5a4d11b5a3caac254ef62d50e14d0
