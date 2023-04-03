@@ -269,12 +269,12 @@ class Analysis:
     def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
         None
 
-    def extract_analyzable_data(self, extract_range=[0,-1]):
+    def extract_analyzable_data(self, extract_range=[0, -1]):
         for i in range(self.__number_of_windows):
             self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, extract_range[0]:extract_range[1]]
         self.__coordinate_series = self.__coordinate_series[extract_range[0]:extract_range[1]]
 
-    # slice_num
+    # do the FFT.
     def do_fft(self, window_num=0, derivative_smoother_factor_1=7, derivative_smoother_factor_2=1):
         my_axis = 0
         fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num], axis=my_axis)
@@ -297,6 +297,7 @@ class Analysis:
             self.__time_series[window_num])
         return max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
+    # Calculate effective shear rate, contains the section that do the FFT.
     def calculate_effective_shear_rate(self, window_num=0):
         _, _, _, real_part, imag_part = self.do_fft(window_num=window_num)
         real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
