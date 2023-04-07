@@ -275,7 +275,7 @@ class Analysis:
         self.__coordinate_series = self.__coordinate_series[extract_range[0]:extract_range[1]]
 
     # do the FFT.
-    def do_fft(self, window_num=0, derivative_smoother_factor_1=7, derivative_smoother_factor_2=1):
+    def do_fft(self, window_num=0, derivative_smoother_factor=[7, 1]):
         my_axis = 0
         fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num], axis=my_axis)
         magnitude = np.abs(fft_result)
@@ -288,8 +288,9 @@ class Analysis:
             condition1 = dphase > np.pi
             condition2 = dphase < -np.pi
             phase_delay[i:] -= np.where(condition1, 2 * np.pi, np.where(condition2, -2 * np.pi, 0))
+        phase_delay += phase_delay[0]
+        phase_delay = np.abs(phase_delay)
 
-        derivative_smoother_factor = [derivative_smoother_factor_1, derivative_smoother_factor_2]
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
         real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / len(
             self.__time_series[window_num])
