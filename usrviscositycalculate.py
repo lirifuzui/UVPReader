@@ -47,7 +47,7 @@ def unnamed(phase_delay_derivative, coordinate_series):
             predicted_value = []
             for visc in copy_initial_visc:
                 alpha = Alpha_Bessel(cylinder_R, freq_0, visc, coordinate_series)
-                alpha += alpha[0]
+                alpha -= alpha[0]
                 alpha = np.abs(alpha)
                 alpha_derivative = Tools.derivative(alpha, coordinate_series, derivative_smoother_factor)[i]
                 predicted_value.append(alpha_derivative)

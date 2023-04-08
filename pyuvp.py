@@ -288,7 +288,7 @@ class Analysis:
             condition1 = dphase > np.pi
             condition2 = dphase < -np.pi
             phase_delay[i:] -= np.where(condition1, 2 * np.pi, np.where(condition2, -2 * np.pi, 0))
-        phase_delay += phase_delay[0]
+        phase_delay -= phase_delay[0]
         phase_delay = np.abs(phase_delay)
 
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
