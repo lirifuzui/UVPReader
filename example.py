@@ -6,7 +6,7 @@ import numpy as np
 # example of single tdx.
 
 # Read the data in the ".mfprof" file
-data = uvp.ReadData(r'C:\Work file\Now_Pros\UVPReader\UVPdatas\1hz60deg.mfprof')   # 'data' is an instantiate object, cannot be print
+data = uvp.ReadData(r'1hz_120deg.mfprof')   # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
 data.resetSoundSpeed(980)
 
@@ -28,11 +28,11 @@ analysis = data.createAnalysis()                        # 'anaylsis' is an insta
 analysis = uvp.Analysis(data)
 
 # According to the location, extract data that can be analyzed.
-analysis.extract_analyzable_data([25, 58])
+analysis.extract_analyzable_data([31, 58])
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
-analysis.settingOuterCylinder(72.5, 50.58, 13)
+analysis.settingOuterCylinder(72.5, 56.2, 13)
 
 # return geometry.
 # returns None if analysis.settingOuterCylinder is not run.

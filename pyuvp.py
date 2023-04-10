@@ -283,11 +283,8 @@ class Analysis:
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / len(
             self.__time_series[window_num])
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
-        for i in range(1, len(phase_delay)):
-            dphase = phase_delay[i] - phase_delay[i - 1]
-            condition1 = dphase > np.pi
-            condition2 = dphase < -np.pi
-            phase_delay[i:] -= np.where(condition1, 2 * np.pi, np.where(condition2, -2 * np.pi, 0))
+        # phase_delay = self.__phase_unwrap(phase_delay)
+        phase_delay = np.unwrap(phase_delay)
         phase_delay -= phase_delay[0]
         phase_delay = np.abs(phase_delay)
 

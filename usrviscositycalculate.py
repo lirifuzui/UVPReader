@@ -3,27 +3,17 @@ from scipy.special import jv
 import Tools
 
 
-def Alpha_Bessel(
-        cylinder_R,  # 定义圆柱形容器的尺寸
-        freq_0,  # 定义容器转动频率
-        visc,  # 定义粘度值
-        position_array  # 定义一个记录位置坐标的数组
-):
+def Alpha_Bessel(cylinder_R, freq_0, visc, position_array):
     k = np.sqrt(np.pi * freq_0 / visc)
     Beta = (-1 + 1j) * k
     Xi_R = Beta * cylinder_R
     Bessel_R = jv(1, Xi_R)
-    Phi_R = np.real(Bessel_R)
-    Psi_R = np.imag(Bessel_R)
-
+    Phi_R, Psi_R = np.real(Bessel_R), np.imag(Bessel_R)
     Xi_r = Beta * position_array
     Bessel_r = jv(1, Xi_r)
-    Phi_r = np.real(Bessel_r)
-    Psi_r = np.imag(Bessel_r)
-
-    alphas = np.arctan(((Phi_r * Psi_R) - (Phi_R * Psi_r)) / ((Phi_r * Phi_r) + (Psi_r * Psi_r)))
-    alphas = np.insert(alphas, 0, 0)
-    alphas = np.cumsum(alphas)
+    Phi_r, Psi_r = np.real(Bessel_r), np.imag(Bessel_r)
+    alphas = np.arctan2(Phi_r * Psi_R - Phi_R * Psi_r, Phi_r * Phi_r + Psi_r * Psi_r)
+    alphas = np.unwrap(alphas)
     return alphas
 
 
