@@ -3,18 +3,39 @@ from scipy.special import jv
 import Tools
 
 
-def Alpha_Bessel(cylinder_R, freq_0, visc, position_array):
-    k = np.sqrt(np.pi * freq_0 / visc)
-    Beta = (-1 + 1j) * k
+def phase_unwrap(alphas):
+    dphase = np.diff(alphas)
+    idx1 = np.where(dphase > np.pi/2)[0]
+    idx2 = np.where(dphase < -np.pi/2)[0]
+    print(idx1,idx2)
+    offsets = np.zeros_like(alphas)
+    for p in idx1:
+        offsets[p + 1:] -= np.pi
+    for p in idx2:
+        offsets[p + 1:] += np.pi
+    alphas += offsets
+    return alphas
+
+
+def Alpha_Bessel(cylinder_R, freq_0, visc, coordinates_r):
+    Beta = np.sqrt(-1j * 2 * np.pi * freq_0 / visc)
     Xi_R = Beta * cylinder_R
     Bessel_R = jv(1, Xi_R)
     Phi_R, Psi_R = np.real(Bessel_R), np.imag(Bessel_R)
-    Xi_r = Beta * position_array
+    Xi_r = Beta * coordinates_r
     Bessel_r = jv(1, Xi_r)
     Phi_r, Psi_r = np.real(Bessel_r), np.imag(Bessel_r)
-    alphas = np.arctan2(Phi_r * Psi_R - Phi_R * Psi_r, Phi_r * Phi_r + Psi_r * Psi_r)
-    alphas = np.unwrap(alphas)
+    alphas = np.arctan(((Phi_r * Psi_R) - (Phi_R * Psi_r)) / ((Phi_r * Phi_R) + (Psi_r * Psi_R)))
+    dphase = np.diff(alphas)
+    offsets = np.zeros_like(alphas)
+    for idx, p in enumerate(dphase):
+        if p > np.pi / 2:
+            offsets[idx + 1:] -= np.pi
+        elif p < -np.pi / 2:
+            offsets[idx + 1:] += np.pi
+    alphas = np.abs(alphas + offsets - alphas[0])
     return alphas
+
 
 
 cylinder_R: float = 72.5  # 定义圆柱形容器的尺寸
@@ -37,8 +58,6 @@ def unnamed(phase_delay_derivative, coordinate_series):
             predicted_value = []
             for visc in initial_visc:
                 alpha = Alpha_Bessel(cylinder_R, freq_0, visc, coordinate_series)
-                alpha -= alpha[0]
-                alpha = np.abs(alpha)
                 alpha_derivative = Tools.derivative(alpha, coordinate_series, derivative_smoother_factor)[i]
                 predicted_value.append(alpha_derivative)
             if (predicted_value[0] - phase_delay_derivative[i]) * (

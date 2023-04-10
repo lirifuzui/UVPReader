@@ -1,6 +1,6 @@
 from struct import unpack
 import numpy as np
-
+from scipy.special import jv
 import Tools
 
 ON = 1
@@ -274,8 +274,41 @@ class Analysis:
             self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, extract_range[0]:extract_range[1]]
         self.__coordinate_series = self.__coordinate_series[extract_range[0]:extract_range[1]]
 
+    # Unwrapping the phase function.
+    def __phase_unwrap(self, phase_delay):
+        dphase = np.diff(phase_delay)
+        idx1 = np.where(dphase > np.pi)[0]
+        idx2 = np.where(dphase < -np.pi)[0]
+        offsets = np.zeros_like(phase_delay)
+        for p in idx1:
+            offsets[p+1:] -= 2 * np.pi
+        for p in idx2:
+            offsets[p+1:] += 2 * np.pi
+        phase_delay += offsets
+        return phase_delay
+
+    # Compute the phase delay(alpha) via the Bessel function.
+    def __Alpha_Bessel(cylinder_R, freq_0, visc, coordinates_r):
+        Beta = np.sqrt(-1j * 2 * np.pi * freq_0 / visc)
+        Xi_R = Beta * cylinder_R
+        Bessel_R = jv(1, Xi_R)
+        Phi_R, Psi_R = np.real(Bessel_R), np.imag(Bessel_R)
+        Xi_r = Beta * coordinates_r
+        Bessel_r = jv(1, Xi_r)
+        Phi_r, Psi_r = np.real(Bessel_r), np.imag(Bessel_r)
+        alphas = np.arctan(((Phi_r * Psi_R) - (Phi_R * Psi_r)) / ((Phi_r * Phi_R) + (Psi_r * Psi_R)))
+        dphase = np.diff(alphas)
+        offsets = np.zeros_like(alphas)
+        for idx, p in enumerate(dphase):
+            if p > np.pi / 2:
+                offsets[idx + 1:] -= np.pi
+            elif p < -np.pi / 2:
+                offsets[idx + 1:] += np.pi
+        alphas = np.abs(alphas + offsets - alphas[0])
+        return alphas
+
     # do the FFT.
-    def do_fft(self, window_num=0, derivative_smoother_factor=[7, 1]):
+    def do_fft(self, window_num=0, derivative_smoother_factor=[11, 1]):
         my_axis = 0
         fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num], axis=my_axis)
         magnitude = np.abs(fft_result)
@@ -283,8 +316,7 @@ class Analysis:
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / len(
             self.__time_series[window_num])
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
-        # phase_delay = self.__phase_unwrap(phase_delay)
-        phase_delay = np.unwrap(phase_delay)
+        phase_delay = self.__phase_unwrap(phase_delay)
         phase_delay -= phase_delay[0]
         phase_delay = np.abs(phase_delay)
 

@@ -1,6 +1,5 @@
 import pyuvp as uvp
 import matplotlib.pyplot as plt
-
 import numpy as np
 
 # example of single tdx.
@@ -28,7 +27,7 @@ analysis = data.createAnalysis()                        # 'anaylsis' is an insta
 analysis = uvp.Analysis(data)
 
 # According to the location, extract data that can be analyzed.
-analysis.extract_analyzable_data([31, 58])
+analysis.extract_analyzable_data([31, 80])
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
@@ -72,4 +71,3 @@ plt.ylabel(r'r/R')
 plt.grid()
 plt.plot(phase_delay_derivative, coordinates_r/cylinder_r)
 plt.show()
-
