@@ -27,7 +27,7 @@ analysis = data.createAnalysis()                        # 'anaylsis' is an insta
 analysis = uvp.Analysis(data)
 
 # According to the location, extract data that can be analyzed.
-analysis.extract_analyzable_data([31, 80])
+analysis.extract_analyzable_data([33, 160])
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
@@ -44,17 +44,23 @@ coordinates_r = analysis.coordinatesR(window_num=0)     # return a one-dimension
 times = analysis.timeSlice(window_num=0)                # return a one-dimensional numpy matrix
 
 # do fft
-max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.do_fft(window_num=0)
+vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.do_fft(window_num=0)
 # Calculate effective shear rate.
 shear_rate = analysis.calculate_effective_shear_rate(window_num=0)
 
+# Calculate effective shear rate and viscosity.
+shear_rate, viscosity = analysis.calculate_viscosity()
+
+# Return shear rate and viscosity.
 shear_rate = analysis.shearRate
+viscosity = analysis.viscosity
 
 
 # -------------------------------------------------------------
 plt.figure()
 plt.xlabel('R')
 plt.ylabel('t [s]')
+plt.xlim(0.5, 1)
 plt.contourf(coordinates_r/cylinder_r, times[0:100], u_theta[0:100, :])
 plt.show()
 
@@ -70,4 +76,13 @@ plt.xlabel(r'$\frac{\mathrm{data} \phi}{\mathrm{data} r} $ ')
 plt.ylabel(r'r/R')
 plt.grid()
 plt.plot(phase_delay_derivative, coordinates_r/cylinder_r)
+plt.show()
+
+plt.figure()
+plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
+plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
+plt.xlim(0.6,1.4)
+plt.ylim(0, 2000)
+plt.grid()
+plt.scatter(shear_rate, viscosity)
 plt.show()

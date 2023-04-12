@@ -5,9 +5,9 @@ import Tools
 
 def phase_unwrap(alphas):
     dphase = np.diff(alphas)
-    idx1 = np.where(dphase > np.pi/2)[0]
-    idx2 = np.where(dphase < -np.pi/2)[0]
-    print(idx1,idx2)
+    idx1 = np.where(dphase > np.pi / 2)[0]
+    idx2 = np.where(dphase < -np.pi / 2)[0]
+    print(idx1, idx2)
     offsets = np.zeros_like(alphas)
     for p in idx1:
         offsets[p + 1:] -= np.pi
@@ -37,61 +37,20 @@ def Alpha_Bessel(cylinder_R, freq_0, visc, coordinates_r):
     return alphas
 
 
-
 cylinder_R: float = 72.5  # 定义圆柱形容器的尺寸
 freq_0: float = 1  # 定义容器转动频率
-initial_visc = [1, 5, 100]  # 定义粘度的初值和猜测范围
-prec = 1  # 定义如果粘度预测范围的最大值和最小值的差小于此值的时候退出
-derivative_smoother_factor = [7,1]
+initial_viscosity = 30000  # 定义粘度的初值和猜测范围
+viscoity_range_tolerance = 1  # 定义如果粘度预测范围的最大值和最小值的差小于此值的时候退出
 
 
-def unnamed(phase_delay_derivative, coordinate_series):
-    # 自动化计算不同位置的粘度，采用二分法逼近的算法，计算量极高
-    result_visc = []
-    for i in range(len(coordinate_series)):
-        # 遍历可以求导的位置点
-        copy_initial_visc = initial_visc.copy()
-        for cycle_index in range(50):
-            # 定义最大的迭代次数，如果迭代次数超过50，自动退出
-            print('在' + str(i) + '点循环' + str(cycle_index + 1) + '次，此时v_eff=' + str(copy_initial_visc[1]))
-            # 采用二分法逼近最终值
-            predicted_value = []
-            for visc in initial_visc:
-                alpha = Alpha_Bessel(cylinder_R, freq_0, visc, coordinate_series)
-                alpha_derivative = Tools.derivative(alpha, coordinate_series, derivative_smoother_factor)[i]
-                predicted_value.append(alpha_derivative)
-            if (predicted_value[0] - phase_delay_derivative[i]) * (
-                    phase_delay_derivative[i] - predicted_value[1]) > 0:  # 如果值在预定的粘度最小值和粘度当前值之前
-                if abs(copy_initial_visc[0] - copy_initial_visc[2]) < prec:
-                    # 判断是否收敛
-                    print('在第' + str(i) + '点收敛\n============================================')
-                    break
-                else:
-                    print('标准值:' + str(phase_delay_derivative))
-                    print('当前判断值:' + str(predicted_value))
-                    initial_visc[2] = copy_initial_visc[1]
-                    initial_visc[1] = (copy_initial_visc[0] + copy_initial_visc[1]) / 2
-            elif (predicted_value[1] - phase_delay_derivative) * (
-                    phase_delay_derivative - predicted_value[2]) > 0:  # 如果值在预定的粘度当前值和粘度最大值值之前
-                if abs(copy_initial_visc[0] - copy_initial_visc[2]) < prec:
-                    # 判断是否收敛
-                    print('在第' + str(i) + '点收敛\n============================================')
-                    break
-                else:
-                    print('标准值:' + str(phase_delay_derivative))
-                    print('当前判断值:' + str(predicted_value))
-                    copy_initial_visc[0] = copy_initial_visc[1]
-                    copy_initial_visc[1] = (copy_initial_visc[1] + copy_initial_visc[2]) / 2
-            else:
-                print('在第' + str(i) + '点出错\n==============================================')
-                print(predicted_value)
-                print(phase_delay_derivative)
-                print(copy_initial_visc)
-                copy_initial_visc[1] = -1
-                break
-        result_visc.append(copy_initial_visc[1])
+# Automatically calculate the viscosity of different positions,
+# using the algorithm of bisection approximation, the calculation amount is extremely high.
+def visc_analysis(phase_delay_derivative, coordinate_series, cylinder_R, freq, max_viscosity, viscoity_range_tolerance):
+    visc_range = [0, max_viscosity]
+    for n in range(len(coordinate_series)):
+        loop_count = int(np.log2(visc_range[1]-visc_range[0])) + 1
+        for loop in range(loop_count):
 
 
 
-
-
+viscoity = visc_analysis(None, None, None, None, None, None)

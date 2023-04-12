@@ -246,7 +246,9 @@ class Analysis:
         self.__number_of_windows = 1
         self.__cylinder_r = None
         self.__delta_y = None
+
         self.__shear_rate = None
+        self.__viscosity = None
 
     # Update the variable self.__coordinate_series and self.__vel_data,
     # to store the data in the radial coordinate system.
@@ -281,14 +283,14 @@ class Analysis:
         idx2 = np.where(dphase < -np.pi)[0]
         offsets = np.zeros_like(phase_delay)
         for p in idx1:
-            offsets[p+1:] -= 2 * np.pi
+            offsets[p + 1:] -= 2 * np.pi
         for p in idx2:
-            offsets[p+1:] += 2 * np.pi
+            offsets[p + 1:] += 2 * np.pi
         phase_delay += offsets
         return phase_delay
 
     # Compute the phase delay(alpha) via the Bessel function.
-    def __Alpha_Bessel(cylinder_R, freq_0, visc, coordinates_r):
+    def __Alpha_Bessel(self, cylinder_R, freq_0, visc, coordinates_r):
         Beta = np.sqrt(-1j * 2 * np.pi * freq_0 / visc)
         Xi_R = Beta * cylinder_R
         Bessel_R = jv(1, Xi_R)
@@ -310,26 +312,26 @@ class Analysis:
     # do the FFT.
     def do_fft(self, window_num=0, derivative_smoother_factor=[11, 1]):
         my_axis = 0
+        N = len(self.__time_series[window_num])
+        Delta_T = (self.__time_series[window_num][-1] - self.__time_series[window_num][0]) / N
         fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
-        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / len(
-            self.__time_series[window_num])
+        freq_array = np.fft.fftfreq(N, Delta_T)
+        vibration_frequency = np.mean(freq_array[max_magnitude_indices])
+        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / (N/2)
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         phase_delay = self.__phase_unwrap(phase_delay)
         phase_delay -= phase_delay[0]
         phase_delay = np.abs(phase_delay)
-
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
-        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / len(
-            self.__time_series[window_num])
-        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / len(
-            self.__time_series[window_num])
-        return max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
+        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / (N/2)
+        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / (N/2)
+        return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate effective shear rate, contains the section that do the FFT.
     def calculate_effective_shear_rate(self, window_num=0):
-        _, _, _, real_part, imag_part = self.do_fft(window_num=window_num)
+        _, _, _, _, real_part, imag_part = self.do_fft(window_num=window_num)
         real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
         imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
         param_1 = real_part_derivative - (real_part / self.__coordinate_series)
@@ -337,8 +339,66 @@ class Analysis:
         self.__shear_rate = np.sqrt(param_1 ** 2 + param_2 ** 2)
         return self.__shear_rate
 
-    def doanaylsis(self):
-        None
+    def calculate_viscosity(self, max_viscosity=30000, viscoity_range_tolerance=1):
+        viscosity = []
+        shear_rate = []
+        for window in range(self.__number_of_windows):
+            vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.do_fft(window_num=window)
+            # Calculate effective shear rate.
+            real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
+            imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
+            param_1 = real_part_derivative - (real_part / self.__coordinate_series)
+            param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
+            shear_rate.extend(np.sqrt(param_1 ** 2 + param_2 ** 2))
+
+            # Calculate effective viscosity.
+            print("\033[1mCalculation Start:")
+            print('------------------------------------------------------')
+            print('Window_num\t|\tcoordinate_index\t|\tViscosity\033[0m')
+            visc_limits = [0.5, max_viscosity]
+            visc_range = int((max_viscosity - 0.5) / 20)
+            for coordinate_index in range(len(self.__coordinate_series)):
+                loop_count = int(np.log2(visc_limits[1] - visc_limits[0])) + 10
+                middle_viscosity = (visc_limits[1] + visc_limits[0]) / 2
+                for loop in range(loop_count):
+                    alpha_min = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency, visc_limits[0],
+                                                    self.__coordinate_series)
+                    alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_series)[coordinate_index]
+                    alpha_max = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency, visc_limits[1],
+                                                    self.__coordinate_series)
+                    alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_series)[coordinate_index]
+                    alpha_middle = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency,
+                                                       middle_viscosity, self.__coordinate_series)
+                    alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_series)[coordinate_index]
+                    simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
+                    idx = np.searchsorted(simulate_value, phase_delay_derivative[coordinate_index])
+                    if idx == 1:
+                        temp = [visc_limits[0], middle_viscosity]
+                    elif idx == 2:
+                        temp = [middle_viscosity, visc_limits[1]]
+                    else:
+                        print("#coordinate_index = " + str(coordinate_index))
+                        print("\033[1m\033[31mCALCULATION ERROR：\033[0mThe sought viscosity value is out of range.")
+                        print('\033[1m------------------------------------------------------')
+                        print('Window_num\t|\tcoordinate_index\t|\tViscosity\033[0m')
+                        viscosity.append(-1)
+                        visc_limits = [0.5, max_viscosity]
+                        break
+                    if np.abs(temp[0]-temp[1]) < viscoity_range_tolerance:
+                        print('\t' + str(window) + '\t\t\033[1m|\033[0m\t\t\t' + str(coordinate_index) +
+                              '\t\t\t\033[1m|\033[0m\t' + str(middle_viscosity))
+                        viscosity.append(middle_viscosity)
+                        visc_limits = [middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
+                                       middle_viscosity + visc_range]
+                        break
+                    else:
+                        visc_limits = temp
+                        middle_viscosity = (visc_limits[1] + visc_limits[0]) / 2
+        self.__shear_rate = np.array(shear_rate)
+        self.__viscosity = np.array(viscosity)
+        print('\033[1m------------------------------------------------------')
+        print("Calculation Complete.\033[0m")
+        return self.__shear_rate, self.__viscosity
 
     def velTableTheta(self, window_num=0):
         return self.__analyzable_vel_data[window_num]
@@ -357,3 +417,8 @@ class Analysis:
     @property
     def shearRate(self):
         return self.__shear_rate
+
+    @property
+    def viscosity(self):
+        return self.__viscosity
+
