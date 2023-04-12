@@ -22,12 +22,9 @@ coordinates_xi = data.coordinateSeries(tdx_num=0)       # return a one-dimension
 
 # -------------------------------------------------------------
 # create an analysis from data.
-analysis = data.createUsrAnalysis()  # 'anaylsis' is an instantiate object, cannot be print
+analysis = data.createUSRAnalysis()  # 'anaylsis' is an instantiate object, cannot be print
 # Another way.
 analysis = usr.Analysis(data)
-
-# According to the location, extract data that can be analyzed.
-analysis.extract_analyzable_data([33, 60])
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
@@ -41,18 +38,23 @@ cylinder_r, delta_y = analysis.geometry
 # returns u_xi and coordinates_xi if analysis.settingOuterCylinder is not run.
 u_theta = analysis.velTableTheta(window_num=0)          # return a two-dimensional numpy matrix
 coordinates_r = analysis.coordinatesR(window_num=0)     # return a one-dimensional numpy matrix
-times = analysis.timeSlice(window_num=0)                # return a one-dimensional numpy matrix
+times = analysis.timeSeries(window_num=0)  # return a one-dimensional numpy matrix
+
+# According to the location, extract data that can be analyzed.
+analysis.extractValidData(33, 60)
+
+analysis.dataSlice()
 
 # do fft
-vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.do_fft(window_num=0)
-# Calculate effective shear rate.
-shear_rate = analysis.calculate_effective_shear_rate(window_num=0)
+vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.doFFT(
+    window_num=0)
 
 # Calculate effective shear rate and viscosity.
-shear_rate, viscosity = analysis.calculate_viscosity()
+viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate()
 # Return shear rate and viscosity.
 shear_rate = analysis.shearRate
 viscosity = analysis.viscosity
+
 # -------------------------------------------------------------
 plt.figure()
 plt.xlabel('R')

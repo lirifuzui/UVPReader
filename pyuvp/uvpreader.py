@@ -185,7 +185,7 @@ class ReadData:
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
         self.resetSoundSpeed(self.__measurement_info['SoundSpeed'])
 
-    def createUsrAnalysis(self, tdx_num=0):
+    def createUSRAnalysis(self, tdx_num=0):
         return pyuvp.usr.Analysis(vel_data=self.velTables, tdx_num=tdx_num, time_series=self.timeSeries,
                         coordinate_series=self.coordinateSeries)
 

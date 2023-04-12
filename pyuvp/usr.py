@@ -37,6 +37,7 @@ class Analysis:
         # Store the pruned analyzable data, and initialize to store the complete data.
         # number of windows, default 1.
         self.__number_of_windows = 1
+        self.__slice = [[0, len(self.__time_series[0])]]
         self.__cylinder_r = None
         self.__delta_y = None
 
@@ -63,10 +64,40 @@ class Analysis:
     def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
         None
 
-    def extract_analyzable_data(self, extract_range=[0, -1]):
+    # Extracted vaild data according to the position coordinates.
+    def extractValidData(self, min_index_of_valid_data=0, max_index_of_valid_data=-1):
         for i in range(self.__number_of_windows):
-            self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, extract_range[0]:extract_range[1]]
-        self.__coordinate_series = self.__coordinate_series[extract_range[0]:extract_range[1]]
+            self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, min_index_of_valid_data:max_index_of_valid_data]
+        self.__coordinate_series = self.__coordinate_series[min_index_of_valid_data:max_index_of_valid_data]
+
+    def dataSlice(self, number_of_slice=5):
+        self.__number_of_windows = number_of_slice
+        if number_of_slice == 1:
+            self.__time_series = [self.__time_series[0]]
+            self.__analyzable_vel_data = [self.__analyzable_vel_data[0]]
+            self.__slice = [self.__slice[0]]
+        elif number_of_slice == 2:
+            self.__time_series = [self.__time_series[0],
+                                  self.__time_series[0][0:len(self.__time_series[0])//2],
+                                  self.__time_series[0][len(self.__time_series[0])//2:-1]]
+            self.__analyzable_vel_data = [self.__analyzable_vel_data[0],
+                                          self.__analyzable_vel_data[0][0:len(self.__time_series[0])//2, :],
+                                          self.__analyzable_vel_data[0][len(self.__time_series[0])//2:-1, :]]
+            self.__slice = [self.__slice[0],
+                            self.__slice[0][0:len(self.__time_series[0]) // 2, :],
+                            self.__slice[0][len(self.__time_series[0]) // 2:-1, :]]
+        else:
+            self.__time_series = [self.__time_series[0]]
+            self.__analyzable_vel_data = [self.__analyzable_vel_data[0]]
+            self.__slice = [self.__slice[0]]
+            moving = len(self.__time_series[0]) // ((number_of_slice-1)*2)
+            for slice_index in range(number_of_slice):
+                start = 0 + slice_index * moving
+                end = -1 - (number_of_slice-1-slice_index)*moving
+                self.__time_series.append(self.__time_series[0][start:end])
+                self.__analyzable_vel_data.append(self.__analyzable_vel_data[0][start:end, :])
+                self.__slice.append([start, end])
+
 
     # Unwrapping the phase function.
     def __phase_unwrap(self, phase_delay):
@@ -102,7 +133,7 @@ class Analysis:
         return alphas
 
     # do the FFT.
-    def do_fft(self, window_num=0, derivative_smoother_factor=[11, 1]):
+    def doFFT(self, window_num=0, derivative_smoother_factor=[11, 1]):
         my_axis = 0
         N = len(self.__time_series[window_num])
         Delta_T = (self.__time_series[window_num][-1] - self.__time_series[window_num][0]) / N
@@ -121,21 +152,15 @@ class Analysis:
         imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / (N/2)
         return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
-    # Calculate effective shear rate, contains the section that do the FFT.
-    def calculate_effective_shear_rate(self, window_num=0):
-        _, _, _, _, real_part, imag_part = self.do_fft(window_num=window_num)
-        real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
-        imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
-        param_1 = real_part_derivative - (real_part / self.__coordinate_series)
-        param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
-        self.__shear_rate = np.sqrt(param_1 ** 2 + param_2 ** 2)
-        return self.__shear_rate
-
-    def calculate_viscosity(self, max_viscosity=30000, viscoity_range_tolerance=1):
+    # Calculate Viscosity and Shear Rate.
+    def calculate_Viscosity_ShearRate(self, max_viscosity=30000, viscoity_range_tolerance=1):
         viscosity = []
         shear_rate = []
+        print("\033[1mCalculation Start:")
+        print('------------------------------------------------------')
+        print('Window_num\t|\tcoordinate_index\t|\tViscosity\033[0m')
         for window in range(self.__number_of_windows):
-            vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.do_fft(window_num=window)
+            vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.doFFT(window_num=window)
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
             imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
@@ -144,9 +169,6 @@ class Analysis:
             shear_rate.extend(np.sqrt(param_1 ** 2 + param_2 ** 2))
 
             # Calculate effective viscosity.
-            print("\033[1mCalculation Start:")
-            print('------------------------------------------------------')
-            print('Window_num\t|\tcoordinate_index\t|\tViscosity\033[0m')
             visc_limits = [0.5, max_viscosity]
             visc_range = int((max_viscosity - 0.5) / 20)
             for coordinate_index in range(len(self.__coordinate_series)):
@@ -190,12 +212,12 @@ class Analysis:
         self.__viscosity = np.array(viscosity)
         print('\033[1m------------------------------------------------------')
         print("Calculation Complete.\033[0m")
-        return self.__shear_rate, self.__viscosity
+        return self.__viscosity, self.__shear_rate,
 
     def velTableTheta(self, window_num=0):
         return self.__analyzable_vel_data[window_num]
 
-    def timeSlice(self, window_num=0):
+    def timeSeries(self, window_num=0):
         return self.__time_series[window_num]
 
     def coordinatesR(self, window_num=0):
