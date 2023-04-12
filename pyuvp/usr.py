@@ -5,7 +5,6 @@ from pyuvp import Tools
 ON = 1
 OFF = 0
 
-
 class Statistic:
     def __init__(self, datas=None, tdx_num=0, vel_data=None, echo_data=None):
         self.__vel_data = np.array(datas.vel_table if datas else vel_data)
