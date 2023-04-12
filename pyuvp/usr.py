@@ -25,7 +25,7 @@ class Statistic:
 
 
 class Analysis:
-    def __init__(self, datas=None, tdx_num=0, vel_data=None, time_series=None, coordinate_series=None):
+    def __init__(self, datas=None, tdx_num=OFF, vel_data=None, time_series=None, coordinate_series=None):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
@@ -133,7 +133,7 @@ class Analysis:
         return alphas
 
     # do the FFT.
-    def doFFT(self, window_num=0, derivative_smoother_factor=[11, 1]):
+    def doFFT(self, window_num=OFF, derivative_smoother_factor=[11, 1]):
         my_axis = 0
         N = len(self.__time_series[window_num])
         Delta_T = (self.__time_series[window_num][-1] - self.__time_series[window_num][0]) / N
@@ -159,7 +159,7 @@ class Analysis:
         print("\033[1mCalculation Start:")
         print('------------------------------------------------------')
         print('Window_num\t|\tcoordinate_index\t|\tViscosity\033[0m')
-        for window in range(self.__number_of_windows):
+        for window in range(self.__number_of_windows+1):
             vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.doFFT(window_num=window)
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
@@ -214,14 +214,14 @@ class Analysis:
         print("Calculation Complete.\033[0m")
         return self.__viscosity, self.__shear_rate,
 
-    def velTableTheta(self, window_num=0):
+    def velTableTheta(self, window_num=OFF):
         return self.__analyzable_vel_data[window_num]
 
-    def timeSeries(self, window_num=0):
+    def timeSeries(self, window_num=OFF):
         return self.__time_series[window_num]
 
-    def coordinatesR(self, window_num=0):
-        window_num = window_num
+    @property
+    def coordinatesR(self):
         return self.__coordinate_series
 
     @property
