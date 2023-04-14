@@ -5,7 +5,7 @@ import numpy as np
 # example of single tdx.
 # Viscosity analysis using USR, 1 Hz_120 deg.
 # Read the data in the ".mfprof" file
-data = uvp.readData(r'example_1.mfprof')   # 'data' is an instantiate object, cannot be print
+data = uvp.readData(r'example_2.mfprof')   # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
 data.resetSoundSpeed(980)
 
@@ -28,16 +28,16 @@ analysis = usr.Analysis(data)
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
-analysis.settingOuterCylinder(72.5, 62.3, 13)
+analysis.settingOuterCylinder(72.5, 54.18, 13)
 
 # return geometry.
 # returns None if analysis.settingOuterCylinder is not run.
 cylinder_r, delta_y = analysis.geometry
 
 # According to the location, extract data that can be analyzed.
-analysis.extractValidData(20, 60)
+analysis.extractValidData(25, 45)
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.dataSlice(1)
+analysis.dataSlice(5)
 
 # Return u_theta, coordinates_r, times
 # returns u_xi and coordinates_xi if analysis.settingOuterCylinder is not run.
@@ -51,10 +51,11 @@ vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_pa
     window_num=0)
 
 # Calculate effective shear rate and viscosity.
-viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate()
+viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1)
 # Return shear rate and viscosity.
 shear_rate = analysis.shearRate
 viscosity = analysis.viscosity
+print(len(shear_rate),len(viscosity))
 
 # -------------------------------------------------------------
 u = np.transpose(u_theta[0:100, :])

@@ -1,11 +1,21 @@
 import numpy as np
 from scipy.special import jv
+import traceback
 
 import pyuvp.uvp
 from pyuvp import Tools
 
 ON = 1
 OFF = 0
+
+
+class USRException(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return f"{self.message}"
+
 
 class Statistic:
     def __init__(self, datas=None, tdx_num=0, vel_data=None, echo_data=None):
@@ -100,7 +110,6 @@ class Analysis:
                 self.__analyzable_vel_data.append(self.__analyzable_vel_data[0][start:end, :])
                 self.__slice.append([start, end])
 
-
     # Unwrapping the phase function.
     def __phase_unwrap(self, phase_delay):
         dphase = np.diff(phase_delay)
@@ -158,7 +167,7 @@ class Analysis:
     def calculate_Viscosity_ShearRate(self, max_viscosity=30000, viscoity_range_tolerance=1):
         viscosity = []
         shear_rate = []
-
+        err_lim = len(self.__coordinate_series) // 5
         # Format the output.
         slice_width = 8
         coordinate_width = 8
@@ -168,6 +177,8 @@ class Analysis:
         print('------------------------------------------------------')
         print(f"{'slice':<{slice_width}}{'index':<{coordinate_width}}"
               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
+        err_time = 0
+        err_str = "The sought viscosity value is out of range."
         for window in range(self.__number_of_windows+1):
             vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.doFFT(window_num=window)
             # Calculate effective shear rate.
@@ -201,11 +212,12 @@ class Analysis:
                         temp = [middle_viscosity, visc_limits[1]]
                     else:
                         print("#coordinate_index = " + str(coordinate_index))
-                        print("\033[1m\033[31mCALCULATION ERROR：\033[0mThe sought viscosity value is out of range.")
+                        print("\033[1m\033[31mCALCULATION ERROR：\033[0m" + err_str)
                         print(f"\033[1m{'slice':<{slice_width}}{'index':<{coordinate_width}}"
                               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
                         viscosity.append(-1)
                         visc_limits = [0.5, max_viscosity]
+                        err_time += 1
                         break
                     if np.abs(temp[0]-temp[1]) < viscoity_range_tolerance:
                         print(f'{str(window):<{slice_width}}{str(coordinate_index):<{coordinate_width}}'
@@ -218,6 +230,12 @@ class Analysis:
                     else:
                         visc_limits = temp
                         middle_viscosity = (visc_limits[1] + visc_limits[0]) / 2
+                if err_time > err_lim:
+                    break
+            if err_time > err_lim:
+                print("\033[1m\033[31mCALCULATION ERROR!!!\033[0m")
+                raise USRException(err_str)
+                break
         self.__shear_rate = np.array(shear_rate)
         self.__viscosity = np.array(viscosity)
         print('\033[1m------------------------------------------------------')

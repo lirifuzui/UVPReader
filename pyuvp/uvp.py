@@ -1,7 +1,8 @@
+import traceback
 from struct import unpack
 import numpy as np
 import pyuvp
-
+import traceback
 ON = 1
 OFF = 0
 
@@ -12,6 +13,7 @@ class FileException(Exception):
 
     def __str__(self):
         return f"{self.message}"
+
 
 class readData:
     def __init__(self, file_path):
@@ -198,7 +200,7 @@ class readData:
 
     def createUSRAnalysis(self, tdx_num=0):
         return pyuvp.usr.Analysis(vel_data=self.velTables, tdx_num=tdx_num, time_series=self.timeSeries,
-                        coordinate_series=self.coordinateSeries)
+                                  coordinate_series=self.coordinateSeries)
 
     @property
     def muxStatus(self):
