@@ -1,11 +1,11 @@
-from pyuvp import uvpReader, usr
+from pyuvp import uvp, usr
 import matplotlib.pyplot as plt
 import numpy as np
 
 # example of single tdx.
 # Viscosity analysis using USR, 1 Hz_120 deg.
 # Read the data in the ".mfprof" file
-data = uvpReader.readData(r'example_1.mfprof')   # 'data' is an instantiate object, cannot be print
+data = uvp.readData(r'example_1.mfprof')   # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
 data.resetSoundSpeed(980)
 
@@ -35,9 +35,9 @@ analysis.settingOuterCylinder(72.5, 62.3, 13)
 cylinder_r, delta_y = analysis.geometry
 
 # According to the location, extract data that can be analyzed.
-analysis.extractValidData(31, 60)
+analysis.extractValidData(20, 60)
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.dataSlice()
+analysis.dataSlice(1)
 
 # Return u_theta, coordinates_r, times
 # returns u_xi and coordinates_xi if analysis.settingOuterCylinder is not run.

@@ -5,6 +5,7 @@ import pyuvp
 ON = 1
 OFF = 0
 
+
 class FileException(Exception):
     def __init__(self, message):
         self.message = message

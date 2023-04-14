@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.special import jv
 
-import pyuvp.uvpReader
+import pyuvp.uvp
 from pyuvp import Tools
 
 ON = 1
@@ -26,7 +26,7 @@ class Statistic:
 
 
 class Analysis:
-    def __init__(self, datas: pyuvp.uvpReader.readData = None, tdx_num: int = OFF, vel_data: np.ndarray = None,
+    def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: np.ndarray = None,
                  time_series: np.ndarray = None, coordinate_series: np.ndarray = None):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
@@ -86,8 +86,8 @@ class Analysis:
                                           self.__analyzable_vel_data[0][0:len(self.__time_series[0])//2, :],
                                           self.__analyzable_vel_data[0][len(self.__time_series[0])//2:-1, :]]
             self.__slice = [self.__slice[0],
-                            self.__slice[0][0:len(self.__time_series[0]) // 2, :],
-                            self.__slice[0][len(self.__time_series[0]) // 2:-1, :]]
+                            self.__slice[0][0:len(self.__time_series[0]) // 2],
+                            self.__slice[0][len(self.__time_series[0]) // 2:-1]]
         else:
             self.__time_series = [self.__time_series[0]]
             self.__analyzable_vel_data = [self.__analyzable_vel_data[0]]
@@ -135,11 +135,11 @@ class Analysis:
         return alphas
 
     # do the FFT.
-    def doFFT(self, window_num=OFF, derivative_smoother_factor=[11, 1]):
+    def doFFT(self, window_num=1, derivative_smoother_factor=[11, 1]):
         my_axis = 0
-        N = len(self.__time_series[window_num])
-        Delta_T = (self.__time_series[window_num][-1] - self.__time_series[window_num][0]) / N
-        fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num], axis=my_axis)
+        N = len(self.__time_series[window_num-1])
+        Delta_T = (self.__time_series[window_num-1][-1] - self.__time_series[window_num-1][0]) / N
+        fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num-1], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
         freq_array = np.fft.fftfreq(N, Delta_T)
@@ -202,7 +202,7 @@ class Analysis:
                     else:
                         print("#coordinate_index = " + str(coordinate_index))
                         print("\033[1m\033[31mCALCULATION ERROR：\033[0mThe sought viscosity value is out of range.")
-                        print(f"{'slice_number':<{slice_width}}{'coordinate_index':<{coordinate_width}}"
+                        print(f"\033[1m{'slice':<{slice_width}}{'index':<{coordinate_width}}"
                               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
                         viscosity.append(-1)
                         visc_limits = [0.5, max_viscosity]
