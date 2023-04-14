@@ -28,11 +28,13 @@ def summary_statistic(data, axis=0):
     return mean, std
 
 
-def derivative(array_y, array_x, derivative_smoother_factor=OFF):
+def derivative(array_y, array_x, derivative_smoother_factor: int = OFF):
     dy_dx = np.gradient(array_y, array_x)
     if derivative_smoother_factor == OFF:
         return dy_dx
+    elif derivative_smoother_factor == 1:
+        return dy_dx
     else:
-        dy_dx_smooth = savgol_filter(dy_dx, window_length=derivative_smoother_factor[0],
-                                     polyorder=derivative_smoother_factor[1])
+        dy_dx_smooth = savgol_filter(dy_dx, window_length=derivative_smoother_factor,
+                                     polyorder=1)
         return dy_dx_smooth

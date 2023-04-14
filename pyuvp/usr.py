@@ -144,7 +144,7 @@ class Analysis:
         return alphas
 
     # do the FFT.
-    def doFFT(self, window_num=1, derivative_smoother_factor=[11, 1]):
+    def doFFT(self, window_num=1, derivative_smoother_factor: int = 11):
         my_axis = 0
         N = len(self.__time_series[window_num-1])
         Delta_T = (self.__time_series[window_num-1][-1] - self.__time_series[window_num-1][0]) / N
@@ -164,7 +164,8 @@ class Analysis:
         return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
-    def calculate_Viscosity_ShearRate(self, max_viscosity=30000, viscoity_range_tolerance=1):
+    def calculate_Viscosity_ShearRate(self, max_viscosity=30000, viscoity_range_tolerance=1,
+                                      smooth_level: int = 11):
         viscosity = []
         shear_rate = []
         err_lim = len(self.__coordinate_series) // 5
@@ -180,7 +181,8 @@ class Analysis:
         err_time = 0
         err_str = "The sought viscosity value is out of range."
         for window in range(self.__number_of_windows+1):
-            vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.doFFT(window_num=window)
+            vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.doFFT(window_num=window,
+                                                                                                 derivative_smoother_factor=smooth_level)
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
             imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
