@@ -1,11 +1,11 @@
-from pyuvp import uvpreader, usr
+from pyuvp import uvpReader, usr
 import matplotlib.pyplot as plt
 import numpy as np
 
 # example of single tdx.
 # Viscosity analysis using USR, 1 Hz_120 deg.
 # Read the data in the ".mfprof" file
-data = uvpreader.ReadData(r'example_1.mfprof')   # 'data' is an instantiate object, cannot be print
+data = uvpReader.readData(r'example_1.mfprof')   # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
 data.resetSoundSpeed(980)
 
@@ -22,20 +22,20 @@ coordinates_xi = data.coordinateSeries(tdx_num=0)       # return a one-dimension
 
 # -------------------------------------------------------------
 # create an analysis from data.
-analysis = data.createUSRAnalysis()  # 'anaylsis' is an instantiate object, cannot be print
+analysis = data.createUSRAnalysis(tdx_num=0)  # 'anaylsis' is an instantiate object, cannot be print
 # Another way.
 analysis = usr.Analysis(data)
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
-analysis.settingOuterCylinder(72.5, 56.2, 13)
+analysis.settingOuterCylinder(72.5, 62.3, 13)
 
 # return geometry.
 # returns None if analysis.settingOuterCylinder is not run.
 cylinder_r, delta_y = analysis.geometry
 
 # According to the location, extract data that can be analyzed.
-analysis.extractValidData(33, 60)
+analysis.extractValidData(31, 60)
 # Create a data slices. This function can divide the data into several equal parts according to time.
 analysis.dataSlice()
 
@@ -57,11 +57,14 @@ shear_rate = analysis.shearRate
 viscosity = analysis.viscosity
 
 # -------------------------------------------------------------
+u = np.transpose(u_theta[0:100, :])
+time = times[0:100]
 plt.figure()
-plt.xlabel('R')
-plt.ylabel('t [s]')
-plt.xlim(0.5, 1)
-plt.contourf(coordinates_r/cylinder_r, times[0:100], u_theta[0:100, :])
+plt.ylabel('R')
+plt.xlabel('t [s]')
+plt.ylim(0.65, 1)
+plt.contourf(time, coordinates_r/cylinder_r, u, cmap="bwr", levels=20)
+plt.colorbar()
 plt.show()
 
 plt.figure()

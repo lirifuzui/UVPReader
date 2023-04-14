@@ -5,8 +5,14 @@ import pyuvp
 ON = 1
 OFF = 0
 
+class FileException(Exception):
+    def __init__(self, message):
+        self.message = message
 
-class ReadData:
+    def __str__(self):
+        return f"{self.message}"
+
+class readData:
     def __init__(self, file_path):
         # To store the important UVP configuration parameters
         self.__measurement_info = {}
@@ -162,14 +168,17 @@ class ReadData:
 
     def __read_data(self, file_path) -> None:
         with open(file_path, 'rb') as uvpDatafile:
-            self.__read_params_part_I(uvpDatafile)
-            self.__read_params_part_II(uvpDatafile)
-
-            # read velocity file_data and echo_data file_data
-            self.__raw_vel_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
-                                            self.__measurement_info['NumberOfChannels']))
-            self.__raw_echo_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
-                                             self.__measurement_info['NumberOfChannels']))
+            try:
+                self.__read_params_part_I(uvpDatafile)
+                self.__read_params_part_II(uvpDatafile)
+                # read velocity file_data and echo_data file_data
+                self.__raw_vel_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
+                                                self.__measurement_info['NumberOfChannels']))
+                self.__raw_echo_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
+                                                 self.__measurement_info['NumberOfChannels']))
+            except np.core._exceptions._ArrayMemoryError:
+                raise FileException('\".mfprof\" file may be corrupted or altered.'
+                                    '\"Number of Profiles\" and \"Number of Channels\" are beyond normal limits.')
             uvpDatafile.seek(104)
             for i in range(self.__measurement_info['NumberOfProfiles']):
                 uvpDatafile.seek(16, 1)
@@ -182,6 +191,7 @@ class ReadData:
                 if self.__measurement_info['AmplitudeStored']:
                     encode_echo_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
                     self.__raw_echo_data[i] = unpack(datatype, encode_echo_data)
+
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
         self.resetSoundSpeed(self.__measurement_info['SoundSpeed'])
 

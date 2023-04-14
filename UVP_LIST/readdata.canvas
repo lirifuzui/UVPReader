@@ -33,7 +33,7 @@
 		{"type":"text","text":"Statistic","id":"9a3282a7d95509db","x":-285,"y":240,"width":250,"height":60,"color":"3"},
 		{"type":"text","text":"getlog","id":"d1c7df0d45a45563","x":75,"y":-45,"width":250,"height":60,"color":"2"},
 		{"type":"text","text":"statistic","id":"1a58dd7497ad8c47","x":75,"y":50,"width":250,"height":60,"color":"2"},
-		{"type":"text","text":"ReadData","id":"6e1f9d76cb9fe75c","x":-285,"y":-280,"width":250,"height":60,"color":"3"},
+		{"type":"text","text":"readData","id":"6e1f9d76cb9fe75c","x":-285,"y":-280,"width":250,"height":60,"color":"3"},
 		{"type":"text","text":"__read_param_part_I","id":"f18c34e8fabd53d9","x":-160,"y":-710,"width":250,"height":60},
 		{"type":"text","text":"__read_param_part_II","id":"e22c142a7710b2da","x":-160,"y":-610,"width":250,"height":60},
 		{"type":"text","text":"average","id":"a35572c9bbe7052c","x":200,"y":180,"width":250,"height":60,"color":"2"},

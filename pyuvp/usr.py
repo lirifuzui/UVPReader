@@ -1,5 +1,7 @@
 import numpy as np
 from scipy.special import jv
+
+import pyuvp.uvpReader
 from pyuvp import Tools
 
 ON = 1
@@ -24,7 +26,8 @@ class Statistic:
 
 
 class Analysis:
-    def __init__(self, datas=None, tdx_num=OFF, vel_data=None, time_series=None, coordinate_series=None):
+    def __init__(self, datas: pyuvp.uvpReader.readData = None, tdx_num: int = OFF, vel_data: np.ndarray = None,
+                 time_series: np.ndarray = None, coordinate_series: np.ndarray = None):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
@@ -48,7 +51,7 @@ class Analysis:
     # If you don't execute these two functions, the variable will store the coordinates in the xi coordinate system.
     # Running this function will modify the data in self.__coordinate_series and self.__vel_data,
     # to represent the coordinates in the radial coordinate system.
-    def settingOuterCylinder(self, cylinder_r, wall_coordinates_in_xi, delta_y):
+    def settingOuterCylinder(self, cylinder_r: int | float, wall_coordinates_in_xi: int | float, delta_y: int | float):
         self.__cylinder_r = cylinder_r
         self.__delta_y = delta_y
         # Update the variable self.__coordinate_series
@@ -64,12 +67,12 @@ class Analysis:
         None
 
     # Extracted vaild data according to the position coordinates.
-    def extractValidData(self, min_index_of_valid_data=0, max_index_of_valid_data=-1):
+    def extractValidData(self, start: int = 0, end: int = -1):
         for i in range(self.__number_of_windows):
-            self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, min_index_of_valid_data:max_index_of_valid_data]
-        self.__coordinate_series = self.__coordinate_series[min_index_of_valid_data:max_index_of_valid_data]
+            self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, start:end]
+        self.__coordinate_series = self.__coordinate_series[start:end]
 
-    def dataSlice(self, number_of_slice=5):
+    def dataSlice(self, number_of_slice: int = 5):
         self.__number_of_windows = number_of_slice
         if number_of_slice == 1:
             self.__time_series = [self.__time_series[0]]
@@ -155,9 +158,16 @@ class Analysis:
     def calculate_Viscosity_ShearRate(self, max_viscosity=30000, viscoity_range_tolerance=1):
         viscosity = []
         shear_rate = []
+
+        # Format the output.
+        slice_width = 8
+        coordinate_width = 8
+        viscosity_width = 20
+        shear_rate_width = 20
         print("\033[1mCalculation Start:")
         print('------------------------------------------------------')
-        print('Window_num\t|\tcoordinate_index\t|\tViscosity\033[0m')
+        print(f"{'slice':<{slice_width}}{'index':<{coordinate_width}}"
+              f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
         for window in range(self.__number_of_windows+1):
             vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.doFFT(window_num=window)
             # Calculate effective shear rate.
@@ -192,14 +202,15 @@ class Analysis:
                     else:
                         print("#coordinate_index = " + str(coordinate_index))
                         print("\033[1m\033[31mCALCULATION ERROR：\033[0mThe sought viscosity value is out of range.")
-                        print('\033[1m------------------------------------------------------')
-                        print('Window_num\t|\tcoordinate_index\t|\tViscosity\033[0m')
+                        print(f"{'slice_number':<{slice_width}}{'coordinate_index':<{coordinate_width}}"
+                              f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
                         viscosity.append(-1)
                         visc_limits = [0.5, max_viscosity]
                         break
                     if np.abs(temp[0]-temp[1]) < viscoity_range_tolerance:
-                        print('\t' + str(window) + '\t\t\033[1m|\033[0m\t\t\t' + str(coordinate_index) +
-                              '\t\t\t\033[1m|\033[0m\t' + str(middle_viscosity))
+                        print(f'{str(window):<{slice_width}}{str(coordinate_index):<{coordinate_width}}'
+                              f'{middle_viscosity:<{viscosity_width}.7g}'
+                              f'{shear_rate[coordinate_index]:<{shear_rate_width}.5g}')
                         viscosity.append(middle_viscosity)
                         visc_limits = [middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
                                        middle_viscosity + visc_range]
