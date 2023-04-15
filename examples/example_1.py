@@ -9,7 +9,6 @@ data = uvp.readData(r'example_2.mfprof')   # 'data' is an instantiate object, ca
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
 data.resetSoundSpeed(980)
 
-
 # -------------------------------------------------------------
 # return datas.
 use_mux = data.muxStatus                                # return 'OFF'
@@ -35,9 +34,9 @@ analysis.settingOuterCylinder(72.5, 54.18, 13)
 cylinder_r, delta_y = analysis.geometry
 
 # According to the location, extract data that can be analyzed.
-analysis.extractValidData(25, 45)
+analysis.validVelData(25, 45)
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.dataSlice(10)
+analysis.slice(10)
 
 # Return u_theta, coordinates_r, times
 # returns u_xi and coordinates_xi if analysis.settingOuterCylinder is not run.
@@ -51,7 +50,7 @@ vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_pa
     window_num=0)
 
 # Calculate effective shear rate and viscosity.
-viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1, 1)
+viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1, 9)
 # Return shear rate and viscosity.
 shear_rate = analysis.shearRate
 viscosity = analysis.viscosity

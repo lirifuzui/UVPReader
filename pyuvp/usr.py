@@ -77,12 +77,12 @@ class Analysis:
         None
 
     # Extracted vaild data according to the position coordinates.
-    def extractValidData(self, start: int = 0, end: int = -1):
+    def validVelData(self, start: int = 0, end: int = -1):
         for i in range(self.__number_of_windows):
             self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]
 
-    def dataSlice(self, number_of_slice: int = 5):
+    def slice(self, number_of_slice: int = 5):
         self.__number_of_windows = number_of_slice
         if number_of_slice == 1:
             self.__time_series = [self.__time_series[0]]

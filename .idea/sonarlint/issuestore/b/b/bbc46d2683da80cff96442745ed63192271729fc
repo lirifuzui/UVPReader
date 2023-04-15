@@ -1,15 +1,0 @@
-
-{python:S100!"XRename method "__read_params_part_I" to match the regular expression ^[a-z_][a-z0-9_]*$.(îÑÖ§úÿÿÿÿ8¡Ÿ´¬÷0
-|python:S1006"YRename method "__read_params_part_II" to match the regular expression ^[a-z_][a-z0-9_]*$.(±Ï˜Ìýÿÿÿÿ8¡Ÿ´¬÷0
-xpython:S37766"TRefactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed.(±Ï˜Ìýÿÿÿÿ8¡Ÿ´¬÷0
-qpython:S100d"SRename method "resetSoundSpeed" to match the regular expression ^[a-z_][a-z0-9_]*$.(êÈèý8¡Ÿ´¬÷0
-spython:S3776d"TRefactor this function to reduce its Cognitive Complexity from 20 to the 15 allowed.(êÈèý8¡Ÿ´¬÷0
-Ypython:S905±":Remove or refactor this statement; it has no side effects.(±èÓ¾8¡Ÿ´¬÷0
-tpython:S100¼"URename method "createUSRAnalysis" to match the regular expression ^[a-z_][a-z0-9_]*$.(æ‚èÑ8¾¯™²÷0
-qpython:S100Á"MRename method "muxStatus" to match the regular expression ^[a-z_][a-z0-9_]*$.(ÔŠÃáùÿÿÿÿ8¡Ÿ´¬÷0
-qpython:S100Ä"MRename method "velTables" to match the regular expression ^[a-z_][a-z0-9_]*$.(îæŠßûÿÿÿÿ8¡Ÿ´¬÷0
-rpython:S100Ç"NRename method "echoTables" to match the regular expression ^[a-z_][a-z0-9_]*$.(¡á§“þÿÿÿÿ8¡Ÿ´¬÷0
-mpython:S100Ê"NRename method "timeSeries" to match the regular expression ^[a-z_][a-z0-9_]*$.(‰“Í—8¡Ÿ´¬÷0
-spython:S100Í"TRename method "coordinateSeries" to match the regular expression ^[a-z_][a-z0-9_]*$.(‘°ö£8¡Ÿ´¬÷0
-Ypython:S905Ñ":Remove or refactor this statement; it has no side effects.(±èÓ¾8¡Ÿ´¬÷0
-Ypython:S905Ô":Remove or refactor this statement; it has no side effects.(±èÓ¾8¡Ÿ´¬÷0
