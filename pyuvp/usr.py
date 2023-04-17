@@ -14,7 +14,11 @@ class USRException(Exception):
         self.message = message
 
     def __str__(self):
-        return f"{self.message}"
+        return f"{self.message}\n*You should check that:" \
+               f"\n*Whether the data file opens correctly." \
+               f"\n*Whether the data being analyzed contains some data that no physical meaning." \
+               f"\n*Whether the data being analyzed still contains data with large errors." \
+               f"\n*Whether the container size is defined correctly."
 
 
 class Statistic:
@@ -74,11 +78,11 @@ class Analysis:
             self.__delta_y = delta_y
         else:
             self.__cylinder_freq = vibration_params[0]
-            max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_freq * (vibration_params[1] / 180) * np.pi
+            max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_r * (vibration_params[1]*np.pi/180)
             vibration_frequency, max_magnitude, _, _, _, _ = self.doFFT()
             if np.abs(vibration_frequency-self.__cylinder_freq) > np.abs(vibration_frequency/10) and not self.__ignoreUSRException:
                 raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
-                                   "experimental data!"+str(vibration_frequency)+","+str(self.__cylinder_freq))
+                                   "experimental data! ["+f"{vibration_frequency:.3g}"+", "+str(self.__cylinder_freq)+ "]")
             self.__delta_y = self.__cylinder_r*np.max(max_magnitude)/max_vel
         # Update the variable self.__coordinate_series
         half_chord = np.sqrt(cylinder_r ** 2 - self.__delta_y ** 2)
@@ -169,7 +173,7 @@ class Analysis:
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
         freq_array = np.fft.fftfreq(N, Delta_T)
-        vibration_frequency = np.mean(freq_array[max_magnitude_indices])
+        vibration_frequency = np.mean(np.abs(freq_array[max_magnitude_indices]))
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / (N / 2)
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         phase_delay = self.__phase_unwrap(phase_delay)
@@ -232,7 +236,7 @@ class Analysis:
                         print("#coordinate_index = " + str(coordinate_index))
                         print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
                               "The viscosity value at this location may exceed the defined maximum, viscosity may be "
-                              "bigger than" + str(max_viscosity) + '.')
+                              "bigger than " + str(max_viscosity) + '.')
                         print(f"\033[1m{'slice':<{slice_width}}{'index':<{coordinate_width}}"
                               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
                         viscosity.append(-1)

@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # example of single tdx.
-# Viscosity analysis using USR, 1 Hz_120 deg.
+# Viscosity analysis using USR, 0.5 Hz_120 deg.
 # Read the data in the ".mfprof" file
-data = uvp.readData(r'example_1.mfprof')   # 'data' is an instantiate object, cannot be print
+data = uvp.readData(r'example_2.mfprof')   # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
 data.resetSoundSpeed(980)
 
@@ -23,21 +23,22 @@ coordinates_xi = data.coordinateSeries(tdx_num=0)       # return a one-dimension
 analysis = data.createUSRAnalysis(tdx_num=0, ignoreUSRException=False)  # 'anaylsis' is an instantiate object, cannot be print
 # Another way.
 analysis = usr.Analysis(data, ignoreUSRException=False)
+# ignoreUSRException means whether to ignore automatic checks and warnings for USR.
 
 
 # -------------------------------------------------------------
 # According to the location, extract data that can be analyzed.
-analysis.validVelData(35, 60)
+analysis.validVelData(25, 40)
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
-'''analysis.settingOuterCylinder(72.5, 61, delta_y=12)'''
+'''analysis.settingOuterCylinder(72.5, 54.39, delta_y=12)'''
 # Or enter the vibration parameters of cylinder,[frequency, amplitude]. 'Delta Y' and 'Vibration Params' must enter one.
 # The function 'settingOuterCylinder' overwrites the original data with new data and can only be executed once.
-analysis.settingOuterCylinder(72.5, 61, vibration_params=[1, 120])
+analysis.settingOuterCylinder(72.5, 54.39, vibration_params=[0.5, 120])
 
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.timeSlicing(10)
+analysis.timeSlicing(15)
 
 # -------------------------------------------------------------
 # return geometry.
@@ -69,7 +70,7 @@ time = times[0:100]
 plt.figure()
 plt.ylabel('R')
 plt.xlabel('t [s]')
-plt.ylim(0.65, 1)
+plt.ylim(0.8, 1)
 plt.contourf(time, coordinates_r/cylinder_r, u, cmap="bwr", levels=20)
 plt.colorbar()
 plt.show()
