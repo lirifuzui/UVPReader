@@ -69,7 +69,7 @@ time = times[0:100]
 plt.figure()
 plt.ylabel('R')
 plt.xlabel('t [s]')
-plt.ylim(0.65, 1)
+#plt.ylim(0.65, 1)
 plt.contourf(time, coordinates_r/cylinder_r, u, cmap="bwr", levels=20)
 plt.colorbar()
 plt.show()

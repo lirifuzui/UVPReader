@@ -35,7 +35,7 @@ analysis.validVelData(25, 40)
 '''analysis.settingOuterCylinder(72.5, 54.39, delta_y=12)'''
 # Or enter the vibration parameters of cylinder,[frequency, amplitude]. 'Delta Y' and 'Vibration Params' must enter one.
 # The function 'settingOuterCylinder' overwrites the original data with new data and can only be executed once.
-analysis.settingOuterCylinder(72.5, 54.39, vibration_params=[0.5, 120])
+analysis.settingOuterCylinder(72.5, wall_coordinates_in_xi=54.39, vibration_params=[0.5, 120])
 
 # Create a data slices. This function can divide the data into several equal parts according to time.
 analysis.timeSlicing(15)
