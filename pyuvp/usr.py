@@ -37,7 +37,7 @@ class Statistic:
 
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: np.ndarray = None,
-                 time_series: np.ndarray = None, coordinate_series: np.ndarray = None):
+                 time_series: np.ndarray = None, coordinate_series: np.ndarray = None, ignoreUSRException = False):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
@@ -52,25 +52,44 @@ class Analysis:
         self.__slice = [[0, len(self.__time_series[0])]]
         self.__cylinder_r = None
         self.__delta_y = None
+        self.__cylinder_freq = None
 
         self.__shear_rate = None
         self.__viscosity = None
+
+        self.__ignoreUSRException = ignoreUSRException
 
     # Update the variable self.__coordinate_series and self.__vel_data,
     # to store the data in the radial coordinate system.
     # If you don't execute these two functions, the variable will store the coordinates in the xi coordinate system.
     # Running this function will modify the data in self.__coordinate_series and self.__vel_data,
     # to represent the coordinates in the radial coordinate system.
-    def settingOuterCylinder(self, cylinder_r: int | float, wall_coordinates_in_xi: int | float, delta_y: int | float):
+    def settingOuterCylinder(self, cylinder_r: int | float, wall_coordinates_in_xi: int | float,
+                             delta_y: int | float | None = None, vibration_params: list | None = None):
+        if delta_y is None and vibration_params is None:
+            raise ValueError("One of the delta_y and vibration_params is required!")
+
         self.__cylinder_r = cylinder_r
-        self.__delta_y = delta_y
+        if delta_y is not None:
+            self.__delta_y = delta_y
+        else:
+            self.__cylinder_freq = vibration_params[0]
+            max_vel = 2 * (np.pi ** 2) * self.__cylinder_freq * self.__cylinder_freq * (vibration_params[1] / 180)
+            vibration_frequency, max_magnitude, _, _, _, _ = self.doFFT()
+            if np.abs(vibration_frequency-self.__cylinder_freq) > np.abs(vibration_frequency/10) and not self.__ignoreUSRException:
+                raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
+                                   "experimental data!"+str(vibration_frequency)+","+str(self.__cylinder_freq))
+            self.__delta_y = self.__cylinder_r*np.max(max_magnitude)/max_vel
+            print(np.max(max_magnitude))
         # Update the variable self.__coordinate_series
-        half_chord = np.sqrt(cylinder_r ** 2 - delta_y ** 2)
+        print(self.__delta_y)
+        half_chord = np.sqrt(cylinder_r ** 2 - self.__delta_y ** 2)
         self.__coordinate_series = np.sqrt((wall_coordinates_in_xi + half_chord -
-                                            self.__coordinate_series) ** 2 + delta_y ** 2)
+                                            self.__coordinate_series) ** 2 + self.__delta_y ** 2)
         # Update the variable self.__analyzable_vel_data
         for i in range(self.__number_of_windows):
-            self.__analyzable_vel_data[i] = np.multiply(self.__analyzable_vel_data[i], self.__coordinate_series / delta_y)
+            self.__analyzable_vel_data[i] = np.multiply(self.__analyzable_vel_data[i],
+                                                        self.__coordinate_series / self.__delta_y)
         return self.__analyzable_vel_data, self.__coordinate_series
 
     def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
@@ -82,7 +101,7 @@ class Analysis:
             self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]
 
-    def slice(self, number_of_slice: int = 5):
+    def timeSlicing(self, number_of_slice: int = 5):
         self.__number_of_windows = number_of_slice
         if number_of_slice == 1:
             self.__time_series = [self.__time_series[0]]
@@ -90,11 +109,11 @@ class Analysis:
             self.__slice = [self.__slice[0]]
         elif number_of_slice == 2:
             self.__time_series = [self.__time_series[0],
-                                  self.__time_series[0][0:len(self.__time_series[0])//2],
-                                  self.__time_series[0][len(self.__time_series[0])//2:-1]]
+                                  self.__time_series[0][0:len(self.__time_series[0]) // 2],
+                                  self.__time_series[0][len(self.__time_series[0]) // 2:-1]]
             self.__analyzable_vel_data = [self.__analyzable_vel_data[0],
-                                          self.__analyzable_vel_data[0][0:len(self.__time_series[0])//2, :],
-                                          self.__analyzable_vel_data[0][len(self.__time_series[0])//2:-1, :]]
+                                          self.__analyzable_vel_data[0][0:len(self.__time_series[0]) // 2, :],
+                                          self.__analyzable_vel_data[0][len(self.__time_series[0]) // 2:-1, :]]
             self.__slice = [self.__slice[0],
                             self.__slice[0][0:len(self.__time_series[0]) // 2],
                             self.__slice[0][len(self.__time_series[0]) // 2:-1]]
@@ -102,10 +121,10 @@ class Analysis:
             self.__time_series = [self.__time_series[0]]
             self.__analyzable_vel_data = [self.__analyzable_vel_data[0]]
             self.__slice = [self.__slice[0]]
-            moving = len(self.__time_series[0]) // ((number_of_slice-1)*2)
+            moving = len(self.__time_series[0]) // ((number_of_slice - 1) * 2)
             for slice_index in range(number_of_slice):
                 start = 0 + slice_index * moving
-                end = -1 - (number_of_slice-1-slice_index)*moving
+                end = -1 - (number_of_slice - 1 - slice_index) * moving
                 self.__time_series.append(self.__time_series[0][start:end])
                 self.__analyzable_vel_data.append(self.__analyzable_vel_data[0][start:end, :])
                 self.__slice.append([start, end])
@@ -146,21 +165,21 @@ class Analysis:
     # do the FFT.
     def doFFT(self, window_num=1, derivative_smoother_factor: int = 11):
         my_axis = 0
-        N = len(self.__time_series[window_num-1])
-        Delta_T = (self.__time_series[window_num-1][-1] - self.__time_series[window_num-1][0]) / N
-        fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num-1], axis=my_axis)
+        N = len(self.__time_series[window_num - 1])
+        Delta_T = (self.__time_series[window_num - 1][-1] - self.__time_series[window_num - 1][0]) / N
+        fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num - 1], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
         freq_array = np.fft.fftfreq(N, Delta_T)
         vibration_frequency = np.mean(freq_array[max_magnitude_indices])
-        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / (N/2)
+        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / (N / 2)
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         phase_delay = self.__phase_unwrap(phase_delay)
         phase_delay -= phase_delay[0]
         phase_delay = np.abs(phase_delay)
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
-        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / (N/2)
-        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / (N/2)
+        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / (N / 2)
+        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / (N / 2)
         return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
@@ -168,7 +187,7 @@ class Analysis:
                                       smooth_level: int = 11):
         viscosity = []
         shear_rate = []
-        err_lim = len(self.__coordinate_series) // 5
+        err_lim = len(self.__coordinate_series) // 3
         # Format the output.
         slice_width = 8
         coordinate_width = 8
@@ -179,8 +198,7 @@ class Analysis:
         print(f"{'slice':<{slice_width}}{'index':<{coordinate_width}}"
               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
         err_time = 0
-        err_str = "The sought viscosity value is out of range."
-        for window in range(self.__number_of_windows+1):
+        for window in range(self.__number_of_windows + 1):
             vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.doFFT(window_num=window,
                                                                                                  derivative_smoother_factor=smooth_level)
             # Calculate effective shear rate.
@@ -214,14 +232,16 @@ class Analysis:
                         temp = [middle_viscosity, visc_limits[1]]
                     else:
                         print("#coordinate_index = " + str(coordinate_index))
-                        print("\033[1m\033[31mCALCULATION ERROR：\033[0m" + err_str)
+                        print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
+                              "The viscosity value at this location may exceed the defined maximum, viscosity may be "
+                              "bigger than" + str(max_viscosity) + '.')
                         print(f"\033[1m{'slice':<{slice_width}}{'index':<{coordinate_width}}"
                               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
                         viscosity.append(-1)
                         visc_limits = [0.5, max_viscosity]
                         err_time += 1
                         break
-                    if np.abs(temp[0]-temp[1]) < viscoity_range_tolerance:
+                    if np.abs(temp[0] - temp[1]) < viscoity_range_tolerance:
                         print(f'{str(window):<{slice_width}}{str(coordinate_index):<{coordinate_width}}'
                               f'{middle_viscosity:<{viscosity_width}.7g}'
                               f'{shear_rate[coordinate_index]:<{shear_rate_width}.5g}')
@@ -236,7 +256,8 @@ class Analysis:
                     break
             if err_time > err_lim:
                 print("\033[1m\033[31mCALCULATION ERROR!!!\033[0m")
-                raise USRException(err_str)
+                if not self.__ignoreUSRException:
+                    raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
                 break
         self.__shear_rate = np.array(shear_rate)
         self.__viscosity = np.array(viscosity)
@@ -265,4 +286,3 @@ class Analysis:
     @property
     def viscosity(self):
         return self.__viscosity
-

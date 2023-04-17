@@ -21,22 +21,23 @@ coordinates_xi = data.coordinateSeries(tdx_num=0)       # return a one-dimension
 
 # -------------------------------------------------------------
 # create an analysis from data.
-analysis = data.createUSRAnalysis(tdx_num=0)  # 'anaylsis' is an instantiate object, cannot be print
+analysis = data.createUSRAnalysis(tdx_num=0, ignoreUSRException=False)  # 'anaylsis' is an instantiate object, cannot be print
 # Another way.
-analysis = usr.Analysis(data)
+analysis = usr.Analysis(data, ignoreUSRException=False)
+
+# According to the location, extract data that can be analyzed.
+analysis.validVelData(25, 45)
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
-analysis.settingOuterCylinder(72.5, 54.18, 13)
+analysis.settingOuterCylinder(72.5, 54.18, vibration_params=[0.5, 120])
 
 # return geometry.
 # returns None if analysis.settingOuterCylinder is not run.
 cylinder_r, delta_y = analysis.geometry
 
-# According to the location, extract data that can be analyzed.
-analysis.validVelData(25, 45)
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.slice(10)
+analysis.timeSlicing(10)
 
 # Return u_theta, coordinates_r, times
 # returns u_xi and coordinates_xi if analysis.settingOuterCylinder is not run.
@@ -50,7 +51,7 @@ vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_pa
     window_num=0)
 
 # Calculate effective shear rate and viscosity.
-viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1, 9)
+viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1, 11)
 # Return shear rate and viscosity.
 shear_rate = analysis.shearRate
 viscosity = analysis.viscosity
