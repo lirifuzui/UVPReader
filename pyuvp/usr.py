@@ -21,13 +21,15 @@ class USRException(Exception):
 
 
 ExceptionConfig = {
-    'Allowable magnification of frequency difference': 0.1
+    'Allowable magnification of frequency difference': 0.1,
+    'Allowable proportion of calculation error points': 0.3
 }
+
 
 class Statistic:
     def __init__(self, datas=None, tdx_num=0, vel_data=None, echo_data=None):
-        self.__vel_data = np.array(datas.vel_table if datas else vel_data)
-        self.__echo_data = np.array(datas.echoTables if datas else echo_data)
+        self.__vel_data = np.array(datas.velTables(tdx_num) if datas else vel_data(tdx_num))
+        self.__echo_data = np.array(datas.echoTables(tdx_num) if datas else echo_data(tdx_num))
 
     # Return the average, maximum, and minimum values of the speed at different positions.
     # The structure is three one-dimensional arrays.
@@ -38,13 +40,19 @@ class Statistic:
         vel_min = np.min(self.__vel_data, axis=0)
         return vel_average, vel_max, vel_min
 
+    def echo_average(self):
+        echo_average = np.mean(self.__echo_data, axis=0)
+        echo_max = np.max(self.__echo_data, axis=0)
+        echo_min = np.min(self.__echo_data, axis=0)
+        return echo_average, echo_max, echo_min
+
     def movvar(self):
         None
 
 
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: np.ndarray = None,
-                 time_series: np.ndarray = None, coordinate_series: np.ndarray = None, ignoreUSRException = False):
+                 time_series: np.ndarray = None, coordinate_series: np.ndarray = None, ignoreUSRException=False):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
@@ -81,14 +89,15 @@ class Analysis:
             self.__delta_y = delta_y
         else:
             self.__cylinder_freq = vibration_params[0]
-            max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_r * (vibration_params[1]*np.pi/180)
+            max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_r * (vibration_params[1] * np.pi / 180)
             vibration_frequency, max_magnitude, _, _, _, _ = self.doFFT()
-            if np.abs(vibration_frequency-self.__cylinder_freq) > \
+            if np.abs(vibration_frequency - self.__cylinder_freq) > \
                     np.abs(vibration_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
                     and not self.__ignoreUSRException:
                 raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
-                                   "experimental data! ["+f"{vibration_frequency:.3g}"+", "+str(self.__cylinder_freq)+ "]")
-            self.__delta_y = self.__cylinder_r*np.max(max_magnitude)/max_vel
+                                   "experimental data! [" + f"{vibration_frequency:.3g}" + ", " + str(
+                    self.__cylinder_freq) + "]")
+            self.__delta_y = self.__cylinder_r * np.max(max_magnitude) / max_vel
         # Update the variable self.__coordinate_series
         half_chord = np.sqrt(cylinder_r ** 2 - self.__delta_y ** 2)
         self.__coordinate_series = np.sqrt((wall_coordinates_in_xi + half_chord -
@@ -173,7 +182,7 @@ class Analysis:
     def doFFT(self, window_num=1, derivative_smoother_factor: int = 11):
         my_axis = 0
         N = len(self.__time_series[window_num - 1])
-        Delta_T = (self.__time_series[window_num - 1][-1] - self.__time_series[window_num - 1][0]) / (N-1)
+        Delta_T = (self.__time_series[window_num - 1][-1] - self.__time_series[window_num - 1][0]) / (N - 1)
         fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num - 1], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
@@ -194,7 +203,8 @@ class Analysis:
                                       smooth_level: int = 11):
         viscosity = []
         shear_rate = []
-        err_lim = len(self.__coordinate_series) // 3
+        err_lim = len(self.__coordinate_series) // \
+            (1 / ExceptionConfig['Allowable proportion of calculation error points'])
         # Format the output.
         slice_width = 8
         coordinate_width = 8
