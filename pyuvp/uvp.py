@@ -198,9 +198,9 @@ class readData:
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
         self.resetSoundSpeed(self.__measurement_info['SoundSpeed'])
 
-    def createUSRAnalysis(self, tdx_num=0, ignoreUSRException=False):
+    def createUSRAnalysis(self, tdx_num=0, ignoreException=False):
         return pyuvp.usr.Analysis(tdx_num=tdx_num, vel_data=self.velTables, time_series=self.timeSeries,
-                                  coordinate_series=self.coordinateSeries, ignoreException=ignoreUSRException)
+                                  coordinate_series=self.coordinateSeries, ignoreException=ignoreException)
 
     @property
     def muxStatus(self):

@@ -227,16 +227,16 @@ class Analysis:
             shear_rate.extend(np.sqrt(param_1 ** 2 + param_2 ** 2))
 
             # Calculate effective viscosity.
-            visc_limits = [0.5, max_viscosity]
+            viscosity_limits = [0.5, max_viscosity]
             visc_range = int((max_viscosity - 0.5) / 20)
             for coordinate_index in range(len(self.__coordinate_series)):
-                loop_count = int(np.log2(visc_limits[1] - visc_limits[0])) + 10
-                middle_viscosity = (visc_limits[1] + visc_limits[0]) / 2
+                loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
+                middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
                 for loop in range(loop_count):
-                    alpha_min = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency, visc_limits[0],
+                    alpha_min = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency, viscosity_limits[0],
                                                     self.__coordinate_series)
                     alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_series)[coordinate_index]
-                    alpha_max = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency, visc_limits[1],
+                    alpha_max = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency, viscosity_limits[1],
                                                     self.__coordinate_series)
                     alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_series)[coordinate_index]
                     alpha_middle = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency,
@@ -245,9 +245,9 @@ class Analysis:
                     simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
                     idx = np.searchsorted(simulate_value, phase_delay_derivative[coordinate_index])
                     if idx == 1:
-                        temp = [visc_limits[0], middle_viscosity]
+                        temp = [viscosity_limits[0], middle_viscosity]
                     elif idx == 2:
-                        temp = [middle_viscosity, visc_limits[1]]
+                        temp = [middle_viscosity, viscosity_limits[1]]
                     else:
                         print("#coordinate_index = " + str(coordinate_index))
                         print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
@@ -256,7 +256,7 @@ class Analysis:
                         print(f"\033[1m{'slice':<{slice_width}}{'index':<{coordinate_width}}"
                               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
                         viscosity.append(-1)
-                        visc_limits = [0.5, max_viscosity]
+                        viscosity_limits = [0.5, max_viscosity]
                         err_time += 1
                         break
                     if np.abs(temp[0] - temp[1]) < viscoity_range_tolerance:
@@ -264,12 +264,12 @@ class Analysis:
                               f'{middle_viscosity:<{viscosity_width}.7g}'
                               f'{shear_rate[coordinate_index]:<{shear_rate_width}.5g}')
                         viscosity.append(middle_viscosity)
-                        visc_limits = [middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
-                                       middle_viscosity + visc_range]
+                        viscosity_limits = [middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
+                                            middle_viscosity + visc_range]
                         break
                     else:
-                        visc_limits = temp
-                        middle_viscosity = (visc_limits[1] + visc_limits[0]) / 2
+                        viscosity_limits = temp
+                        middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
                 if err_time > err_lim and not self.__ignoreUSRException and not ignoreException:
                     break
             if err_time > err_lim:
