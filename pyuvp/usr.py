@@ -20,6 +20,10 @@ class USRException(Exception):
                f"\n*Whether the container size is defined correctly."
 
 
+ExceptionConfig = {
+    'Allowable magnification of frequency difference': 0.1
+}
+
 class Statistic:
     def __init__(self, datas=None, tdx_num=0, vel_data=None, echo_data=None):
         self.__vel_data = np.array(datas.vel_table if datas else vel_data)
@@ -79,7 +83,9 @@ class Analysis:
             self.__cylinder_freq = vibration_params[0]
             max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_r * (vibration_params[1]*np.pi/180)
             vibration_frequency, max_magnitude, _, _, _, _ = self.doFFT()
-            if np.abs(vibration_frequency-self.__cylinder_freq) > np.abs(vibration_frequency/10) and not self.__ignoreUSRException:
+            if np.abs(vibration_frequency-self.__cylinder_freq) > \
+                    np.abs(vibration_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
+                    and not self.__ignoreUSRException:
                 raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
                                    "experimental data! ["+f"{vibration_frequency:.3g}"+", "+str(self.__cylinder_freq)+ "]")
             self.__delta_y = self.__cylinder_r*np.max(max_magnitude)/max_vel
