@@ -180,8 +180,8 @@ class readData:
                 self.__raw_echo_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
                                                  self.__measurement_info['NumberOfChannels']))
             except np.core._exceptions._ArrayMemoryError:
-                raise FileException('\".mfprof\" file may be corrupted or altered.'
-                                    '\"Number of Profiles\" and \"Number of Channels\" are beyond normal limits.')
+                raise FileException("'.mfprof' file may be corrupted or altered."
+                                    "'Number of Profiles' and 'Number of Channels' are beyond normal limits.")
             uvpDatafile.seek(104)
             for i in range(self.__measurement_info['NumberOfProfiles']):
                 uvpDatafile.seek(16, 1)
@@ -198,7 +198,7 @@ class readData:
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
         self.resetSoundSpeed(self.__measurement_info['SoundSpeed'])
 
-    def createUSRAnalysis(self, tdx_num=0,ignoreUSRException=False):
+    def createUSRAnalysis(self, tdx_num=0, ignoreUSRException=False):
         return pyuvp.usr.Analysis(vel_data=self.velTables, tdx_num=tdx_num, time_series=self.timeSeries,
                                   coordinate_series=self.coordinateSeries, ignoreUSRException=ignoreUSRException)
 

@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.special import jv
-import traceback
 
 import pyuvp.uvp
 from pyuvp import Tools
