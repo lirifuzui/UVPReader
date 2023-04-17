@@ -74,15 +74,13 @@ class Analysis:
             self.__delta_y = delta_y
         else:
             self.__cylinder_freq = vibration_params[0]
-            max_vel = 2 * (np.pi ** 2) * self.__cylinder_freq * self.__cylinder_freq * (vibration_params[1] / 180)
+            max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_freq * (vibration_params[1] / 180) * np.pi
             vibration_frequency, max_magnitude, _, _, _, _ = self.doFFT()
             if np.abs(vibration_frequency-self.__cylinder_freq) > np.abs(vibration_frequency/10) and not self.__ignoreUSRException:
                 raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
                                    "experimental data!"+str(vibration_frequency)+","+str(self.__cylinder_freq))
             self.__delta_y = self.__cylinder_r*np.max(max_magnitude)/max_vel
-            print(np.max(max_magnitude))
         # Update the variable self.__coordinate_series
-        print(self.__delta_y)
         half_chord = np.sqrt(cylinder_r ** 2 - self.__delta_y ** 2)
         self.__coordinate_series = np.sqrt((wall_coordinates_in_xi + half_chord -
                                             self.__coordinate_series) ** 2 + self.__delta_y ** 2)
@@ -166,7 +164,7 @@ class Analysis:
     def doFFT(self, window_num=1, derivative_smoother_factor: int = 11):
         my_axis = 0
         N = len(self.__time_series[window_num - 1])
-        Delta_T = (self.__time_series[window_num - 1][-1] - self.__time_series[window_num - 1][0]) / N
+        Delta_T = (self.__time_series[window_num - 1][-1] - self.__time_series[window_num - 1][0]) / (N-1)
         fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num - 1], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)

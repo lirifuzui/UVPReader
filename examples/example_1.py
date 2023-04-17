@@ -5,7 +5,7 @@ import numpy as np
 # example of single tdx.
 # Viscosity analysis using USR, 1 Hz_120 deg.
 # Read the data in the ".mfprof" file
-data = uvp.readData(r'example_2.mfprof')   # 'data' is an instantiate object, cannot be print
+data = uvp.readData(r'example_1.mfprof')   # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
 data.resetSoundSpeed(980)
 
@@ -26,11 +26,11 @@ analysis = data.createUSRAnalysis(tdx_num=0, ignoreUSRException=False)  # 'anayl
 analysis = usr.Analysis(data, ignoreUSRException=False)
 
 # According to the location, extract data that can be analyzed.
-analysis.validVelData(25, 45)
+analysis.validVelData(30, 60)
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
-analysis.settingOuterCylinder(72.5, 54.18, vibration_params=[0.5, 120])
+analysis.settingOuterCylinder(72.5, 61.47, delta_y=16)
 
 # return geometry.
 # returns None if analysis.settingOuterCylinder is not run.
@@ -46,9 +46,20 @@ u_theta = analysis.velTableTheta(window_num=0)          # return a two-dimension
 coordinates_r = analysis.coordinatesR                   # return a one-dimensional numpy matrix
 times = analysis.timeSeries(window_num=0)               # return a one-dimensional numpy matrix
 
+import scipy
+test_data = u_theta[:, 0:1]
+fft = np.fft.fft(test_data)
+print(fft)
+mag = np.abs(fft)
+# plt.plot(times[0:100], test_data[0:100])
+plt.plot(times, mag)
+
+
 # do fft
 vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.doFFT(
     window_num=0)
+plt.figure()
+plt.plot(coordinates_r,max_magnitude)
 
 # Calculate effective shear rate and viscosity.
 viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1, 11)
