@@ -22,7 +22,7 @@ coordinates_xi = data.coordinateSeries(tdx_num=0)       # return a one-dimension
 # create an analysis from data.
 analysis = data.createUSRAnalysis(tdx_num=0, ignoreUSRException=False)  # 'anaylsis' is an instantiate object, cannot be print
 # Another way.
-analysis = usr.Analysis(data, ignoreUSRException=False)
+analysis = usr.Analysis(data, ignoreException=False)
 
 
 # -------------------------------------------------------------
@@ -56,11 +56,11 @@ vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_pa
     window_num=0)
 
 # Calculate effective shear rate and viscosity.
-viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1, 15)
+viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1, 15, ignoreException=True)
 # Return shear rate and viscosity.
 shear_rate = analysis.shearRate
 viscosity = analysis.viscosity
-
+print(len(shear_rate),len(viscosity))
 
 # -------------------------------------------------------------
 # plot

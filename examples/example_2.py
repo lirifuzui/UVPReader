@@ -22,7 +22,7 @@ coordinates_xi = data.coordinateSeries(tdx_num=0)       # return a one-dimension
 # create an analysis from data.
 analysis = data.createUSRAnalysis(tdx_num=0, ignoreUSRException=False)  # 'anaylsis' is an instantiate object, cannot be print
 # Another way.
-analysis = usr.Analysis(data, ignoreUSRException=False)
+analysis = usr.Analysis(data, ignoreException=False)
 # ignoreUSRException means whether to ignore automatic checks and warnings for USR.
 
 

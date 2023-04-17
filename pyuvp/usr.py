@@ -52,7 +52,7 @@ class Statistic:
 
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: np.ndarray = None,
-                 time_series: np.ndarray = None, coordinate_series: np.ndarray = None, ignoreUSRException=False):
+                 time_series: np.ndarray = None, coordinate_series: np.ndarray = None, ignoreException=False):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
@@ -72,7 +72,7 @@ class Analysis:
         self.__shear_rate = None
         self.__viscosity = None
 
-        self.__ignoreUSRException = ignoreUSRException
+        self.__ignoreUSRException = ignoreException
 
     # Update the variable self.__coordinate_series and self.__vel_data,
     # to store the data in the radial coordinate system.
@@ -80,7 +80,8 @@ class Analysis:
     # Running this function will modify the data in self.__coordinate_series and self.__vel_data,
     # to represent the coordinates in the radial coordinate system.
     def settingOuterCylinder(self, cylinder_r: int | float, wall_coordinates_in_xi: int | float,
-                             delta_y: int | float | None = None, vibration_params: list | None = None):
+                             delta_y: int | float | None = None, vibration_params: list | None = None,
+                             ignoreException=False):
         if delta_y is None and vibration_params is None:
             raise ValueError("One of the delta_y and vibration_params is required!")
 
@@ -93,7 +94,7 @@ class Analysis:
             vibration_frequency, max_magnitude, _, _, _, _ = self.doFFT()
             if np.abs(vibration_frequency - self.__cylinder_freq) > \
                     np.abs(vibration_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
-                    and not self.__ignoreUSRException:
+                    and not self.__ignoreUSRException and not ignoreException:
                 raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
                                    "experimental data! [" + f"{vibration_frequency:.3g}" + ", " + str(
                     self.__cylinder_freq) + "]")
@@ -200,11 +201,11 @@ class Analysis:
 
     # Calculate Viscosity and Shear Rate.
     def calculate_Viscosity_ShearRate(self, max_viscosity=30000, viscoity_range_tolerance=1,
-                                      smooth_level: int = 11):
+                                      smooth_level: int = 11, ignoreException=False):
         viscosity = []
         shear_rate = []
         err_lim = len(self.__coordinate_series) // \
-            (1 / ExceptionConfig['Allowable proportion of calculation error points'])
+                  (1 / ExceptionConfig['Allowable proportion of calculation error points'])
         # Format the output.
         slice_width = 8
         coordinate_width = 8
@@ -216,8 +217,8 @@ class Analysis:
               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
         err_time = 0
         for window in range(self.__number_of_windows + 1):
-            vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = self.doFFT(window_num=window,
-                                                                                                 derivative_smoother_factor=smooth_level)
+            vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
+                self.doFFT(window_num=window, derivative_smoother_factor=smooth_level)
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
             imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
@@ -269,13 +270,12 @@ class Analysis:
                     else:
                         visc_limits = temp
                         middle_viscosity = (visc_limits[1] + visc_limits[0]) / 2
-                if err_time > err_lim:
+                if err_time > err_lim and not self.__ignoreUSRException and not ignoreException:
                     break
             if err_time > err_lim:
-                print("\033[1m\033[31mCALCULATION ERROR!!!\033[0m")
-                if not self.__ignoreUSRException:
+                if not self.__ignoreUSRException and not ignoreException:
+                    print("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
                     raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
-                break
         self.__shear_rate = np.array(shear_rate)
         self.__viscosity = np.array(viscosity)
         print('\033[1m------------------------------------------------------')

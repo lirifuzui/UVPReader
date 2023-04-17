@@ -199,8 +199,8 @@ class readData:
         self.resetSoundSpeed(self.__measurement_info['SoundSpeed'])
 
     def createUSRAnalysis(self, tdx_num=0, ignoreUSRException=False):
-        return pyuvp.usr.Analysis(vel_data=self.velTables, tdx_num=tdx_num, time_series=self.timeSeries,
-                                  coordinate_series=self.coordinateSeries, ignoreUSRException=ignoreUSRException)
+        return pyuvp.usr.Analysis(tdx_num=tdx_num, vel_data=self.velTables, time_series=self.timeSeries,
+                                  coordinate_series=self.coordinateSeries, ignoreException=ignoreUSRException)
 
     @property
     def muxStatus(self):
