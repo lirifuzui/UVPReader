@@ -187,7 +187,7 @@ class Analysis:
         fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num - 1], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
-        freq_array = np.fft.fftfreq(N, Delta_T)
+        freq_array = np.fft.rfftfreq(N, Delta_T)
         vibration_frequency = np.mean(np.abs(freq_array[max_magnitude_indices]))
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / (N / 2)
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
