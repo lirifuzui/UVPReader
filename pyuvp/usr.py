@@ -102,7 +102,7 @@ class Analysis:
             self.__coordinate_series, self.__temp_coords = self.__temp_coords, self.__coordinate_series
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
             self.__delta_y = self.__cylinder_r * np.max(max_magnitude) / max_vel
-            if self.__delta_y > self.__cylinder_r :
+            if self.__delta_y > self.__cylinder_r:
                 raise ValueError("Delta y is greater than the cylinder radius!")
         # Update the variable self.__coordinate_series
         half_chord = np.sqrt(cylinder_r ** 2 - self.__delta_y ** 2)
