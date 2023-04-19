@@ -38,7 +38,7 @@ analysis.validVelData(25, 40)
 analysis.settingOuterCylinder(72.5, vibration_params=[0.5, 120])
 
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.timeSlicing(1)
+analysis.timeSlicing(3)
 
 # -------------------------------------------------------------
 # return geometry.
