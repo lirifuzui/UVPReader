@@ -132,14 +132,14 @@ class Analysis:
             self.__slice = [self.__slice[0]]
         elif number_of_slice == 2:
             self.__time_series = [self.__time_series[0],
-                                  self.__time_series[0][0:len(self.__time_series[0]) // 2],
-                                  self.__time_series[0][len(self.__time_series[0]) // 2:-1]]
+                                  self.__time_series[0][:len(self.__time_series[0]) // 2],
+                                  self.__time_series[0][len(self.__time_series[0]) // 2:]]
             self.__vel_data = [self.__vel_data[0],
-                               self.__vel_data[0][0:len(self.__time_series[0]) // 2, :],
-                               self.__vel_data[0][len(self.__time_series[0]) // 2:-1, :]]
+                               self.__vel_data[0][:len(self.__time_series[0]) // 2, :],
+                               self.__vel_data[0][len(self.__time_series[0]) // 2:, :]]
             self.__slice = [self.__slice[0],
-                            self.__slice[0][0:len(self.__time_series[0]) // 2],
-                            self.__slice[0][len(self.__time_series[0]) // 2:-1]]
+                            self.__slice[0][:len(self.__time_series[0]) // 2],
+                            self.__slice[0][len(self.__time_series[0]) // 2:]]
         else:
             self.__time_series = [self.__time_series[0]]
             self.__vel_data = [self.__vel_data[0]]
