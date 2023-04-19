@@ -20,7 +20,7 @@ coordinates_xi = data.coordinateSeries(tdx_num=0)       # return a one-dimension
 
 # -------------------------------------------------------------
 # create an analysis from data.
-analysis = data.createUSRAnalysis(tdx_num=0, ignoreUSRException=False)  # 'anaylsis' is an instantiate object, cannot be print
+analysis = data.createUSRAnalysis(tdx_num=0, ignoreException=False)  # 'anaylsis' is an instantiate object, cannot be print
 # Another way.
 analysis = usr.Analysis(data, ignoreException=False)
 # ignoreUSRException means whether to ignore automatic checks and warnings for USR.
@@ -32,13 +32,13 @@ analysis.validVelData(25, 40)
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
-'''analysis.settingOuterCylinder(72.5, 54.39, delta_y=12)'''
+'''analysis.settingOuterCylinder(72.5, 54.39, 12)'''
 # Or enter the vibration parameters of cylinder,[frequency, amplitude]. 'Delta Y' and 'Vibration Params' must enter one.
 # The function 'settingOuterCylinder' overwrites the original data with new data and can only be executed once.
-analysis.settingOuterCylinder(72.5, wall_coordinates_in_xi=54.39, vibration_params=[0.5, 120])
+analysis.settingOuterCylinder(72.5, vibration_params=[0.5, 120])
 
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.timeSlicing(15)
+analysis.timeSlicing(1)
 
 # -------------------------------------------------------------
 # return geometry.

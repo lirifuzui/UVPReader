@@ -56,11 +56,13 @@ class Analysis:
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
-        # self.__analyzable_vel_data and self.__time series should be equal in length.
-        # self.__analyzable_vel_data store the pruned analyzable data, and initialize to store the complete data.
-        self.__analyzable_vel_data = [datas.velTables(tdx_num) if datas else vel_data(tdx_num)]
+        # self.__vel_data and self.__time series should be equal in length.
+        # self.__vel_data store the pruned analyzable data, and initialize to store the complete data.
+        self.__vel_data = [datas.velTables(tdx_num) if datas else vel_data(tdx_num)]
+        self.__temp_vel = [datas.velTables(tdx_num) if datas else vel_data(tdx_num)]
         self.__time_series = [datas.timeSeries(tdx_num) if datas else time_series(tdx_num)]
         self.__coordinate_series = datas.coordinateSeries(tdx_num) if datas else coordinate_series(tdx_num)
+        self.__temp_coords = datas.coordinateSeries(tdx_num) if datas else coordinate_series(tdx_num)
         # Store the pruned analyzable data, and initialize to store the complete data.
         # number of windows, default 1.
         self.__number_of_windows = 1
@@ -79,11 +81,13 @@ class Analysis:
     # If you don't execute these two functions, the variable will store the coordinates in the xi coordinate system.
     # Running this function will modify the data in self.__coordinate_series and self.__vel_data,
     # to represent the coordinates in the radial coordinate system.
-    def settingOuterCylinder(self, cylinder_r: int | float, wall_coordinates_in_xi: int | float,
+    def settingOuterCylinder(self, cylinder_r: int | float, wall_coords_xi: int | float | None = None,
                              delta_y: int | float | None = None, vibration_params: list | None = None,
                              ignoreException=False):
-        if delta_y is None and vibration_params is None:
-            raise ValueError("One of the delta_y and vibration_params is required!")
+        if delta_y is None and vibration_params is None and wall_coords_xi is None:
+            raise ValueError("the parameters delta_y,wall_coords_xi and vibration_params are required!")
+        elif ((delta_y is None and wall_coords_xi is not None) or (delta_y is not None and wall_coords_xi is None)) and vibration_params is None:
+            raise ValueError("If you don't use vibration params, both delta_y and wall_coords_xi are required!")
 
         self.__cylinder_r = cylinder_r
         if delta_y is not None:
@@ -91,23 +95,24 @@ class Analysis:
         else:
             self.__cylinder_freq = vibration_params[0]
             max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_r * (vibration_params[1] * np.pi / 180)
+            self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
+            self.__coordinate_series, self.__temp_coords = self.__temp_coords, self.__coordinate_series
             vibration_frequency, max_magnitude, _, _, _, _ = self.doFFT()
-            if np.abs(vibration_frequency - self.__cylinder_freq) > \
-                    np.abs(vibration_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
-                    and not self.__ignoreUSRException and not ignoreException:
-                raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
-                                   "experimental data! [" + f"{vibration_frequency:.3g}" + ", " + str(
-                    self.__cylinder_freq) + "]")
+            wall_coords_xi = self.__coordinate_series[np.argmax(max_magnitude)]
+            self.__coordinate_series, self.__temp_coords = self.__temp_coords, self.__coordinate_series
+            self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
             self.__delta_y = self.__cylinder_r * np.max(max_magnitude) / max_vel
+            if self.__delta_y > self.__cylinder_r :
+                raise ValueError("Delta y is greater than the cylinder radius!")
         # Update the variable self.__coordinate_series
         half_chord = np.sqrt(cylinder_r ** 2 - self.__delta_y ** 2)
-        self.__coordinate_series = np.sqrt((wall_coordinates_in_xi + half_chord -
+        self.__coordinate_series = np.sqrt((wall_coords_xi + half_chord -
                                             self.__coordinate_series) ** 2 + self.__delta_y ** 2)
-        # Update the variable self.__analyzable_vel_data
+        # Update the variable self.__vel_data
         for i in range(self.__number_of_windows):
-            self.__analyzable_vel_data[i] = np.multiply(self.__analyzable_vel_data[i],
-                                                        self.__coordinate_series / self.__delta_y)
-        return self.__analyzable_vel_data, self.__coordinate_series
+            self.__vel_data[i] = np.multiply(self.__vel_data[i],
+                                             self.__coordinate_series / self.__delta_y)
+        return self.__vel_data, self.__coordinate_series
 
     def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
         None
@@ -115,35 +120,36 @@ class Analysis:
     # Extracted vaild data according to the position coordinates.
     def validVelData(self, start: int = 0, end: int = -1):
         for i in range(self.__number_of_windows):
-            self.__analyzable_vel_data[i] = self.__analyzable_vel_data[i][:, start:end]
+            self.__vel_data[i] = self.__vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]
 
     def timeSlicing(self, number_of_slice: int = 5):
         self.__number_of_windows = number_of_slice
-        if number_of_slice == 1:
+        if number_of_slice == 1 or number_of_slice == 0:
+            self.__number_of_windows = 1
             self.__time_series = [self.__time_series[0]]
-            self.__analyzable_vel_data = [self.__analyzable_vel_data[0]]
+            self.__vel_data = [self.__vel_data[0]]
             self.__slice = [self.__slice[0]]
         elif number_of_slice == 2:
             self.__time_series = [self.__time_series[0],
                                   self.__time_series[0][0:len(self.__time_series[0]) // 2],
                                   self.__time_series[0][len(self.__time_series[0]) // 2:-1]]
-            self.__analyzable_vel_data = [self.__analyzable_vel_data[0],
-                                          self.__analyzable_vel_data[0][0:len(self.__time_series[0]) // 2, :],
-                                          self.__analyzable_vel_data[0][len(self.__time_series[0]) // 2:-1, :]]
+            self.__vel_data = [self.__vel_data[0],
+                               self.__vel_data[0][0:len(self.__time_series[0]) // 2, :],
+                               self.__vel_data[0][len(self.__time_series[0]) // 2:-1, :]]
             self.__slice = [self.__slice[0],
                             self.__slice[0][0:len(self.__time_series[0]) // 2],
                             self.__slice[0][len(self.__time_series[0]) // 2:-1]]
         else:
             self.__time_series = [self.__time_series[0]]
-            self.__analyzable_vel_data = [self.__analyzable_vel_data[0]]
+            self.__vel_data = [self.__vel_data[0]]
             self.__slice = [self.__slice[0]]
             moving = len(self.__time_series[0]) // ((number_of_slice - 1) * 2)
             for slice_index in range(number_of_slice):
                 start = 0 + slice_index * moving
                 end = -1 - (number_of_slice - 1 - slice_index) * moving
                 self.__time_series.append(self.__time_series[0][start:end])
-                self.__analyzable_vel_data.append(self.__analyzable_vel_data[0][start:end, :])
+                self.__vel_data.append(self.__vel_data[0][start:end, :])
                 self.__slice.append([start, end])
 
     # Unwrapping the phase function.
@@ -184,7 +190,7 @@ class Analysis:
         my_axis = 0
         N = len(self.__time_series[window_num - 1])
         Delta_T = (self.__time_series[window_num - 1][-1] - self.__time_series[window_num - 1][0]) / (N - 1)
-        fft_result = np.fft.rfft(self.__analyzable_vel_data[window_num - 1], axis=my_axis)
+        fft_result = np.fft.rfft(self.__vel_data[window_num - 1], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
         freq_array = np.fft.rfftfreq(N, Delta_T)
@@ -219,6 +225,12 @@ class Analysis:
         for window in range(self.__number_of_windows + 1):
             vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
                 self.doFFT(window_num=window, derivative_smoother_factor=smooth_level)
+            if np.abs(vibration_frequency - self.__cylinder_freq) > \
+                    np.abs(vibration_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
+                    and not self.__ignoreUSRException and not ignoreException:
+                raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
+                                   "experimental data! [" + f"{vibration_frequency:.3g}" + ", " + str(
+                    self.__cylinder_freq) + "]")
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
             imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
@@ -283,7 +295,7 @@ class Analysis:
         return self.__viscosity, self.__shear_rate,
 
     def velTableTheta(self, window_num=OFF):
-        return self.__analyzable_vel_data[window_num]
+        return self.__vel_data[window_num]
 
     def timeSeries(self, window_num=OFF):
         return self.__time_series[window_num]

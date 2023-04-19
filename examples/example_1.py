@@ -31,13 +31,13 @@ analysis.validVelData(35, 60)
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
-'''analysis.settingOuterCylinder(72.5, 61, delta_y=12)'''
+'''analysis.settingOuterCylinder(72.5, 61, 12)'''
 # Or enter the vibration parameters of cylinder,[frequency, amplitude]. 'Delta Y' and 'Vibration Params' must enter one.
 # The function 'settingOuterCylinder' overwrites the original data with new data and can only be executed once.
-analysis.settingOuterCylinder(72.5, 61, vibration_params=[1, 120], ignoreException=False)
+analysis.settingOuterCylinder(72.5, vibration_params=[1, 120], ignoreException=False)
 
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.timeSlicing(10)
+analysis.timeSlicing(2)
 
 # -------------------------------------------------------------
 # return geometry.
