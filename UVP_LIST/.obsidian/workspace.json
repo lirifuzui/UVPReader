@@ -4,20 +4,20 @@
     "type": "split",
     "children": [
       {
-        "id": "4be1ce336f739927",
+        "id": "8942ec6055f38180",
         "type": "tabs",
         "children": [
           {
-            "id": "5f86b6bc2ab163b6",
+            "id": "6d886537a39c47ea",
             "type": "leaf",
             "state": {
               "type": "canvas",
               "state": {
-                "file": "readdata.canvas",
+                "file": "未命名.canvas",
                 "viewState": {
-                  "x": 703.8727157094713,
-                  "y": -486.5267891211126,
-                  "zoom": -0.3333333333333334
+                  "x": 0,
+                  "y": 0,
+                  "zoom": 0
                 }
               }
             }
@@ -88,7 +88,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "readdata.canvas",
+                "file": "未命名.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -105,7 +105,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "readdata.canvas",
+                "file": "未命名.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -128,7 +128,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "readdata.canvas"
+                "file": "未命名.canvas"
               }
             }
           }
@@ -149,10 +149,13 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "5f86b6bc2ab163b6",
+  "active": "6d886537a39c47ea",
   "lastOpenFiles": [
-    "readdata.md",
+    "未命名.canvas",
+    "未命名.md",
+    "未命名",
     "readdata.canvas",
-    "未命名.md"
+    "emulsion.md",
+    "readdata.md"
   ]
 }

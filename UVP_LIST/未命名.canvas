@@ -1,0 +1,9 @@
+{
+	"nodes":[
+		{"id":"a265b3c548c40afa","x":-400,"y":-140,"width":250,"height":60,"type":"text","text":"乳化液"},
+		{"id":"e2ef12aa0f82d143","x":-20,"y":-260,"width":250,"height":60,"type":"text","text":"制备"},
+		{"id":"1c67c592f649bd4a","x":-40,"y":-110,"width":250,"height":60,"type":"text","text":"测量"},
+		{"id":"6d7d5a877319d6cf","x":0,"y":40,"width":250,"height":60,"type":"text","text":"模型"}
+	],
+	"edges":[]
+}
