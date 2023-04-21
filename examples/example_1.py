@@ -11,11 +11,11 @@ data.resetSoundSpeed(980)
 
 # -------------------------------------------------------------
 # return datas.
-use_mux = data.muxStatus                                # return 'OFF'
-u_xi = data.velTables(tdx_num=0)                        # return a two-dimensional numpy matrix
-echo = data.echoTables(tdx_num=0)                       # return a two-dimensional numpy matrix
-times = data.timeSeries(tdx_num=0)                      # return a one-dimensional numpy matrix
-coordinates_xi = data.coordinateSeries(tdx_num=0)       # return a one-dimensional numpy matrix
+use_mux = data.muxStatus                       # return 'OFF'
+u_xi = data.velTables[0]                       # return a two-dimensional numpy matrix
+echo = data.echoTables[0]                      # return a two-dimensional numpy matrix
+times = data.timeSeries[0]                     # return a one-dimensional numpy matrix
+coordinates_xi = data.coordinateSeries[0]      # return a one-dimensional numpy matrix
 
 
 # -------------------------------------------------------------
@@ -37,7 +37,7 @@ analysis.validVelData(35, 60)
 analysis.settingOuterCylinder(72.5, vibration_params=[1, 120], ignoreException=False)
 
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.timeSlicing(2)
+analysis.timeSlicing(1)
 
 # -------------------------------------------------------------
 # return geometry.
@@ -48,7 +48,7 @@ cylinder_r, delta_y = analysis.geometry
 # returns u_xi and coordinates_xi if analysis.settingOuterCylinder is not run.
 # window_num=0，represents the complete data that has not been sliced
 u_theta = analysis.velTableTheta(window_num=0)          # return a two-dimensional numpy matrix
-coordinates_r = analysis.coordinatesR                   # return a one-dimensional numpy matrix
+coordinates_r = analysis.coordSeries                   # return a one-dimensional numpy matrix
 times = analysis.timeSeries(window_num=0)               # return a one-dimensional numpy matrix
 
 # do fft

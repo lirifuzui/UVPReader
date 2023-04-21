@@ -23,7 +23,7 @@ Ang = 90  # [deg] Oscillation amplitude in degree
 
 Nosc = 20.0  # number of oscillation periods
 
-nuset = 1000  # [mm^2/s] Kinematic viscosity of test fluid
+nuset = 500  # [mm^2/s] Kinematic viscosity of test fluid
 
 nlev = 0.03  # Noise level relative to the wall velocity
 
@@ -93,7 +93,7 @@ xj, tj = np.meshgrid(xi, ti)
 levels = MaxNLocator(nbins=64, integer=True).tick_values(-np.max(uxi), np.max(uxi))
 
 cmap = plt.get_cmap('seismic')
-norm = BoundaryNorm(levels, ncolors=cmap.nProfiles, clip=True)
+norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
 
 fig, ax1 = plt.subplots(figsize=(9, 3.4))
 

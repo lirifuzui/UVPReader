@@ -51,18 +51,18 @@ class Statistic:
 
 
 class Analysis:
-    def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: np.ndarray = None,
-                 time_series: np.ndarray = None, coordinate_series: np.ndarray = None, ignoreException=False):
+    def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list = None,
+                 time_series: list = None, coordinate_series: list = None, ignoreException=False):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
         # self.__vel_data and self.__time series should be equal in length.
         # self.__vel_data store the pruned analyzable data, and initialize to store the complete data.
-        self.__vel_data = [datas.velTables(tdx_num) if datas else vel_data(tdx_num)]
-        self.__temp_vel = [datas.velTables(tdx_num) if datas else vel_data(tdx_num)]
-        self.__time_series = [datas.timeSeries(tdx_num) if datas else time_series(tdx_num)]
-        self.__coordinate_series = datas.coordinateSeries(tdx_num) if datas else coordinate_series(tdx_num)
-        self.__temp_coords = datas.coordinateSeries(tdx_num) if datas else coordinate_series(tdx_num)
+        self.__vel_data = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
+        self.__temp_vel = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
+        self.__time_series = [datas.timeSeries[tdx_num] if datas else time_series[tdx_num]]
+        self.__coordinate_series = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
+        self.__temp_coords = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
         # Store the pruned analyzable data, and initialize to store the complete data.
         # number of windows, default 1.
         self.__number_of_windows = 1
@@ -301,7 +301,7 @@ class Analysis:
         return self.__time_series[window_num]
 
     @property
-    def coordinatesR(self):
+    def coordSeries(self):
         return self.__coordinate_series
 
     @property

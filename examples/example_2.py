@@ -49,7 +49,7 @@ cylinder_r, delta_y = analysis.geometry
 # returns u_xi and coordinates_xi if analysis.settingOuterCylinder is not run.
 # window_num=0，represents the complete data that has not been sliced
 u_theta = analysis.velTableTheta(window_num=0)          # return a two-dimensional numpy matrix
-coordinates_r = analysis.coordinatesR                   # return a one-dimensional numpy matrix
+coordinates_r = analysis.coordSeries                   # return a one-dimensional numpy matrix
 times = analysis.timeSeries(window_num=0)               # return a one-dimensional numpy matrix
 
 # do fft

@@ -206,17 +206,21 @@ class readData:
     def muxStatus(self):
         return 'On' if self.__measurement_info['UseMultiplexer'] else 'OFF'
 
-    def velTables(self, tdx_num=0):
-        return self.__vel_data_list[tdx_num]
+    @property
+    def velTables(self):
+        return self.__vel_data_list
 
-    def echoTables(self, tdx_num=0):
-        return self.__echo_data_list[tdx_num]
+    @property
+    def echoTables(self):
+        return self.__echo_data_list
 
-    def timeSeries(self, tdx_num=0):
-        return self.__time_series_list[tdx_num]
+    @property
+    def timeSeries(self):
+        return self.__time_series_list
 
-    def coordinateSeries(self, tdx_num=0):
-        return self.__coordinate_series_list[tdx_num]
+    @property
+    def coordinateSeries(self):
+        return self.__coordinate_series_list
 
     def show_info(self):
         None
