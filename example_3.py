@@ -24,7 +24,7 @@ u = np.transpose(anaylsis.velTableTheta())[:, 0:50]
 plt.contourf(time, coordinates_r / cyclinder_r, u, cmap="bwr", levels=20)
 plt.show()
 
-anaylsis.timeSlicing(5)
+# anaylsis.timeSlicing(5)
 visc, shearrate = anaylsis.calculate_Viscosity_ShearRate(ignoreException=True)
 
 plt.scatter(shearrate, visc)
