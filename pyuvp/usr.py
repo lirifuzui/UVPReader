@@ -225,6 +225,7 @@ class Analysis:
         for window in range(self.__number_of_windows + 1):
             vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
                 self.doFFT(window_num=window, derivative_smoother_factor=smooth_level)
+            self.__cylinder_freq = vibration_frequency if self.__cylinder_freq == None else self.__cylinder_freq
             if np.abs(vibration_frequency - self.__cylinder_freq) > \
                     np.abs(vibration_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
                     and not self.__ignoreUSRException and not ignoreException:

@@ -20,7 +20,7 @@ coordinates_xi = data.coordinateSeries[0]      # return a one-dimensional numpy 
 
 # -------------------------------------------------------------
 # create an analysis from data.
-analysis = data.createUSRAnalysis(tdx_num=0, ignoreException=False)  # 'anaylsis' is an instantiate object, cannot be print
+analysis = data.createUSRAnalysis(tdx_num=0, ignoreException=False)  # 'analysis' is an instantiate object, cannot be print
 # Another way.
 analysis = usr.Analysis(data, ignoreException=False)
 
