@@ -5,14 +5,17 @@ import numpy as np
 data = uvp.readData("1hz30deg.mfprof")
 analysis = data.createUSRAnalysis()
 
-analysis.validVelData(160, 180)
-analysis.settingOuterCylinder(72.5, 41,11.7)
+
+analysis.settingOuterCylinder(72.5, 41, 11.7)
 u_theta = analysis.velTableTheta()
 coordinates_r = analysis.coordSeries
 times = analysis.timeSeries()
+x = [i for i in range(len(coordinates_r))]
 
+plt.plot(x,coordinates_r)
+plt.show()
 
-
+analysis.validVelData(160, 180)
 
 u = np.transpose(u_theta[0:100, :])
 time = times[0:100]
