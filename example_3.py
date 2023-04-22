@@ -2,7 +2,6 @@ from pyuvp import uvp, usr
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
 
 # 读取 CSV 文件
 df = pd.read_csv('u_xi500cSt1Hz90deg_vel.csv', header=None)
@@ -13,8 +12,10 @@ times = np.array(df.iloc[4:, 0:1]).astype(float)
 times = np.transpose(times)[0]
 
 anaylsis = usr.Analysis(None, 0, [data], [times], [coords], ignoreException=False)
-anaylsis.validVelData(33, 50)
+anaylsis.validVelData(34, 46)
 anaylsis.settingOuterCylinder(72.5, vibration_params=[1, 90])
+
+anaylsis.timeSlicing(5)
 
 time = anaylsis.timeSeries()[0:50]
 cyclinder_r, detla_y = anaylsis.geometry
@@ -28,4 +29,8 @@ plt.show()
 visc, shearrate = anaylsis.calculate_Viscosity_ShearRate(ignoreException=True)
 
 plt.scatter(shearrate, visc)
+plt.ylim(1000, 3000)
+plt.grid()
+plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
+plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 plt.show()

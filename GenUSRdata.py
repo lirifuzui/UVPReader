@@ -52,6 +52,8 @@ beta = (-1 + 1j) * np.sqrt(omega0 / 2.0 / nuset) * RR  # [-] Thickness of viscou
 br = ri / RR * beta / 2.0  # beta r/2
 bRR = 1.0 * beta / 2.0  # beta R/2
 
+
+
 # -- Bessel function
 J1r = jv(1, br)  # J_1(r, nu); r = rn
 J1RR = jv(1, bRR)  # J_1(r, nu); r = R at the wall

@@ -39,8 +39,6 @@ G.idea/sonarlint/issuestore/1/0/10a03f31c4dce92cb371e761ce9429428bb6c176,0\3\03
 Q.idea/sonarlint/securityhotspotstore/1/0/10a03f31c4dce92cb371e761ce9429428bb6c176,6\4\64876b8bea138a82803d0008198401e04ab468aa
 w
 G.idea/sonarlint/issuestore/b/4/b4a0b63ce8560bbc5de0f9995c20cc861dc2adb3,b\0\b04578cffb47b1e57970601a0cacef6081245859
-=
-GenUSRdata.py,1\f\1f6988ae3432a82a8f31daaa048869525ef05226
 ^
 .ç›¸ä½æ»žåŽåˆ†æž/Second_Anaylsis_the_Data.py,2\3\239c3fa244ad652d6d0f8bf4f5a375684ff87b2c
 @
@@ -95,8 +93,6 @@ G.idea/sonarlint/issuestore/a/8/a841878a1eb5a4d11b5a3caac254ef62d50e14d0,d\e\de
 Q.idea/sonarlint/securityhotspotstore/0/3/030ed2ccb712537825891dfda283154162e458a8,c\9\c9b3776f6ce02f40809b5a2883142fcb439b1357
 
 Q.idea/sonarlint/securityhotspotstore/3/0/30516142ed91aa469a91f556ba102cd6088c93d6,c\1\c1da403e8faf601cf733a427df5b996befacd558
-
-Q.idea/sonarlint/securityhotspotstore/1/f/1f6988ae3432a82a8f31daaa048869525ef05226,7\6\76d02712c9212457fe79d9d12018d9e5ba5dbcda
 
 Q.idea/sonarlint/securityhotspotstore/c/9/c9b3776f6ce02f40809b5a2883142fcb439b1357,f\b\fbb4d50e29d761b598f4d87a714b02f9c44312b4
 
@@ -2709,9 +2705,5 @@ w
 G.idea/sonarlint/issuestore/0/c/0cdd6207cdf75b17e4eb0f1f84db7048af66fbe8,b\a\ba41feb4f20e048e6a9efc5639975751490c89c6
 w
 G.idea/sonarlint/issuestore/0/6/06111234ca18da686a7d0b0991efd3a395ff9ef4,0\f\0fde9c0c2aa0a216898d2e1afabb48216498ec91
-E
-examples/example_1.py,e\1\e10b5520479fe4f9f183445747d862a60645596a
 >
 pyuvp/setup.py,9\9\99ceb95130080f1a3d98e5bfb240be00847ec99e
-<
-example_3.py,0\f\0ff84de20c1215e642a726058f89b0cd83255dd7
