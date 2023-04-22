@@ -2713,3 +2713,5 @@ E
 examples/example_1.py,e\1\e10b5520479fe4f9f183445747d862a60645596a
 >
 pyuvp/setup.py,9\9\99ceb95130080f1a3d98e5bfb240be00847ec99e
+<
+example_3.py,0\f\0ff84de20c1215e642a726058f89b0cd83255dd7
