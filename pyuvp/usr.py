@@ -208,6 +208,8 @@ class Analysis:
     # Calculate Viscosity and Shear Rate.
     def calculate_Viscosity_ShearRate(self, max_viscosity=30000, viscoity_range_tolerance=1,
                                       smooth_level: int = 11, ignoreException=False):
+        if self.__cylinder_r == None:
+            raise ValueError("You must define geometry first！")
         viscosity = []
         shear_rate = []
         err_lim = len(self.__coordinate_series) // \
