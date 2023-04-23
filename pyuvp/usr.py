@@ -49,6 +49,9 @@ class Statistic:
     def movvar(self):
         None
 
+def geometry(data: pyuvp.uvp.readData, tdx_num: int, cylinder_r: float):
+    vel = data.velTables[tdx_num]
+    echo = data.echoTable[tdx_num]
 
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list = None,
