@@ -2,11 +2,12 @@ from pyuvp import uvp, usr
 import matplotlib.pyplot as plt
 import numpy as np
 
-data = uvp.readData("05hz45deg.mfprof")
+data = uvp.readData("1hz30deg.mfprof")
 analysis = data.createUSRAnalysis()
 
-analysis.cylinderGeom(72.5, 41, 11.7)
-analysis.coordsClean(156, 179)
+analysis.cylinderGeom(72.5, 38, 11.7)
+analysis.coordsClean(156, 175)
+analysis.timeSlicing(5)
 u_theta = analysis.velTableTheta()
 coordinates_r = analysis.coordSeries
 times = analysis.timeSeries()
@@ -26,13 +27,13 @@ plt.contourf(time, coordinates_r, u, cmap="bwr", levels=20)
 plt.colorbar()
 plt.show()
 
-analysis.timeSlicing(4)
+
 visc, shearrate = analysis.calculate_Viscosity_ShearRate(ignoreException=True)
 
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
-plt.ylim(0, 800)
+plt.ylim(200, 600)
 plt.grid()
 plt.scatter(shearrate, visc)
 plt.show()

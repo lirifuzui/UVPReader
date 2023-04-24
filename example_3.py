@@ -27,8 +27,8 @@ plt.plot(phase_delay/(2*np.pi)*360,coordinates_r)
 plt.show()
 
 anaylsis.timeSlicing(5)
-
-
+anaylsis.timeSlicing(1)
+#anaylsis.timeSlicing(5)
 
 plt.contourf(time, coordinates_r / cyclinder_r, u, cmap="bwr", levels=20)
 plt.show()
@@ -37,7 +37,7 @@ plt.show()
 visc, shearrate = anaylsis.calculate_Viscosity_ShearRate(ignoreException=True)
 
 plt.scatter(shearrate, visc)
-plt.ylim(1000, 3000)
+plt.ylim(1500, 2500)
 plt.grid()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')

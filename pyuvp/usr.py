@@ -71,7 +71,7 @@ class Analysis:
         self.__temp_coords: np.ndarray = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
         # Store the pruned analyzable data, and initialize to store the complete data.
         # number of windows, default 1.
-        self.__number_of_windows: int = 1
+        self.__number_of_windows: int = 0
         self.__slice: list[list[int]] = [[0, len(self.__time_series[0])]]
 
         self.__cylinder_radius: float | None = None
@@ -120,24 +120,24 @@ class Analysis:
         self.__coordinate_series = np.sqrt((wall_coordinate + half_chord -
                                             self.__coordinate_series) ** 2 + self.__delta_y ** 2)
         # Update the variable self.__vel_data
-        for i in range(self.__number_of_windows):
+        for i in range(self.__number_of_windows + 1):
             self.__vel_data[i] = np.multiply(self.__vel_data[i],
                                              self.__coordinate_series / self.__delta_y)
         return self.__vel_data, self.__coordinate_series
 
     # Extracted vaild data according to the position coordinates.
     def coordsClean(self, start: int = 0, end: int = -1):
-        for i in range(self.__number_of_windows):
+        for i in range(self.__number_of_windows + 1):
             self.__vel_data[i] = self.__vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]
 
     def timeSlicing(self, number_of_slice: int = 5):
         self.__number_of_windows = number_of_slice
         if number_of_slice == 1 or number_of_slice == 0:
-            self.__number_of_windows = 1
-            self.__time_series = [self.__time_series[0]]
-            self.__vel_data = [self.__vel_data[0]]
-            self.__slice = [self.__slice[0]]
+            self.__number_of_windows = 0
+            self.__time_series = self.__time_series[:1]
+            self.__vel_data = self.__vel_data[:1]
+            self.__slice = self.__slice[:1]
         elif number_of_slice == 2:
             self.__time_series = [self.__time_series[0],
                                   self.__time_series[0][:len(self.__time_series[0]) // 2],
@@ -175,13 +175,20 @@ class Analysis:
 
     # Compute the phase delay(alpha) via the Bessel function.
     def __Alpha_Bessel(self, cylinder_R, freq_0, visc, coordinates_r):
-        Beta = np.sqrt(-1j * 2 * np.pi * freq_0 / visc)
-        Xi_R = Beta * cylinder_R
-        Bessel_R = jv(1, Xi_R)
+        beta = np.sqrt(-1j * 2 * np.pi * freq_0 / visc)
+        bR = beta * cylinder_R
+        Bessel_R = jv(1, bR)
         Phi_R, Psi_R = np.real(Bessel_R), np.imag(Bessel_R)
-        Xi_r = Beta * coordinates_r
-        Bessel_r = jv(1, Xi_r)
+        br = beta * coordinates_r
+        Bessel_r = jv(1, br)
         Phi_r, Psi_r = np.real(Bessel_r), np.imag(Bessel_r)
+        '''beta = (-1 + 1j) * np.sqrt(np.pi * freq_0 / visc) * cylinder_R
+        br = coordinates_r / cylinder_R * beta / 2
+        bR = beta / 2
+        Bessel_r = jv(1, br)
+        Bessel_R = jv(1, bR)
+        Phi_R, Psi_R = np.real(Bessel_R), np.imag(Bessel_R)
+        Phi_r, Psi_r = np.real(Bessel_r), np.imag(Bessel_r)'''
         alphas = np.arctan(((Phi_r * Psi_R) - (Phi_R * Psi_r)) / ((Phi_r * Phi_R) + (Psi_r * Psi_R)))
         dphase = np.diff(alphas)
         offsets = np.zeros_like(alphas)
@@ -211,14 +218,14 @@ class Analysis:
         phase_delay = np.abs(phase_delay)
 
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
-        #phase_delay_derivative = np.abs(phase_delay_derivative)
 
         real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / (N / 2)
         imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / (N / 2)
         return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
-    def calculate_Viscosity_ShearRate(self, max_viscosity: int | float = 30000, viscosity_range_tolerance: int | float = 1,
+    def calculate_Viscosity_ShearRate(self, max_viscosity: int | float = 30000,
+                                      viscosity_range_tolerance: int | float = 1,
                                       smooth_level: int = 11, ignoreException=False):
         if self.__cylinder_radius is None and self.__pipe_TDXangle is None:
             raise ValueError("You must define Container Geometry first！")

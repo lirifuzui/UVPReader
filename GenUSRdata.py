@@ -48,8 +48,8 @@ ti = np.arange(0.0, Nt * Dt, step=Dt)  # Time
 
 # Velocity profile calculation from Bessel function ----------------------------
 
-beta = (-1 + 1j) * np.sqrt(omega0 / 2.0 / nuset) * RR  # [-] Thickness of viscous layer
-br = ri / RR * beta / 2.0  # beta r/2
+beta = (-1 + 1j)* np.sqrt(omega0 / 2.0 / nuset) * RR  # [-] Thickness of viscous layer
+br = ri / RR *  beta / 2.0  # beta r/2
 bRR = 1.0 * beta / 2.0  # beta R/2
 
 
@@ -58,9 +58,9 @@ bRR = 1.0 * beta / 2.0  # beta R/2
 J1r = jv(1, br)  # J_1(r, nu); r = rn
 J1RR = jv(1, bRR)  # J_1(r, nu); r = R at the wall
 
-Phir = J1r.real;
+Phir = J1r.real
 PhiRR = J1RR.real  # Extraction of real part
-Psir = J1r.imag;
+Psir = J1r.imag
 PsiRR = J1RR.imag  # Extractin of imaginary part
 
 Usin = Phir * PhiRR + Psir * PsiRR
