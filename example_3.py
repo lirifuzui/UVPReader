@@ -23,7 +23,7 @@ cyclinder_r, detla_y = anaylsis.geometry
 coordinates_r = anaylsis.coordSeries
 u = np.transpose(anaylsis.velTableTheta())[:, 0:50]
 
-plt.plot(coordinates_r, phase_delay_derivative)
+plt.plot(phase_delay/(2*np.pi)*360,coordinates_r)
 plt.show()
 
 anaylsis.timeSlicing(5)

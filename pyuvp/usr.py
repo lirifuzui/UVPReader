@@ -205,10 +205,14 @@ class Analysis:
         vibration_frequency = np.mean(np.abs(freq_array[max_magnitude_indices]))
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / (N / 2)
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
+
         phase_delay = self.__phase_unwrap(phase_delay)
-        phase_delay -= phase_delay[0]
+        phase_delay -= phase_delay[np.argmax(self.__coordinate_series)]
         phase_delay = np.abs(phase_delay)
+
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
+        #phase_delay_derivative = np.abs(phase_delay_derivative)
+
         real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / (N / 2)
         imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / (N / 2)
         return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
@@ -224,12 +228,13 @@ class Analysis:
                   (1 / ExceptionConfig['Allowable proportion of calculation error points'])
         # Format the output.
         slice_width = 8
-        coordinate_width = 8
+        index_width = 8
+        search_range_width = 8
         viscosity_width = 20
         shear_rate_width = 20
         print("\033[1mCalculation Start:")
         print('------------------------------------------------------')
-        print(f"{'slice':<{slice_width}}{'index':<{coordinate_width}}"
+        print(f"{'slice':<{slice_width}}{'index':<{index_width}}"
               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
         err_time = 0
         for window in range(self.__number_of_windows + 1):
@@ -258,12 +263,18 @@ class Analysis:
                 for loop in range(loop_count):
                     alpha_min = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency, viscosity_limits[0],
                                                     self.__coordinate_series)
+                    alpha_min -= alpha_min[np.argmax(self.__coordinate_series)]
+                    alpha_min = np.abs(alpha_min)
                     alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_series)[coordinate_index]
                     alpha_max = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency, viscosity_limits[1],
                                                     self.__coordinate_series)
+                    alpha_max -= alpha_max[np.argmax(self.__coordinate_series)]
+                    alpha_max = np.abs(alpha_max)
                     alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_series)[coordinate_index]
                     alpha_middle = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency,
                                                        middle_viscosity, self.__coordinate_series)
+                    alpha_middle -= alpha_middle[np.argmax(self.__coordinate_series)]
+                    alpha_middle = np.abs(alpha_middle)
                     alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_series)[coordinate_index]
                     simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
                     idx = np.searchsorted(simulate_value, phase_delay_derivative[coordinate_index])
@@ -276,14 +287,14 @@ class Analysis:
                         print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
                               "The viscosity value at this location may exceed the defined maximum, viscosity may be "
                               "bigger than " + str(max_viscosity) + '.')
-                        print(f"\033[1m{'slice':<{slice_width}}{'index':<{coordinate_width}}"
+                        print(f"\033[1m{'slice':<{slice_width}}{'index':<{index_width}}"
                               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
                         viscosity.append(-1)
                         viscosity_limits = [0.5, max_viscosity]
                         err_time += 1
                         break
                     if np.abs(temp[0] - temp[1]) < viscosity_range_tolerance:
-                        print(f'{str(window):<{slice_width}}{str(coordinate_index):<{coordinate_width}}'
+                        print(f'{str(window):<{slice_width}}{str(coordinate_index):<{index_width}}'
                               f'{middle_viscosity:<{viscosity_width}.7g}'
                               f'{shear_rate[coordinate_index]:<{shear_rate_width}.5g}')
                         viscosity.append(middle_viscosity)

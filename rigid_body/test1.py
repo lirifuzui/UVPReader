@@ -6,17 +6,18 @@ data = uvp.readData("05hz45deg.mfprof")
 analysis = data.createUSRAnalysis()
 
 analysis.cylinderGeom(72.5, 41, 11.7)
-analysis.coordsClean(40, 60)
+analysis.coordsClean(156, 179)
 u_theta = analysis.velTableTheta()
 coordinates_r = analysis.coordSeries
 times = analysis.timeSeries()
 x = [i for i in range(len(coordinates_r))]
 vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.doFFT()
 plt.plot(phase_delay_derivative, coordinates_r)
+plt.grid()
 plt.show()
 
-u = np.transpose(u_theta[0:100, :])
-time = times[0:100]
+u = np.transpose(u_theta[0:50, :])
+time = times[0:50]
 plt.figure()
 plt.ylabel('R')
 plt.xlabel('t [s]')
