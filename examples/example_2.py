@@ -28,14 +28,14 @@ analysis = usr.Analysis(data, ignoreException=False)
 
 # -------------------------------------------------------------
 # According to the location, extract data that can be analyzed.
-analysis.validVelData(25, 40)
+analysis.coordsClean(25, 40)
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]
 '''analysis.settingOuterCylinder(72.5, 54.39, 12)'''
 # Or enter the vibration parameters of cylinder,[frequency, amplitude]. 'Delta Y' and 'Vibration Params' must enter one.
 # The function 'settingOuterCylinder' overwrites the original data with new data and can only be executed once.
-analysis.settingOuterCylinder(72.5, vibration_params=[0.5, 120])
+analysis.cylinderGeom(72.5, vibration_params=[0.5, 120])
 
 # Create a data slices. This function can divide the data into several equal parts according to time.
 analysis.timeSlicing(3)

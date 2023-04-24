@@ -12,15 +12,23 @@ times = np.array(df.iloc[4:, 0:1]).astype(float)
 times = np.transpose(times)[0]
 
 anaylsis = usr.Analysis(None, 0, [data], [times], [coords], ignoreException=False)
-anaylsis.validVelData(34, 46)
-anaylsis.settingOuterCylinder(72.5, vibration_params=[1, 90])
+anaylsis.coordsClean(34, 46)
+anaylsis.cylinderGeom(72.5, vibration_params=[1, 90])
 
-anaylsis.timeSlicing(5)
+vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = anaylsis.doFFT()
+
 
 time = anaylsis.timeSeries()[0:50]
 cyclinder_r, detla_y = anaylsis.geometry
 coordinates_r = anaylsis.coordSeries
 u = np.transpose(anaylsis.velTableTheta())[:, 0:50]
+
+plt.plot(coordinates_r, phase_delay_derivative)
+plt.show()
+
+anaylsis.timeSlicing(5)
+
+
 
 plt.contourf(time, coordinates_r / cyclinder_r, u, cmap="bwr", levels=20)
 plt.show()

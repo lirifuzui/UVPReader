@@ -49,9 +49,11 @@ class Statistic:
     def movvar(self):
         None
 
+
 def geometry(data: pyuvp.uvp.readData, tdx_num: int, cylinder_r: float):
     vel = data.velTables[tdx_num]
     echo = data.echoTable[tdx_num]
+
 
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list = None,
@@ -61,21 +63,23 @@ class Analysis:
         # and each item corresponds to a window.
         # self.__vel_data and self.__time series should be equal in length.
         # self.__vel_data store the pruned analyzable data, and initialize to store the complete data.
-        self.__vel_data = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
-        self.__temp_vel = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
-        self.__time_series = [datas.timeSeries[tdx_num] if datas else time_series[tdx_num]]
-        self.__coordinate_series = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
-        self.__temp_coords = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
+        self.__vel_data: list[np.ndarray] = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
+        self.__time_series: list[np.ndarray] = [datas.timeSeries[tdx_num] if datas else time_series[tdx_num]]
+        self.__coordinate_series: np.ndarray = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
+
+        self.__temp_vel: list[np.ndarray] = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
+        self.__temp_coords: np.ndarray = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
         # Store the pruned analyzable data, and initialize to store the complete data.
         # number of windows, default 1.
-        self.__number_of_windows = 1
-        self.__slice = [[0, len(self.__time_series[0])]]
-        self.__cylinder_r = None
+        self.__number_of_windows: int = 1
+        self.__slice: list[list[int]] = [[0, len(self.__time_series[0])]]
+        self.__cylinder_radius: float | None = None
+
         self.__delta_y = None
         self.__cylinder_freq = None
 
-        self.__shear_rate = None
-        self.__viscosity = None
+        self.__shear_rate: np.ndarray | None = None
+        self.__viscosity: np.ndarray | None = None
 
         self.__ignoreUSRException = ignoreException
 
@@ -84,32 +88,33 @@ class Analysis:
     # If you don't execute these two functions, the variable will store the coordinates in the xi coordinate system.
     # Running this function will modify the data in self.__coordinate_series and self.__vel_data,
     # to represent the coordinates in the radial coordinate system.
-    def settingOuterCylinder(self, cylinder_r: int | float, wall_coords_xi: int | float | None = None,
-                             delta_y: int | float | None = None, vibration_params: list | None = None,
-                             ignoreException=False):
-        if delta_y is None and vibration_params is None and wall_coords_xi is None:
-            raise ValueError("the parameters delta_y,wall_coords_xi and vibration_params are required!")
-        elif ((delta_y is None and wall_coords_xi is not None) or (delta_y is not None and wall_coords_xi is None)) and vibration_params is None:
+    def cylinderGeom(self, radius: int | float, wall_coordinate: int | float | None = None,
+                     delta_y: int | float | None = None, vibration_params: list[float] | None = None,
+                     outward=False, fixedTDX=False, ignoreException=False):
+        if delta_y is None and vibration_params is None and wall_coordinate is None:
+            raise ValueError("the parameters delta_y, wall_coordinate and vibration_params are required!")
+        elif ((delta_y is None and wall_coordinate is not None) or (
+                delta_y is not None and wall_coordinate is None)) and vibration_params is None:
             raise ValueError("If you don't use vibration params, both delta_y and wall_coords_xi are required!")
 
-        self.__cylinder_r = cylinder_r
+        self.__cylinder_radius = radius
         if delta_y is not None:
             self.__delta_y = delta_y
         else:
             self.__cylinder_freq = vibration_params[0]
-            max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_r * (vibration_params[1] * np.pi / 180)
+            max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_radius * (vibration_params[1] * np.pi / 180)
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
             self.__coordinate_series, self.__temp_coords = self.__temp_coords, self.__coordinate_series
             vibration_frequency, max_magnitude, _, _, _, _ = self.doFFT()
-            wall_coords_xi = self.__coordinate_series[np.argmax(max_magnitude)]
+            wall_coordinate = self.__coordinate_series[np.argmax(max_magnitude)]
             self.__coordinate_series, self.__temp_coords = self.__temp_coords, self.__coordinate_series
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
-            self.__delta_y = self.__cylinder_r * np.max(max_magnitude) / max_vel
-            if self.__delta_y > self.__cylinder_r:
+            self.__delta_y = self.__cylinder_radius * np.max(max_magnitude) / max_vel
+            if self.__delta_y > self.__cylinder_radius:
                 raise ValueError("Delta y is greater than the cylinder radius!")
         # Update the variable self.__coordinate_series
-        half_chord = np.sqrt(cylinder_r ** 2 - self.__delta_y ** 2)
-        self.__coordinate_series = np.sqrt((wall_coords_xi + half_chord -
+        half_chord = np.sqrt(radius ** 2 - self.__delta_y ** 2)
+        self.__coordinate_series = np.sqrt((wall_coordinate + half_chord -
                                             self.__coordinate_series) ** 2 + self.__delta_y ** 2)
         # Update the variable self.__vel_data
         for i in range(self.__number_of_windows):
@@ -117,11 +122,8 @@ class Analysis:
                                              self.__coordinate_series / self.__delta_y)
         return self.__vel_data, self.__coordinate_series
 
-    def settingInterCylinder(self, cylinder_r, wall_coordinates_xi, delta_y):
-        None
-
     # Extracted vaild data according to the position coordinates.
-    def validVelData(self, start: int = 0, end: int = -1):
+    def coordsClean(self, start: int = 0, end: int = -1):
         for i in range(self.__number_of_windows):
             self.__vel_data[i] = self.__vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]
@@ -189,7 +191,7 @@ class Analysis:
         return alphas
 
     # do the FFT.
-    def doFFT(self, window_num=1, derivative_smoother_factor: int = 11):
+    def doFFT(self, window_num: int = 1, derivative_smoother_factor: int = 11):
         my_axis = 0
         N = len(self.__time_series[window_num - 1])
         Delta_T = (self.__time_series[window_num - 1][-1] - self.__time_series[window_num - 1][0]) / (N - 1)
@@ -211,7 +213,7 @@ class Analysis:
     # Calculate Viscosity and Shear Rate.
     def calculate_Viscosity_ShearRate(self, max_viscosity=30000, viscoity_range_tolerance=1,
                                       smooth_level: int = 11, ignoreException=False):
-        if self.__cylinder_r == None:
+        if self.__cylinder_radius == None:
             raise ValueError("You must define geometry first！")
         viscosity = []
         shear_rate = []
@@ -251,13 +253,13 @@ class Analysis:
                 loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
                 middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
                 for loop in range(loop_count):
-                    alpha_min = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency, viscosity_limits[0],
+                    alpha_min = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency, viscosity_limits[0],
                                                     self.__coordinate_series)
                     alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_series)[coordinate_index]
-                    alpha_max = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency, viscosity_limits[1],
+                    alpha_max = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency, viscosity_limits[1],
                                                     self.__coordinate_series)
                     alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_series)[coordinate_index]
-                    alpha_middle = self.__Alpha_Bessel(self.__cylinder_r, vibration_frequency,
+                    alpha_middle = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency,
                                                        middle_viscosity, self.__coordinate_series)
                     alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_series)[coordinate_index]
                     simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
@@ -312,7 +314,7 @@ class Analysis:
 
     @property
     def geometry(self):
-        return self.__cylinder_r, self.__delta_y
+        return self.__cylinder_radius, self.__delta_y
 
     @property
     def shearRate(self):
