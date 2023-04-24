@@ -73,9 +73,12 @@ class Analysis:
         # number of windows, default 1.
         self.__number_of_windows: int = 1
         self.__slice: list[list[int]] = [[0, len(self.__time_series[0])]]
-        self.__cylinder_radius: float | None = None
 
+        self.__cylinder_radius: float | None = None
         self.__delta_y = None
+
+        self.__pipe_TDXangle: float | None = None
+
         self.__cylinder_freq = None
 
         self.__shear_rate: np.ndarray | None = None
@@ -211,10 +214,10 @@ class Analysis:
         return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
-    def calculate_Viscosity_ShearRate(self, max_viscosity=30000, viscoity_range_tolerance=1,
+    def calculate_Viscosity_ShearRate(self, max_viscosity: int | float = 30000, viscosity_range_tolerance: int | float = 1,
                                       smooth_level: int = 11, ignoreException=False):
-        if self.__cylinder_radius == None:
-            raise ValueError("You must define geometry first！")
+        if self.__cylinder_radius is None and self.__pipe_TDXangle is None:
+            raise ValueError("You must define Container Geometry first！")
         viscosity = []
         shear_rate = []
         err_lim = len(self.__coordinate_series) // \
@@ -279,7 +282,7 @@ class Analysis:
                         viscosity_limits = [0.5, max_viscosity]
                         err_time += 1
                         break
-                    if np.abs(temp[0] - temp[1]) < viscoity_range_tolerance:
+                    if np.abs(temp[0] - temp[1]) < viscosity_range_tolerance:
                         print(f'{str(window):<{slice_width}}{str(coordinate_index):<{coordinate_width}}'
                               f'{middle_viscosity:<{viscosity_width}.7g}'
                               f'{shear_rate[coordinate_index]:<{shear_rate_width}.5g}')
