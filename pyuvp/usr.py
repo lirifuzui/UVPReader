@@ -56,8 +56,9 @@ def geometry(data: pyuvp.uvp.readData, tdx_num: int, cylinder_r: float):
 
 
 class Analysis:
-    def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list = None,
-                 time_series: list = None, coordinate_series: list = None, ignoreException=False):
+    def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list[np.ndarray] | None = None,
+                 time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
+                 ignoreException=False):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
@@ -177,18 +178,18 @@ class Analysis:
     def __Alpha_Bessel(self, cylinder_R, freq_0, visc, coordinates_r):
         beta = np.sqrt(-1j * 2 * np.pi * freq_0 / visc)
         bR = beta * cylinder_R
-        Bessel_R = jv(1, bR)
-        Phi_R, Psi_R = np.real(Bessel_R), np.imag(Bessel_R)
+        J_R = jv(1, bR)
+        Phi_R, Psi_R = np.real(J_R), np.imag(J_R)
         br = beta * coordinates_r
-        Bessel_r = jv(1, br)
-        Phi_r, Psi_r = np.real(Bessel_r), np.imag(Bessel_r)
-        '''beta = (-1 + 1j) * np.sqrt(np.pi * freq_0 / visc) * cylinder_R
-        br = coordinates_r / cylinder_R * beta / 2
-        bR = beta / 2
-        Bessel_r = jv(1, br)
-        Bessel_R = jv(1, bR)
-        Phi_R, Psi_R = np.real(Bessel_R), np.imag(Bessel_R)
-        Phi_r, Psi_r = np.real(Bessel_r), np.imag(Bessel_r)'''
+        J_r = jv(1, br)
+        Phi_r, Psi_r = np.real(J_r), np.imag(J_r)
+        '''beta = (1 + 1j) * np.sqrt(np.pi * freq_0 / visc) * cylinder_R
+        br = coordinates_r / cylinder_R * beta
+        bR = beta
+        J_r = jv(1, br)
+        J_R = jv(1, bR)
+        Phi_R, Psi_R = np.real(J_R), np.imag(J_R)
+        Phi_r, Psi_r = np.real(J_r), np.imag(J_r)'''
         alphas = np.arctan(((Phi_r * Psi_R) - (Phi_R * Psi_r)) / ((Phi_r * Phi_R) + (Psi_r * Psi_R)))
         dphase = np.diff(alphas)
         offsets = np.zeros_like(alphas)
