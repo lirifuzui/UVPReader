@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 data = uvp.readData("1000min.mfprof")
 vel = data.velTables[0]
 anaylsis = data.createUSRAnalysis()
-anaylsis.cylinderGeom(77,66,15)
+anaylsis.cylinderGeom(77, 66, 15)
 anaylsis.coordsClean(77, 110)
 viscoity,shearrate = anaylsis.calculate_Viscosity_ShearRate()
 
