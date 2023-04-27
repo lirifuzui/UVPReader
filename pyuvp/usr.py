@@ -237,24 +237,31 @@ class Analysis:
         # Format the output.
         slice_width = 8
         index_width = 8
-        search_range_width = 8
-        viscosity_width = 20
-        shear_rate_width = 20
+        search_range_width = 26
+        viscosity_width = 16
+        shear_rate_width = 10
         print("\033[1mCalculation Start:")
         print('------------------------------------------------------')
-        print(f"{'slice':<{slice_width}}{'index':<{index_width}}"
-              f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
         err_time = 0
         for window in range(self.__number_of_windows + 1):
             vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
                 self.doFFT(window_num=window, derivative_smoother_factor=smooth_level)
             self.__cylinder_freq = vibration_frequency if self.__cylinder_freq is None else self.__cylinder_freq
+
+            # Determine whether the frequency of the input container matches the experimental results.
             if np.abs(vibration_frequency - self.__cylinder_freq) > \
                     np.abs(vibration_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
                     and not self.__ignoreUSRException and not ignoreException:
                 raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
                                    "experimental data! [" + f"{vibration_frequency:.3g}" + ", " + str(
                     self.__cylinder_freq) + "]")
+
+            # print title
+            print(f"{'slice':<{8}}{'time_range':<{12}}{'vessel_freq':<{8}}")
+            print(f"{window:<{8}}{str(self.__slice[window]):<{12}}{vibration_frequency:<{8}.7g}")
+            print(f"{'slice':<{slice_width}}{'index':<{index_width}}{'search_range(cycles)':<{search_range_width}}"
+                  f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
+
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
             imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
@@ -264,10 +271,11 @@ class Analysis:
 
             # Calculate effective viscosity.
             viscosity_limits = [0.5, max_viscosity]
-            visc_range = int((max_viscosity - 0.5) / 20)
+            visc_range = int((max_viscosity - 0.5) / 40)
             for coordinate_index in range(len(self.__coordinate_series)):
                 loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
                 middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
+                first_search_range_of_loop = viscosity_limits.copy()
                 for loop in range(loop_count):
                     alpha_min = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency, viscosity_limits[0],
                                                     self.__coordinate_series)
@@ -295,14 +303,16 @@ class Analysis:
                         print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
                               "The viscosity value at this location may exceed the defined maximum, viscosity may be "
                               "bigger than " + str(max_viscosity) + '.')
-                        print(f"\033[1m{'slice':<{slice_width}}{'index':<{index_width}}"
+                        print(f"\033[1m{'slice':<{slice_width}}{'index':<{index_width}}{'index':<{index_width}}"
                               f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
                         viscosity.append(-1)
                         viscosity_limits = [0.5, max_viscosity]
                         err_time += 1
                         break
                     if np.abs(temp[0] - temp[1]) < viscosity_range_tolerance:
-                        print(f'{str(window):<{slice_width}}{str(coordinate_index):<{index_width}}'
+                        print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
+                              f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
+                              f'   '
                               f'{middle_viscosity:<{viscosity_width}.7g}'
                               f'{shear_rate[coordinate_index]:<{shear_rate_width}.5g}')
                         viscosity.append(middle_viscosity)
