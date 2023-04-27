@@ -10,7 +10,6 @@ plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 plt.ylim(0, 2000)
 
-
 for file in files:
     data = uvp.readData(file)
     vel_origin = data.velTables[0]
