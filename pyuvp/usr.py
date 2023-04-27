@@ -257,8 +257,8 @@ class Analysis:
                     self.__cylinder_freq) + "]")
 
             # print title
-            print(f"{'slice':<{8}}{'time_range':<{12}}{'vessel_freq':<{8}}")
-            print(f"{window:<{8}}{str(self.__slice[window]):<{12}}{vibration_frequency:<{8}.7g}")
+            print(f"{'slice':<{8}}{'time_range':<{16}}{'vessel_freq':<{8}}")
+            print(f"{window:<{8}}{str(self.__slice[window]):<{16}}{vibration_frequency:<{8}.7g}")
             print(f"{'slice':<{slice_width}}{'index':<{index_width}}{'search_range(cycles)':<{search_range_width}}"
                   f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
 
