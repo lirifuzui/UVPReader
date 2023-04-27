@@ -8,7 +8,8 @@ files = ["05hz60deg.mfprof","05hz75deg.mfprof","1hz45deg.mfprof","1hz30deg.mfpro
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
-plt.ylim(0, 2000)
+plt.ylim(0, 2000) #aaaaaa
+
 
 for file in files:
     data = uvp.readData(file)
