@@ -213,7 +213,6 @@ class Analysis:
         vibration_frequency = np.mean(np.abs(freq_array[max_magnitude_indices]))
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / (N / 2)
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
-
         phase_delay = self.__phase_unwrap(phase_delay)
         phase_delay -= phase_delay[np.argmax(self.__coordinate_series)]
         phase_delay = np.abs(phase_delay)
