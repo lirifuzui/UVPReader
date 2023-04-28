@@ -161,6 +161,12 @@ class Analysis:
                 self.__vel_data.append(self.__vel_data[0][start:end, :])
                 self.__slice.append([start, end])
 
+    def sliceRange(self,window_num, range):
+        None
+
+    def slicesize(self,length):
+        None
+
     # Unwrapping the phase function.
     def __phase_unwrap(self, phase_delay):
         dphase = np.diff(phase_delay)
