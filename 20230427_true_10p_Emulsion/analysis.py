@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-#files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof","05hz60deg02.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg02.mfprof"]
-files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof"]
+# files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof","05hz60deg02.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg02.mfprof"]
+# files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof"]
 # files = ["05hz60deg02.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg.mfprof"]
+files = ["05hz60deg.mfprof","05hz60deg02.mfprof","05hz60deg03.mfprof"]
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
