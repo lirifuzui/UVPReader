@@ -246,13 +246,13 @@ class Analysis:
         return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
-    def calculate_Viscosity_ShearRate(self, max_viscosity: int | float = 30000,
+    def calculation(self, max_viscosity: int | float = 30000,
                                       viscosity_range_tolerance: int | float = 1,
                                       smooth_level: int = 11, ignoreException=False):
         if self.__cylinder_radius is None and self.__pipe_TDXangle is None:
             raise ValueError("You must define Container Geometry first！")
-        viscosity = []
-        shear_rate = []
+        effective_viscosity = []
+        effective_shear_rate = []
         err_lim = len(self.__coordinate_series) // \
                   (1 / ExceptionConfig['Allowable proportion of calculation error points'])
         # Format the output.
@@ -281,7 +281,7 @@ class Analysis:
             print(f"{'slice':<{8}}{'time_range':<{16}}{'vessel_freq':<{8}}")
             print(f"{window:<{8}}{str(self.__slice[window]):<{16}}{vibration_frequency:<{8}.7g}")
             print(f"{'slice':<{slice_width}}{'index':<{index_width}}{'search_range(cycles)':<{search_range_width}}"
-                  f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
+                  f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
 
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
@@ -289,9 +289,9 @@ class Analysis:
             param_1 = real_part_derivative - (real_part / self.__coordinate_series)
             param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
-            shear_rate.extend(shear_rate_of_now_window)
+            effective_shear_rate.extend(shear_rate_of_now_window / np.sqrt(2))
 
-            # Calculate effective viscosity.
+            # Calculate effective effective_viscosity.
             viscosity_limits = [0.5, max_viscosity]
             visc_range = int((max_viscosity - 0.5) / 40)
             for coordinate_index in range(len(self.__coordinate_series)):
@@ -323,11 +323,11 @@ class Analysis:
                     else:
                         print("#coordinate_index = " + str(coordinate_index))
                         print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
-                              "The viscosity value at this location may exceed the defined maximum, viscosity may be "
+                              "The effective_viscosity value at this location may exceed the defined maximum, effective_viscosity may be "
                               "bigger than " + str(max_viscosity) + '.')
                         print(f"\033[1m{'slice':<{slice_width}}{'index':<{index_width}}{'index':<{index_width}}"
-                              f"{'Viscosity':<{viscosity_width}}{'shear_rate':<{shear_rate_width}}\033[0m")
-                        viscosity.append(-1)
+                              f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
+                        effective_viscosity.append(-1)
                         viscosity_limits = [0.5, max_viscosity]
                         err_time += 1
                         break
@@ -337,7 +337,7 @@ class Analysis:
                               f'   '
                               f'{middle_viscosity:<{viscosity_width}.7g}'
                               f'{shear_rate_of_now_window[coordinate_index]:<{shear_rate_width}.5g}')
-                        viscosity.append(middle_viscosity)
+                        effective_viscosity.append(middle_viscosity)
                         viscosity_limits = [middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
                                             middle_viscosity + visc_range]
                         break
@@ -350,8 +350,8 @@ class Analysis:
                 if not self.__ignoreUSRException and not ignoreException:
                     print("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
                     raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
-        self.__shear_rate = np.array(shear_rate)
-        self.__viscosity = np.array(viscosity)
+        self.__shear_rate = np.array(effective_shear_rate)
+        self.__viscosity = np.array(effective_viscosity)
         print('\033[1m------------------------------------------------------')
         print("Calculation Complete.\033[0m")
         return self.__viscosity, self.__shear_rate,

@@ -34,7 +34,7 @@ plt.contourf(time, coordinates_r / cyclinder_r, u, cmap="bwr", levels=20)
 plt.show()
 
 # analysis.timeSlicing(5)
-visc, shearrate = anaylsis.calculate_Viscosity_ShearRate(ignoreException=True)
+visc, shearrate = anaylsis.calculation(ignoreException=True)
 
 plt.scatter(shearrate, visc)
 plt.ylim(1500, 2500)
