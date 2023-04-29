@@ -56,7 +56,7 @@ vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_pa
     window_num=0)
 
 # Calculate effective shear rate and viscosity.
-viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1, 15, ignoreException=False)
+viscosity, shear_rate = analysis.calculation(30000, 1, 15, ignoreException=False)
 # Return shear rate and viscosity.
 shear_rate = analysis.shearRate
 viscosity = analysis.viscosity

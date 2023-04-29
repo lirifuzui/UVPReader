@@ -24,7 +24,7 @@ for file in files:
     coordinates_r = analysis.coordSeries
     times = analysis.timeSeries()
 
-    visc, shearrate = analysis.calculate_Viscosity_ShearRate(smooth_level= 9,ignoreException=True)
+    visc, shearrate = analysis.calculation(smooth_level=9, ignoreException=True)
     '''visc_t = visc.reshape((51,35))
     shearrate_t = shearrate.reshape((51,35))
     visc = np.sum(visc_t,axis=0)/11

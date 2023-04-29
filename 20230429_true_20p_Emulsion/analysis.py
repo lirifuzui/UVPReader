@@ -26,7 +26,7 @@ for file in files:
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
     times = analysis.timeSeries()
-    visc, shearrate = analysis.calculate_Viscosity_ShearRate(smooth_level=9, ignoreException=True)
+    visc, shearrate = analysis.calculation(smooth_level=9, ignoreException=True)
 
     plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
     # plt.scatter(shearrate, visc, label=file)
