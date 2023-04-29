@@ -7,7 +7,7 @@ import numpy as np
 # Read the data in the ".mfprof" file
 data = uvp.readData(r'example_1.mfprof')   # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
-data.resetSoundSpeed(980)
+data.__multiplying_coefficient()
 
 # -------------------------------------------------------------
 # return datas.
