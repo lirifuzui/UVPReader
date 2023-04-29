@@ -5,7 +5,8 @@ from pyuvp import uvp
 # files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof","05hz60deg02.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg02.mfprof"]
 # files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof"]
 # files = ["05hz60deg02.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg.mfprof"]
-files = ["05hz60deg.mfprof", "05hz90deg.mfprof", "05hz90deg02.mfprof", "05hz120deg.mfprof", "05hz150deg.mfprof"]
+files = ["05hz60deg.mfprof", "05hz90deg.mfprof", "05hz90deg02.mfprof", "05hz120deg.mfprof", "05hz150deg.mfprof",
+         "1hz30deg.mfprof"]
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
@@ -20,33 +21,14 @@ for file in files:
     analysis.cylinderGeom(72.5, 59.5, 11.115)
     analysis.coordsClean(65, 95)
     analysis.timeSlicing(50)
+    analysis.sliceSize(2000)
+
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
     times = analysis.timeSeries()
-    '''x = [i for i in range(len(coordinates_r))]
-    vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.doFFT()
-    plt.plot(phase_delay_derivative, coordinates_r)
-    plt.grid()
-    plt.show()'''
+    visc, shearrate = analysis.calculate_Viscosity_ShearRate(smooth_level=9, ignoreException=True)
 
-    '''u = np.transpose(u_theta[0:50, :])
-    time = times[0:50]
-    plt.figure()
-    plt.ylabel('R')
-    plt.xlabel('t [s]')
-    #plt.ylim(0.65, 1)
-    plt.contourf(time, coordinates_r, u, cmap="bwr", levels=20)
-    plt.colorbar()
-    plt.show()'''
-
-    visc, shearrate = analysis.calculate_Viscosity_ShearRate(smooth_level= 9,ignoreException=True)
-    '''visc_t = visc.reshape((11,30))
-    shearrate_t = shearrate.reshape((11,30))
-    visc = np.sum(visc_t,axis=0)/11
-    shearrate = np.sum(shearrate_t,axis=0)/11'''
-
-    plt.scatter(shearrate, visc, s=10, alpha=0.1, label=file)
-
+    plt.scatter(shearrate, visc, s=10, alpha=0.2, label=file)
 
 plt.grid()
 plt.legend()
