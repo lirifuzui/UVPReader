@@ -2,11 +2,11 @@ import matplotlib.pyplot as plt
 
 from pyuvp import uvp
 
-# files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof","05hz60deg02.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg02.mfprof"]
-# files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof"]
-# files = ["05hz60deg02.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg.mfprof"]
-files = ["05hz60deg.mfprof", "05hz90deg02.mfprof", "05hz120deg.mfprof", "05hz150deg.mfprof",
-         "1hz30deg.mfprof"]
+files = ["05hz60deg.mfprof", "05hz90deg02.mfprof", "05hz120deg.mfprof", "05hz150deg02.mfprof", "1hz30deg.mfprof",
+         "1hz45deg.mfprof", "1hz60deg.mfprof", "15hz30deg.mfprof"]
+# files = ["1hz45deg.mfprof", "1hz45deg02.mfprof"]
+# files = ["05hz90deg.mfprof", "05hz90deg02.mfprof", "05hz90deg03.mfprof"]
+# files = ["05hz150deg.mfprof", "05hz150deg02.mfprof"]
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
@@ -28,8 +28,8 @@ for file in files:
     times = analysis.timeSeries()
     visc, shearrate = analysis.calculate_Viscosity_ShearRate(smooth_level=9, ignoreException=True)
 
-    plt.scatter(shearrate, visc, s=10, alpha=0.2, label=file)
-
+    plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
+    # plt.scatter(shearrate, visc, label=file)
 plt.grid()
 plt.legend()
 plt.show()

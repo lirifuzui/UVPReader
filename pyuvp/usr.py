@@ -288,7 +288,8 @@ class Analysis:
             imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
             param_1 = real_part_derivative - (real_part / self.__coordinate_series)
             param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
-            shear_rate.extend(np.sqrt(param_1 ** 2 + param_2 ** 2))
+            shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
+            shear_rate.extend(shear_rate_of_now_window)
 
             # Calculate effective viscosity.
             viscosity_limits = [0.5, max_viscosity]
@@ -335,7 +336,7 @@ class Analysis:
                               f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
                               f'   '
                               f'{middle_viscosity:<{viscosity_width}.7g}'
-                              f'{shear_rate[coordinate_index]:<{shear_rate_width}.5g}')
+                              f'{shear_rate_of_now_window[coordinate_index]:<{shear_rate_width}.5g}')
                         viscosity.append(middle_viscosity)
                         viscosity_limits = [middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
                                             middle_viscosity + visc_range]
