@@ -14,7 +14,7 @@ plt.ylim(0, 3000)
 
 for file in files:
     data = uvp.readData(file)
-    data.resetSoundSpeed(1066)
+    data.redefineSoundSpeed(1066)
     vel_origin = data.velTables[0]
 
     analysis = data.createUSRAnalysis()
