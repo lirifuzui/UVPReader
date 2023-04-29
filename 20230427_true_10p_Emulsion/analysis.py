@@ -1,7 +1,6 @@
-from pyuvp import uvp, usr
 import matplotlib.pyplot as plt
-import numpy as np
 
+from pyuvp import uvp
 
 files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof","05hz60deg02.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg.mfprof"]
 # files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof"]
@@ -24,21 +23,6 @@ for file in files:
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
     times = analysis.timeSeries()
-    '''x = [i for i in range(len(coordinates_r))]
-    vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.doFFT()
-    plt.plot(phase_delay_derivative, coordinates_r)
-    plt.grid()
-    plt.show()'''
-
-    '''u = np.transpose(u_theta[0:50, :])
-    time = times[0:50]
-    plt.figure()
-    plt.ylabel('R')
-    plt.xlabel('t [s]')
-    #plt.ylim(0.65, 1)
-    plt.contourf(time, coordinates_r, u, cmap="bwr", levels=20)
-    plt.colorbar()
-    plt.show()'''
 
     visc, shearrate = analysis.calculate_Viscosity_ShearRate(smooth_level= 9,ignoreException=True)
     '''visc_t = visc.reshape((51,35))
