@@ -178,8 +178,6 @@ class Analysis:
             temp_slice.append([0 + moving*(n+1), slice_length + moving*(n+1)])
         temp_slice.append([self.__slice[0][1] - slice_length, self.__slice[0][1]])
         self.__slice = temp_slice
-        print(self.__slice)
-        print(len(self.__slice))
         self.__time_series = [self.__time_series[0][slice_range[0]:slice_range[1]] for slice_range in self.__slice]
         self.__vel_data = [self.__vel_data[0][slice_range[0]:slice_range[1]] for slice_range in self.__slice]
 
