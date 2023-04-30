@@ -20,8 +20,8 @@ for file in files:
     analysis = data.createUSRAnalysis()
     analysis.cylinderGeom(72.5, 59.5, 11.115)
     analysis.coordsClean(65, 95)
-    analysis.timeSlicing(50)
-    analysis.sliceSize(2000)
+    analysis.slicing(20)
+    analysis.sliceSize(1000)
 
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries

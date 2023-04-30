@@ -19,7 +19,7 @@ for file in files:
     analysis = data.createUSRAnalysis()
     analysis.cylinderGeom(72.5, 71.54, 11.35)
     analysis.coordsClean(55, 90)
-    analysis.timeSlicing(50)
+    analysis.slicing(50)
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
     times = analysis.timeSeries()

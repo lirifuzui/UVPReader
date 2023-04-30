@@ -38,7 +38,7 @@ analysis.coordsClean(25, 40)
 analysis.cylinderGeom(72.5, vibration_params=[0.5, 120])
 
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.timeSlicing(3)
+analysis.slicing(3)
 
 # -------------------------------------------------------------
 # return geometry.

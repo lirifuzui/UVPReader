@@ -18,7 +18,7 @@ for file in files:
 
     analysis.cylinderGeom(72.5, 38, 11.7)
     analysis.coordsClean(156, 175)
-    analysis.timeSlicing(5)
+    analysis.slicing(5)
     u_theta = analysis.velTableTheta()
     '''coordinates_r = analysis.coordSeries
     times = analysis.timeSeries()

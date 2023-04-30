@@ -132,7 +132,7 @@ class Analysis:
             self.__vel_data[i] = self.__vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]
 
-    def timeSlicing(self, number_of_slice: int = 5):
+    def slicing(self, number_of_slice: int = 5):
         self.__number_of_windows = number_of_slice
         max_index = self.__slice[0][1]
 
@@ -165,21 +165,21 @@ class Analysis:
                 self.__vel_data.append(self.__vel_data[0][start:end, :])
                 self.__slice.append([start, end])
 
-    def sliceRange(self, window_num, range):
-        None
-
     def sliceSize(self, slice_length, ignoreException=False):
         if slice_length < self.__slice[0][1] // self.__number_of_windows and not ignoreException:
             raise USRException("The slice length is not enough to cover all the data!")
+        if self.__number_of_windows == 1 or self.__number_of_windows == 2:
+            raise USRException("Too few slices to change length!")
+
         temp_slice = self.__slice[:1]
-        for slice in self.__slice:
-            center_slice = (slice[0] + slice[1]) // 2
-            new_slice = [0 if center_slice - slice_length // 2 < 0 else center_slice - slice_length // 2,
-                         len(self.__time_series[0]) - 1 if center_slice + slice_length // 2 > len(
-                             self.__time_series[0]) - 1 else
-                         center_slice + slice_length // 2]
-            temp_slice.append(new_slice)
+        temp_slice.append([0, slice_length - 1])
+        moving = (self.__slice[0][1] + 1 - slice_length) // (self.__number_of_windows - 1)
+        for n in range(self.__number_of_windows - 2):
+            temp_slice.append([0 + moving*(n+1), slice_length + moving*(n+1)])
+        temp_slice.append([self.__slice[0][1] - slice_length, self.__slice[0][1]])
         self.__slice = temp_slice
+        print(self.__slice)
+        print(len(self.__slice))
         self.__time_series = [self.__time_series[0][slice_range[0]:slice_range[1]] for slice_range in self.__slice]
         self.__vel_data = [self.__vel_data[0][slice_range[0]:slice_range[1]] for slice_range in self.__slice]
 
@@ -284,10 +284,10 @@ class Analysis:
                   f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
 
             # Calculate effective shear rate.
-            real_part_derivative = Tools.derivative(real_part, self.__coordinate_series)
-            imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series)
-            param_1 = real_part_derivative - (real_part / self.__coordinate_series)
-            param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
+            real_part_derivative = Tools.derivative(real_part * 2, self.__coordinate_series)
+            imag_part_derivative = Tools.derivative(imag_part * 2, self.__coordinate_series)
+            param_1 = real_part_derivative - (real_part * 2 / self.__coordinate_series)
+            param_2 = imag_part_derivative - (imag_part * 2 / self.__coordinate_series)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
             effective_shear_rate.extend(shear_rate_of_now_window / np.sqrt(2))
 

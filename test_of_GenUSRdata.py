@@ -26,8 +26,8 @@ u = np.transpose(anaylsis.velTableTheta())[:, 0:50]
 plt.plot(phase_delay/(2*np.pi)*360,coordinates_r)
 plt.show()
 
-anaylsis.timeSlicing(5)
-anaylsis.timeSlicing(1)
+anaylsis.slicing(5)
+anaylsis.slicing(1)
 #anaylsis.timeSlicing(5)
 
 plt.contourf(time, coordinates_r / cyclinder_r, u, cmap="bwr", levels=20)
