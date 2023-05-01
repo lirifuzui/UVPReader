@@ -221,6 +221,9 @@ class Analysis:
         alphas = np.abs(alphas + offsets - alphas[0])
         return alphas
 
+    def sinWaveFilter(self, window_num: int = 1, derivative_smoother_factor: int = 11):
+        None
+
     # do the FFT.
     def doFFT(self, window_num: int = 1, derivative_smoother_factor: int = 11):
         my_axis = 0
