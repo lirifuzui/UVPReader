@@ -21,6 +21,9 @@ class readData:
         self.__measurement_info = {}
         self.__mux_config_params = {}
 
+        # If the sound speed needs to be changed, the new sound speed is stored here.
+        self.__new_sound_speed = None
+
         # Velocity file_data, echo_data file_data and time series are each stored in a list.
         # Each item in the list corresponds to data from a tdx.
         # Notice! ! !
@@ -35,6 +38,7 @@ class readData:
 
         # Run the function “__read_data”, and store the data in the corresponding class variables respectively.
         self.__read_data(file_path)
+
 
         # 实例化统计和分析数据类。
         # self.statistic = Statistic(vel_data=self.velTable, echo_data=self.echoTable)
@@ -106,12 +110,16 @@ class readData:
         mux_config = [list(map(float, item.split())) for item in mux_config_params_list[index_3 + 1:]]
         self.__mux_config_params['MultiplexerConfiguration'] = mux_config
 
-    def resetSoundSpeed(self, sound_speed) -> None:
-        self.__measurement_info['SoundSpeed'] = sound_speed
+
+    # Redefine the speed of sound and modify the data.
+    def redefineSoundSpeed(self, new_sound_speed) -> None:
+        self.__new_sound_speed = new_sound_speed
+        sound_speed = self.__measurement_info['SoundSpeed']
         max_depth = self.__measurement_info['MaximumDepth']
         doppler_coefficient = sound_speed / (max_depth * 2.0) / 256.0 * 1000.0
-        sounds_speed_coefficient = sound_speed / (self.__measurement_info['Frequency'] * 2.0)
+        sounds_speed_coefficient = new_sound_speed / (self.__measurement_info['Frequency'] * 2.0)
 
+        # Modifies the velocity and echo data according to the newly defined sound speed.
         if self.__measurement_info['UseMultiplexer']:
             self.__vel_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
             self.__echo_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
@@ -163,7 +171,7 @@ class readData:
         coordinate_series = np.arange(self.__measurement_info['StartChannel'], self.__measurement_info['StartChannel'] +
                                       self.__measurement_info['NumberOfChannels'] * self.__measurement_info[
                                           'ChannelDistance'],
-                                      self.__measurement_info['ChannelDistance'])
+                                      self.__measurement_info['ChannelDistance']) * new_sound_speed / sound_speed
         if int(self.__mux_config_params['Table']):
             self.__coordinate_series_list = [coordinate_series for _ in range(int(self.__mux_config_params['Table']))]
         else:
@@ -196,7 +204,7 @@ class readData:
                     self.__raw_echo_data[i] = unpack(datatype, encode_echo_data)
 
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
-        self.resetSoundSpeed(self.__measurement_info['SoundSpeed'])
+        self.redefineSoundSpeed(self.__measurement_info['SoundSpeed'])
 
     def createUSRAnalysis(self, tdx_num=0, ignoreException=False):
         return pyuvp.usr.Analysis(tdx_num=tdx_num, vel_data=self.velTables, time_series=self.timeSeries,

@@ -7,7 +7,7 @@ import numpy as np
 # Read the data in the ".mfprof" file
 data = uvp.readData(r'example_1.mfprof')   # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
-data.resetSoundSpeed(980)
+data.__multiplying_coefficient()
 
 # -------------------------------------------------------------
 # return datas.
@@ -37,7 +37,7 @@ analysis.coordsClean(35, 60)
 analysis.cylinderGeom(72.5, vibration_params=[1, 120], ignoreException=False)
 
 # Create a data slices. This function can divide the data into several equal parts according to time.
-analysis.timeSlicing(5)
+analysis.slicing(5)
 
 # -------------------------------------------------------------
 # return geometry.
@@ -56,7 +56,7 @@ vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_pa
     window_num=0)
 
 # Calculate effective shear rate and viscosity.
-viscosity, shear_rate = analysis.calculate_Viscosity_ShearRate(30000, 1, 15, ignoreException=False)
+viscosity, shear_rate = analysis.calculation(30000, 1, 15, ignoreException=False)
 # Return shear rate and viscosity.
 shear_rate = analysis.shearRate
 viscosity = analysis.viscosity
