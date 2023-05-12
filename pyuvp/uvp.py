@@ -1,8 +1,9 @@
-import traceback
 from struct import unpack
+
 import numpy as np
+
 import pyuvp
-import traceback
+
 ON = 1
 OFF = 0
 
@@ -168,9 +169,10 @@ class readData:
             self.__time_series_list.append(time_series * 0.001)
 
         # Store multiple coordinate series of tdx data into a list
+        print(self.__measurement_info['NumberOfChannels'])
         coordinate_series = np.arange(self.__measurement_info['StartChannel'], self.__measurement_info['StartChannel'] +
                                       self.__measurement_info['NumberOfChannels'] * self.__measurement_info[
-                                          'ChannelDistance'],
+                                          'ChannelDistance'] - self.__measurement_info['ChannelDistance'] * 0.5,
                                       self.__measurement_info['ChannelDistance']) * new_sound_speed / sound_speed
         if int(self.__mux_config_params['Table']):
             self.__coordinate_series_list = [coordinate_series for _ in range(int(self.__mux_config_params['Table']))]

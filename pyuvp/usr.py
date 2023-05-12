@@ -122,7 +122,6 @@ class Analysis:
                                             self.__coordinate_series) ** 2 + self.__delta_y ** 2)
         # Update the variable self.__vel_data
         for i in range(self.__number_of_windows + 1):
-            print(self.__coordinate_series)
             self.__vel_data[i] = np.multiply(self.__vel_data[i],
                                              self.__coordinate_series / self.__delta_y)
         return self.__vel_data, self.__coordinate_series
