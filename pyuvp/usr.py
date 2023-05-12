@@ -122,6 +122,7 @@ class Analysis:
                                             self.__coordinate_series) ** 2 + self.__delta_y ** 2)
         # Update the variable self.__vel_data
         for i in range(self.__number_of_windows + 1):
+            print(self.__coordinate_series)
             self.__vel_data[i] = np.multiply(self.__vel_data[i],
                                              self.__coordinate_series / self.__delta_y)
         return self.__vel_data, self.__coordinate_series
@@ -285,8 +286,10 @@ class Analysis:
                   f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
 
             # Calculate effective shear rate.
-            real_part_derivative = Tools.derivative(real_part * 2, self.__coordinate_series)
-            imag_part_derivative = Tools.derivative(imag_part * 2, self.__coordinate_series)
+            real_part_derivative = Tools.derivative(real_part * 2, self.__coordinate_series,
+                                                    derivative_smoother_factor=5)
+            imag_part_derivative = Tools.derivative(imag_part * 2, self.__coordinate_series,
+                                                    derivative_smoother_factor=5)
             param_1 = real_part_derivative - (real_part * 2 / self.__coordinate_series)
             param_2 = imag_part_derivative - (imag_part * 2 / self.__coordinate_series)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)

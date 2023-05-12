@@ -20,8 +20,8 @@ for file in files:
     vel_origin = data.velTables[0]
 
     analysis = data.createUSRAnalysis()
-    analysis.cylinderGeom(72.5, 59.5, 11.115)
     analysis.channelRange(65, 95)
+    analysis.cylinderGeom(72.5, 59.5, 11.115)
     analysis.slicing(40)
     analysis.sliceSize(7000)
 
