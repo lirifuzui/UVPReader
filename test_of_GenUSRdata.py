@@ -1,7 +1,8 @@
-from pyuvp import uvp, usr
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+from pyuvp import usr
 
 # 读取 CSV 文件
 df = pd.read_csv('u_xi500cSt1Hz90deg_vel.csv', header=None)
@@ -12,7 +13,7 @@ times = np.array(df.iloc[4:, 0:1]).astype(float)
 times = np.transpose(times)[0]
 
 anaylsis = usr.Analysis(None, 0, [data], [times], [coords], ignoreException=False)
-anaylsis.coordsClean(34, 46)
+anaylsis.channelRange(34, 46)
 anaylsis.cylinderGeom(72.5, vibration_params=[1, 90])
 
 vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = anaylsis.doFFT()

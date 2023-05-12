@@ -6,7 +6,7 @@ data = uvp.readData("1000min.mfprof")
 vel = data.velTables[0]
 anaylsis = data.createUSRAnalysis()
 anaylsis.cylinderGeom(77, 66, 15)
-anaylsis.coordsClean(77, 110)
+anaylsis.channelRange(77, 110)
 anaylsis.slicing(0)
 viscoity,shearrate = anaylsis.calculation()
 

@@ -127,7 +127,7 @@ class Analysis:
         return self.__vel_data, self.__coordinate_series
 
     # Extracted vaild data according to the position coordinates.
-    def coordsClean(self, start: int = 0, end: int = -1):
+    def channelRange(self, start: int = 0, end: int = -1):
         for i in range(self.__number_of_windows + 1):
             self.__vel_data[i] = self.__vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]

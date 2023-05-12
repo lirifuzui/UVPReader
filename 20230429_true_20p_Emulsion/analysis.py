@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+
 from pyuvp import uvp
 
 files = ["05hz120deg.mfprof","1hz60deg.mfprof", "1hz60deg.mfprof",]
@@ -20,7 +21,7 @@ for file in files:
 
     analysis = data.createUSRAnalysis()
     analysis.cylinderGeom(72.5, 59.5, 11.115)
-    analysis.coordsClean(65, 95)
+    analysis.channelRange(65, 95)
     analysis.slicing(40)
     analysis.sliceSize(7000)
 

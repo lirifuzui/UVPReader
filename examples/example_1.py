@@ -1,6 +1,7 @@
-from pyuvp import uvp, usr
 import matplotlib.pyplot as plt
 import numpy as np
+
+from pyuvp import uvp, usr
 
 # example of single tdx.
 # Viscosity analysis using USR, 1 Hz_120 deg.
@@ -27,7 +28,7 @@ analysis = usr.Analysis(data, ignoreException=False)
 
 # -------------------------------------------------------------
 # According to the location, extract data that can be analyzed.
-analysis.coordsClean(35, 60)
+analysis.channelRange(35, 60)
 
 # Define cylinder dimensions
 # cylinder radius[mm], The coordinate[mm] of the cylinder wall in the xi coordinate system, delta_y[mm]

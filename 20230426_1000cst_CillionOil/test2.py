@@ -1,7 +1,6 @@
-from pyuvp import uvp, usr
 import matplotlib.pyplot as plt
-import numpy as np
 
+from pyuvp import uvp
 
 files = ["05hz60deg.mfprof","05hz75deg.mfprof","1hz45deg.mfprof","1hz30deg.mfprof"]
 
@@ -16,7 +15,7 @@ for file in files:
 
     analysis = data.createUSRAnalysis()
     analysis.cylinderGeom(72.5, 46.69, 11.6)
-    analysis.coordsClean(165, 215)
+    analysis.channelRange(165, 215)
     analysis.slicing(0)
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
