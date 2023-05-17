@@ -173,7 +173,7 @@ class readData:
         coordinate_series = np.arange(self.__measurement_info['StartChannel'], self.__measurement_info['StartChannel'] +
                                       self.__measurement_info['NumberOfChannels'] * self.__measurement_info[
                                           'ChannelDistance'] - self.__measurement_info['ChannelDistance'] * 0.5,
-                                      self.__measurement_info['ChannelDistance']) * new_sound_speed / sound_speed
+                                      self.__measurement_info['ChannelDistance']) * (new_sound_speed / sound_speed)
         if int(self.__mux_config_params['Table']):
             self.__coordinate_series_list = [coordinate_series for _ in range(int(self.__mux_config_params['Table']))]
         else:
@@ -218,7 +218,7 @@ class readData:
 
     @property
     def velTables(self):
-        # velocity _m/s
+        # velocity _mm/s
         return self.__vel_data_list
 
     @property
