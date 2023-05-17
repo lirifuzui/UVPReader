@@ -359,13 +359,16 @@ class Analysis:
                                 smooth_level: int = 11, ignoreException=False):
         # density _kg/m3
         # max_viscosity _cSt
+        for i in range(len(self.__vel_data)):
+            self.__vel_data[i] *= 0.001
+        self.__coordinate_series *= 0.001
         if self.__cylinder_radius is None:
             raise ValueError("You must define cylinder container Geometry first！")
         effective_shear_rate = []
         viscosity_pas = []
         elasticity = []
         cost_function = []
-        deltas = np.linspace(0.1, np.pi / 2, 100).reshape((-1, 1))
+        deltas = np.linspace(0.01, np.pi / 2 - 0.01, 100).reshape((-1, 1))
         viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), max_viscosity)
         for window in range(self.__number_of_windows + 1):
             vibration_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
@@ -380,8 +383,8 @@ class Analysis:
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
             effective_shear_rate.extend(shear_rate_of_now_window)
             # Calculate viscoelastcity.
-            Re = (param_2 * np.cos(deltas) / np.sin(deltas)) + param_1
-            Im = -(param_1 * np.cos(deltas) / np.sin(deltas)) + param_2
+            Re = (param_2 / np.tan(deltas)) + param_1
+            Im = -(param_1 / np.tan(deltas)) + param_2
             Re_derivative = np.gradient(Re, self.__coordinate_series, axis=1)
             Im_derivative = np.gradient(Im, self.__coordinate_series, axis=1)
             for coordinate_index in range(len(self.__coordinate_series)):
@@ -392,10 +395,9 @@ class Analysis:
                 coordinate = self.__coordinate_series[coordinate_index]
                 param_2_1 = (Re_derivative_r + (Re_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
                 param_2_2 = (Im_derivative_r + (Im_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
-                a = 2 * np.pi * vibration_frequency * density * Im_r.reshape((-1, 1))
-                cost_funciton_r = ((2 * np.pi * vibration_frequency * density * 10 ** (-3) * Im_r.reshape((-1, 1))
-                                    + (viscositys * param_2_1)) ** 2) + \
-                                  ((2 * np.pi * vibration_frequency * density * 10 ** (-3) * Re_r.reshape((-1, 1)) -
+                cost_funciton_r = ((2 * np.pi * vibration_frequency * density * Im_r.reshape((-1, 1))
+                                    - (viscositys * param_2_1)) ** 2) + \
+                                  ((2 * np.pi * vibration_frequency * density * Re_r.reshape((-1, 1)) +
                                     (viscositys * param_2_2)) ** 2)
                 cost_function.append(cost_funciton_r)
 
