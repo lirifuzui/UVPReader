@@ -16,7 +16,7 @@ anaylsis = usr.Analysis(None, 0, [data], [times], [coords], ignoreException=Fals
 anaylsis.channelRange(34, 46)
 anaylsis.cylinderGeom(72.5, vibration_params=[1, 90])
 
-vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = anaylsis.doFFT()
+vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = anaylsis.fftInUSR()
 
 
 time = anaylsis.timeSeries()[0:50]

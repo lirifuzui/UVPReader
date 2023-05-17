@@ -104,7 +104,7 @@ class Analysis:
             max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_radius * (vibration_params[1] * np.pi / 180)
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
             self.__coordinate_series, self.__temp_coords = self.__temp_coords, self.__coordinate_series
-            vibration_frequency, max_magnitude, _, _, _, _ = self.doFFT()
+            vibration_frequency, max_magnitude, _, _, _, _ = self.fftInUSR()
             wall_coordinate = self.__coordinate_series[np.argmax(max_magnitude)]
             self.__coordinate_series, self.__temp_coords = self.__temp_coords, self.__coordinate_series
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
@@ -220,7 +220,7 @@ class Analysis:
         None
 
     # do the FFT.
-    def doFFT(self, window_num: int = 1, derivative_smoother_factor: int = 11):
+    def fftInUSR(self, window_num: int = 1, derivative_smoother_factor: int = 11):
         my_axis = 0
         N = len(self.__time_series[window_num - 1])
         Delta_T = (self.__time_series[window_num - 1][-1] - self.__time_series[window_num - 1][0]) / (N - 1)
@@ -264,7 +264,7 @@ class Analysis:
         err_time = 0
         for window in range(self.__number_of_windows + 1):
             vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
-                self.doFFT(window_num=window, derivative_smoother_factor=smooth_level)
+                self.fftInUSR(window_num=window, derivative_smoother_factor=smooth_level)
             self.__cylinder_freq = vibration_frequency if self.__cylinder_freq is None else self.__cylinder_freq
 
             # Determine whether the frequency of the input container matches the experimental results.
@@ -365,20 +365,28 @@ class Analysis:
         effective_shear_rate = []
         viscosity_pas = []
         elasticity = []
+        cost_function = []
         deltas = np.transpose((np.linspace(0, np.pi / 2, 100)))
         viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), 100)
         for window in range(self.__number_of_windows + 1):
-            _, _, _, _, real_part, imag_part = self.doFFT(window_num=window, derivative_smoother_factor=smooth_level)
+            vibration_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
+                                                                               derivative_smoother_factor=smooth_level)
             # Calculate effective shear rate.
-            real_part_derivative = Tools.derivative(real_part * 2, self.__coordinate_series,
+            real_part_derivative = Tools.derivative(real_part, self.__coordinate_series,
                                                     derivative_smoother_factor=5)
             imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series,
                                                     derivative_smoother_factor=5)
-            param_1 = real_part_derivative - (real_part * 2 / self.__coordinate_series)
-            param_2 = imag_part_derivative - (imag_part * 2 / self.__coordinate_series)
+            param_1 = real_part_derivative - (real_part / self.__coordinate_series)
+            param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
-            effective_shear_rate.extend(shear_rate_of_now_window / np.sqrt(2))
+            effective_shear_rate.extend(shear_rate_of_now_window)
             # Calculate viscoelastcity.
+            Re = ((np.cos(deltas) / np.sin(deltas)) @ param_2) + param_1
+            Im = -((np.cos(deltas) / np.sin(deltas)) @ param_1) + param_2
+            Re_derivative = np.gradient(Re, self.__coordinate_series, axis=1)
+            Im_derivative = np.gradient(Im, self.__coordinate_series, axis=1)
+            for coordinate_index in range(len(self.__coordinate_series)):
+                None
 
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]

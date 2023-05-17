@@ -53,7 +53,7 @@ coordinates_r = analysis.coordSeries                   # return a one-dimensiona
 times = analysis.timeSeries(window_num=0)               # return a one-dimensional numpy matrix
 
 # do fft
-vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.doFFT(
+vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.fftInUSR(
     window_num=0)
 
 # Calculate effective shear rate and viscosity.
