@@ -245,10 +245,12 @@ class Analysis:
     def rheologyViscosity(self, max_viscosity: int | float = 30000,
                           viscosity_range_tolerance: int | float = 1,
                           smooth_level: int = 11, ignoreException=False):
+        # max_viscosity _cSt
+        # viscosity_range_tolerance _cSt
         if self.__cylinder_radius is None and self.__pipe_TDXangle is None:
             raise ValueError("You must define Container Geometry first！")
-        effective_viscosity = []
         effective_shear_rate = []
+        effective_viscosity = []
         err_lim = len(self.__coordinate_series) // \
                   (1 / ExceptionConfig['Allowable proportion of calculation error points'])
         # Format the output.
@@ -280,14 +282,14 @@ class Analysis:
                   f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
 
             # Calculate effective shear rate.
-            real_part_derivative = Tools.derivative(real_part * 2, self.__coordinate_series,
+            real_part_derivative = Tools.derivative(real_part, self.__coordinate_series,
                                                     derivative_smoother_factor=5)
             imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series,
                                                     derivative_smoother_factor=5)
-            param_1 = real_part_derivative - (real_part * 2 / self.__coordinate_series)
-            param_2 = imag_part_derivative - (imag_part * 2 / self.__coordinate_series)
+            param_1 = real_part_derivative - (real_part / self.__coordinate_series)
+            param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
-            effective_shear_rate.extend(shear_rate_of_now_window / np.sqrt(2))
+            effective_shear_rate.extend(shear_rate_of_now_window)
 
             # Calculate effective effective_viscosity.
             viscosity_limits = [0.5, max_viscosity]
@@ -353,6 +355,30 @@ class Analysis:
         print('\033[1m------------------------------------------------------')
         print("Calculation Complete.\033[0m")
         return self.__shear_rate, self.__viscosity
+
+    def rheologyViscoelasticity(self, density, max_viscosity: int | float = 30000,
+                                smooth_level: int = 11, ignoreException=False):
+        # density _kg/m3
+        # max_viscosity _cSt
+        if self.__cylinder_radius is None:
+            raise ValueError("You must define cylinder container Geometry first！")
+        effective_shear_rate = []
+        viscosity_pas = []
+        elasticity = []
+        deltas = np.transpose((np.linspace(0, np.pi / 2, 100)))
+        viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), 100)
+        for window in range(self.__number_of_windows + 1):
+            _, _, _, _, real_part, imag_part = self.doFFT(window_num=window, derivative_smoother_factor=smooth_level)
+            # Calculate effective shear rate.
+            real_part_derivative = Tools.derivative(real_part * 2, self.__coordinate_series,
+                                                    derivative_smoother_factor=5)
+            imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series,
+                                                    derivative_smoother_factor=5)
+            param_1 = real_part_derivative - (real_part * 2 / self.__coordinate_series)
+            param_2 = imag_part_derivative - (imag_part * 2 / self.__coordinate_series)
+            shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
+            effective_shear_rate.extend(shear_rate_of_now_window / np.sqrt(2))
+            # Calculate viscoelastcity.
 
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]

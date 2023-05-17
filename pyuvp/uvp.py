@@ -218,6 +218,7 @@ class readData:
 
     @property
     def velTables(self):
+        # velocity _m/s
         return self.__vel_data_list
 
     @property
@@ -226,10 +227,12 @@ class readData:
 
     @property
     def timeSeries(self):
+        # time _s
         return self.__time_series_list
 
     @property
     def coordinateSeries(self):
+        # coordinate _mm
         return self.__coordinate_series_list
 
     def show_info(self):
