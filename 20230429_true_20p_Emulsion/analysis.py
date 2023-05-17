@@ -28,7 +28,7 @@ for file in files:
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
     times = analysis.timeSeries()
-    visc, shearrate = analysis.calculation(smooth_level=9, ignoreException=True)
+    visc, shearrate = analysis.viscosity(smooth_level=9, ignoreException=True)
 
     visc_t = visc.reshape((41,30))
     shearrate_t = shearrate.reshape((41,30))

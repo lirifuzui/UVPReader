@@ -8,7 +8,7 @@ anaylsis = data.createUSRAnalysis()
 anaylsis.cylinderGeom(77, 66, 15)
 anaylsis.channelRange(77, 110)
 anaylsis.slicing(0)
-viscoity,shearrate = anaylsis.calculation()
+viscoity, shearrate = anaylsis.viscosity()
 
 plt.scatter(shearrate, viscoity, s=3, alpha=0.5)
 plt.grid()

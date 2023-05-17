@@ -234,7 +234,7 @@ class Analysis:
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
         freq_array = np.fft.rfftfreq(N, Delta_T)
         vibration_frequency = np.mean(np.abs(freq_array[max_magnitude_indices]))
-        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / (N / 2)
+        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / N
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         phase_delay = self.__phase_unwrap(phase_delay)
         phase_delay -= phase_delay[np.argmax(self.__coordinate_series)]
@@ -242,14 +242,14 @@ class Analysis:
 
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
 
-        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / (N / 2)
-        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / (N / 2)
+        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / N
+        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / N
         return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
-    def calculation(self, max_viscosity: int | float = 30000,
-                                      viscosity_range_tolerance: int | float = 1,
-                                      smooth_level: int = 11, ignoreException=False):
+    def rheologyViscosity(self, max_viscosity: int | float = 30000,
+                          viscosity_range_tolerance: int | float = 1,
+                          smooth_level: int = 11, ignoreException=False):
         if self.__cylinder_radius is None and self.__pipe_TDXangle is None:
             raise ValueError("You must define Container Geometry first！")
         effective_viscosity = []
@@ -285,12 +285,12 @@ class Analysis:
                   f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
 
             # Calculate effective shear rate.
-            real_part_derivative = Tools.derivative(real_part, self.__coordinate_series,
+            real_part_derivative = Tools.derivative(real_part * 2, self.__coordinate_series,
                                                     derivative_smoother_factor=5)
             imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series,
                                                     derivative_smoother_factor=5)
-            param_1 = real_part_derivative - (real_part / self.__coordinate_series)
-            param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
+            param_1 = real_part_derivative - (real_part * 2 / self.__coordinate_series)
+            param_2 = imag_part_derivative - (imag_part * 2 / self.__coordinate_series)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
             effective_shear_rate.extend(shear_rate_of_now_window / np.sqrt(2))
 
@@ -357,7 +357,7 @@ class Analysis:
         self.__viscosity = np.array(effective_viscosity)
         print('\033[1m------------------------------------------------------')
         print("Calculation Complete.\033[0m")
-        return self.__viscosity, self.__shear_rate,
+        return self.__shear_rate, self.__viscosity
 
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]
@@ -372,11 +372,3 @@ class Analysis:
     @property
     def geometry(self):
         return self.__cylinder_radius, self.__delta_y
-
-    @property
-    def shearRate(self):
-        return self.__shear_rate
-
-    @property
-    def viscosity(self):
-        return self.__viscosity

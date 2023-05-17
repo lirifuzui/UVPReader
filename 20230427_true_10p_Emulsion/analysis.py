@@ -28,8 +28,8 @@ for file in files:
     coordinates_r = analysis.coordSeries
     times = analysis.timeSeries()
 
-    visc, shearrate = analysis.calculation(smooth_level=9, ignoreException=True)
-    visc_t = visc.reshape((slice_num+1,35))
+    visc, shearrate = analysis.viscosity(smooth_level=9, ignoreException=True)
+    visc_t = visc.reshape((slice_num + 1, 35))
     shearrate_t = shearrate.reshape((slice_num+1,35))
     visc = np.sum(visc_t,axis=0)/(slice_num+1)
     shearrate = np.sum(shearrate_t,axis=0)/(slice_num+1)

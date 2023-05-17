@@ -36,7 +36,7 @@ for file in files:
     plt.colorbar()
     plt.show()'''
 
-    visc, shearrate = analysis.calculation(ignoreException=True)
+    visc, shearrate = analysis.viscosity(ignoreException=True)
     plt.scatter(shearrate, visc)
 
 plt.grid()
