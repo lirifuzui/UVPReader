@@ -49,12 +49,6 @@ class Statistic:
     def movvar(self):
         None
 
-
-def geometry(data: pyuvp.uvp.readData, tdx_num: int, cylinder_r: float):
-    vel = data.velTables[tdx_num]
-    echo = data.echoTable[tdx_num]
-
-
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
@@ -84,6 +78,7 @@ class Analysis:
 
         self.__shear_rate: np.ndarray | None = None
         self.__viscosity: np.ndarray | None = None
+        self.__elasticity: np.ndarray | None = None
 
         self.__ignoreUSRException = ignoreException
 
