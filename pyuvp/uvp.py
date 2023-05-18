@@ -121,6 +121,8 @@ class readData:
         sounds_speed_coefficient = new_sound_speed / (self.__measurement_info['Frequency'] * 2.0)
 
         # Modifies the velocity and echo data according to the newly defined sound speed.
+
+        # 这段代码中时间序列没弄好，
         if self.__measurement_info['UseMultiplexer']:
             self.__vel_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
             self.__echo_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
