@@ -365,9 +365,9 @@ class Analysis:
         if self.__cylinder_radius is None:
             raise ValueError("You must define cylinder container Geometry first！")
         effective_shear_rate = []
+        cost_function = []
         viscosity_pas = []
         elasticity = []
-        cost_function = []
         deltas = np.linspace(0.01, np.pi / 2 - 0.01, 100).reshape((-1, 1))
         viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), max_viscosity)
         for window in range(self.__number_of_windows + 1):
