@@ -171,7 +171,6 @@ class readData:
             self.__time_series_list.append(time_series * 0.001)
 
         # Store multiple coordinate series of tdx data into a list
-        print(self.__measurement_info['NumberOfChannels'])
         coordinate_series = np.arange(self.__measurement_info['StartChannel'], self.__measurement_info['StartChannel'] +
                                       self.__measurement_info['NumberOfChannels'] * self.__measurement_info[
                                           'ChannelDistance'] - self.__measurement_info['ChannelDistance'] * 0.5,

@@ -359,6 +359,9 @@ class Analysis:
                                 smooth_level: int = 11, ignoreException=False):
         # density _kg/m3
         # max_viscosity _cSt
+        for i in range(len(self.__vel_data)):
+            self.__vel_data[i] *= 0.001
+        self.__coordinate_series *= 0.001
         if self.__cylinder_radius is None:
             raise ValueError("You must define cylinder container Geometry first！")
         effective_shear_rate = []
