@@ -195,9 +195,7 @@ class readData:
             uvpDatafile.seek(104)
             for i in range(self.__measurement_info['NumberOfProfiles']):
                 uvpDatafile.seek(16, 1)
-                if self.__measurement_info['DoNotStoreDoppler']:
-                    None
-                else:
+                if self.__measurement_info['DoNotStoreDoppler'] != 1:
                     encode_vel_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
                     datatype = '{}h'.format(self.__measurement_info['NumberOfChannels'])
                     self.__raw_vel_data[i] = unpack(datatype, encode_vel_data)
