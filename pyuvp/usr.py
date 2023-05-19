@@ -241,7 +241,7 @@ class Analysis:
         return oscillation_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
-    def rheologyViscosity(self, max_viscosity: int | float = 30000,
+    def rheologyViscosity(self, max_viscosity: int | float = 20000,
                           viscosity_range_tolerance: int | float = 1,
                           smooth_level: int = 11, ignoreException=False):
         # max_viscosity _cSt
@@ -395,10 +395,10 @@ class Analysis:
                 coordinate = self.__coordinate_series[coordinate_index]
                 param_2_1 = (Re_derivative_r + (Re_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
                 param_2_2 = (Im_derivative_r + (Im_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
-                cost_funciton_r = ((2 * np.pi * oscillation_frequency * density * Im_r.reshape((-1, 1))
-                                    - (viscositys * param_2_1)) ** 2) + \
-                                  ((2 * np.pi * oscillation_frequency * density * Re_r.reshape((-1, 1)) +
-                                    (viscositys * param_2_2)) ** 2)
+                cost_funciton_r = ((2 * np.pi * oscillation_frequency * density * imag_part[coordinate_index])
+                                   + (viscositys * param_2_1)) ** 2 + \
+                                  ((2 * np.pi * oscillation_frequency * density * real_part[coordinate_index])
+                                   - (viscositys * param_2_2)) ** 2
                 cost_function.append(cost_funciton_r)
 
     def velTableTheta(self, window_num=OFF):
