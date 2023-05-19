@@ -383,7 +383,7 @@ class Analysis:
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
             effective_shear_rate.extend(shear_rate_of_now_window)
             # Calculate viscoelastcity.
-            Re = (param_2 / np.tan(deltas)) + param_1
+            Re = param_1 + (param_2 / np.tan(deltas))
             Im = -(param_1 / np.tan(deltas)) + param_2
             Re_derivative = np.gradient(Re, self.__coordinate_series, axis=1)
             Im_derivative = np.gradient(Im, self.__coordinate_series, axis=1)
