@@ -227,7 +227,7 @@ class Analysis:
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
         freq_array = np.fft.rfftfreq(N, Delta_T)
-        vibration_frequency = np.mean(np.abs(freq_array[max_magnitude_indices]))
+        oscillation_frequency = np.mean(np.abs(freq_array[max_magnitude_indices]))
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / N
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         phase_delay = self.__phase_unwrap(phase_delay)
@@ -238,7 +238,7 @@ class Analysis:
 
         real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / N
         imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / N
-        return vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
+        return oscillation_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
     def rheologyViscosity(self, max_viscosity: int | float = 30000,
@@ -371,8 +371,8 @@ class Analysis:
         deltas = np.linspace(0.01, np.pi / 2 - 0.01, 100).reshape((-1, 1))
         viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), max_viscosity)
         for window in range(self.__number_of_windows + 1):
-            vibration_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
-                                                                               derivative_smoother_factor=smooth_level)
+            cscillation_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
+                                                                                 derivative_smoother_factor=smooth_level)
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part, self.__coordinate_series,
                                                     derivative_smoother_factor=5)
@@ -395,9 +395,9 @@ class Analysis:
                 coordinate = self.__coordinate_series[coordinate_index]
                 param_2_1 = (Re_derivative_r + (Re_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
                 param_2_2 = (Im_derivative_r + (Im_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
-                cost_funciton_r = ((2 * np.pi * vibration_frequency * density * Im_r.reshape((-1, 1))
+                cost_funciton_r = ((2 * np.pi * cscillation_frequency * density * Im_r.reshape((-1, 1))
                                     - (viscositys * param_2_1)) ** 2) + \
-                                  ((2 * np.pi * vibration_frequency * density * Re_r.reshape((-1, 1)) +
+                                  ((2 * np.pi * cscillation_frequency * density * Re_r.reshape((-1, 1)) +
                                     (viscositys * param_2_2)) ** 2)
                 cost_function.append(cost_funciton_r)
 
