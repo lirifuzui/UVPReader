@@ -49,6 +49,7 @@ class Statistic:
     def movvar(self):
         None
 
+
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
@@ -169,7 +170,7 @@ class Analysis:
         temp_slice.append([0, slice_length - 1])
         moving = (self.__slice[0][1] + 1 - slice_length) // (self.__number_of_windows - 1)
         for n in range(self.__number_of_windows - 2):
-            temp_slice.append([0 + moving*(n+1), slice_length + moving*(n+1)])
+            temp_slice.append([0 + moving * (n + 1), slice_length + moving * (n + 1)])
         temp_slice.append([self.__slice[0][1] - slice_length, self.__slice[0][1]])
         self.__slice = temp_slice
         self.__time_series = [self.__time_series[0][slice_range[0]:slice_range[1]] for slice_range in self.__slice]
@@ -385,8 +386,8 @@ class Analysis:
             # Calculate viscoelastcity.
             Re = param_1 + (param_2 / np.tan(deltas))
             Im = -(param_1 / np.tan(deltas)) + param_2
-            Re_derivative = np.gradient(Re, self.__coordinate_series, axis=1)
-            Im_derivative = np.gradient(Im, self.__coordinate_series, axis=1)
+            Re_derivative = np.gradient(Re, self.__coordinate_series, edge_order=3, axis=1)
+            Im_derivative = np.gradient(Im, self.__coordinate_series, edge_order=3, axis=1)
             for coordinate_index in range(len(self.__coordinate_series)):
                 Re_r = Re[:, coordinate_index]
                 Im_r = Im[:, coordinate_index]
