@@ -29,12 +29,10 @@ def summary_statistic(data, axis=0):
 
 
 def derivative(array_y, array_x, derivative_smoother_factor: int = OFF):
-    dy_dx = np.gradient(array_y, array_x)
     if derivative_smoother_factor == OFF:
-        return dy_dx
+        return np.gradient(array_y, array_x)
     elif derivative_smoother_factor == 1:
-        return dy_dx
+        return np.gradient(array_y, array_x)
     else:
-        dy_dx_smooth = savgol_filter(dy_dx, window_length=derivative_smoother_factor,
-                                     polyorder=1)
-        return dy_dx_smooth
+        array_y_smooth = savgol_filter(array_y, window_length=derivative_smoother_factor, polyorder=1)
+        return np.gradient(array_y_smooth, array_x)
