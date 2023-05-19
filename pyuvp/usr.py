@@ -290,7 +290,7 @@ class Analysis:
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
             effective_shear_rate.extend(shear_rate_of_now_window)
 
-            # Calculate effective effective_viscosity.
+            # Calculate effective_viscosity.
             viscosity_limits = [0.5, max_viscosity]
             visc_range = int((max_viscosity - 0.5) / 40)
             for coordinate_index in range(len(self.__coordinate_series)):
