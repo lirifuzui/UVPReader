@@ -262,21 +262,21 @@ class Analysis:
         print('------------------------------------------------------')
         err_time = 0
         for window in range(self.__number_of_windows + 1):
-            vibration_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
+            oscillation_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
                 self.fftInUSR(window_num=window, derivative_smoother_factor=smooth_level)
-            self.__cylinder_freq = vibration_frequency if self.__cylinder_freq is None else self.__cylinder_freq
+            self.__cylinder_freq = oscillation_frequency if self.__cylinder_freq is None else self.__cylinder_freq
 
             # Determine whether the frequency of the input container matches the experimental results.
-            if np.abs(vibration_frequency - self.__cylinder_freq) > \
-                    np.abs(vibration_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
+            if np.abs(oscillation_frequency - self.__cylinder_freq) > \
+                    np.abs(oscillation_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
                     and not self.__ignoreUSRException and not ignoreException:
                 raise USRException("The defined vibration frequency of the cylinder does not match the results of the "
-                                   "experimental data! [" + f"{vibration_frequency:.3g}" + ", " + str(
+                                   "experimental data! [" + f"{oscillation_frequency:.3g}" + ", " + str(
                     self.__cylinder_freq) + "]")
 
             # print title
             print(f"{'slice':<{8}}{'time_range':<{16}}{'vessel_freq':<{8}}")
-            print(f"{window:<{8}}{str(self.__slice[window]):<{16}}{vibration_frequency:<{8}.7g}")
+            print(f"{window:<{8}}{str(self.__slice[window]):<{16}}{oscillation_frequency:<{8}.7g}")
             print(f"{'slice':<{slice_width}}{'index':<{index_width}}{'search_range(cycles)':<{search_range_width}}"
                   f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
 
@@ -298,17 +298,17 @@ class Analysis:
                 middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
                 first_search_range_of_loop = viscosity_limits.copy()
                 for loop in range(loop_count):
-                    alpha_min = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency, viscosity_limits[0],
+                    alpha_min = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency, viscosity_limits[0],
                                                     self.__coordinate_series)
                     alpha_min -= alpha_min[np.argmax(self.__coordinate_series)]
                     alpha_min = np.abs(alpha_min)
                     alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_series)[coordinate_index]
-                    alpha_max = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency, viscosity_limits[1],
+                    alpha_max = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency, viscosity_limits[1],
                                                     self.__coordinate_series)
                     alpha_max -= alpha_max[np.argmax(self.__coordinate_series)]
                     alpha_max = np.abs(alpha_max)
                     alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_series)[coordinate_index]
-                    alpha_middle = self.__Alpha_Bessel(self.__cylinder_radius, vibration_frequency,
+                    alpha_middle = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
                                                        middle_viscosity, self.__coordinate_series)
                     alpha_middle -= alpha_middle[np.argmax(self.__coordinate_series)]
                     alpha_middle = np.abs(alpha_middle)
@@ -371,7 +371,7 @@ class Analysis:
         deltas = np.linspace(0.01, np.pi / 2 - 0.01, 100).reshape((-1, 1))
         viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), max_viscosity)
         for window in range(self.__number_of_windows + 1):
-            cscillation_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
+            oscillation_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
                                                                                  derivative_smoother_factor=smooth_level)
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part, self.__coordinate_series,
@@ -395,9 +395,9 @@ class Analysis:
                 coordinate = self.__coordinate_series[coordinate_index]
                 param_2_1 = (Re_derivative_r + (Re_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
                 param_2_2 = (Im_derivative_r + (Im_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
-                cost_funciton_r = ((2 * np.pi * cscillation_frequency * density * Im_r.reshape((-1, 1))
+                cost_funciton_r = ((2 * np.pi * oscillation_frequency * density * Im_r.reshape((-1, 1))
                                     - (viscositys * param_2_1)) ** 2) + \
-                                  ((2 * np.pi * cscillation_frequency * density * Re_r.reshape((-1, 1)) +
+                                  ((2 * np.pi * oscillation_frequency * density * Re_r.reshape((-1, 1)) +
                                     (viscositys * param_2_2)) ** 2)
                 cost_function.append(cost_funciton_r)
 
