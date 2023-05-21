@@ -325,12 +325,14 @@ class Analysis:
                     elif idx == 2:
                         temp = [middle_viscosity, viscosity_limits[1]]
                     else:
-                        print("#coordinate_index = " + str(coordinate_index))
+                        print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
+                              f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
+                              f'   '
+                              f'{"ERROR":<{viscosity_width}}'
+                              f'{shear_rate_of_now_window[coordinate_index]:<{shear_rate_width}.5g}')
                         print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
-                              "The effective_viscosity value at this location may exceed the defined maximum, effective_viscosity may be "
-                              "bigger than " + str(max_viscosity) + '.')
-                        print(f"\033[1m{'slice':<{slice_width}}{'index':<{index_width}}{'index':<{index_width}}"
-                              f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
+                              "The effective_viscosity value at this location may exceed the defined maximum"
+                              "(" + str(max_viscosity) + ').')
                         effective_viscosity.append(-1)
                         viscosity_limits = [0.5, max_viscosity]
                         err_time += 1
