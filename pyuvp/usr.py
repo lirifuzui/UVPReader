@@ -78,8 +78,10 @@ class Analysis:
         self.__cylinder_freq = None
 
         self.__shear_rate: np.ndarray | None = None
-        self.__viscosity: np.ndarray | None = None
-        self.__elasticity: np.ndarray | None = None
+        self.__viscosity_cSt: np.ndarray | None = None
+
+        self.__viscoelastic_viscosity_Pas: np.ndarray | None = None
+        self.__viscoelastic_delta: np.ndarray | None = None
 
         self.__ignoreUSRException = ignoreException
 
@@ -127,7 +129,7 @@ class Analysis:
             self.__vel_data[i] = self.__vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]
 
-    def slicing(self, number_of_slice: int = 5):
+    def slicing(self, number_of_slice: int = 5, slice_size: None | int = None, ignoreException=False):
         self.__number_of_windows = number_of_slice
         max_index = self.__slice[0][1]
 
@@ -159,6 +161,8 @@ class Analysis:
                 self.__time_series.append(self.__time_series[0][start:end])
                 self.__vel_data.append(self.__vel_data[0][start:end, :])
                 self.__slice.append([start, end])
+        if slice_size is not None:
+            self.sliceSize(slice_size, ignoreException)
 
     def sliceSize(self, slice_length, ignoreException=False):
         if slice_length < self.__slice[0][1] // self.__number_of_windows and not ignoreException:
@@ -351,10 +355,10 @@ class Analysis:
                     print("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
                     raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
         self.__shear_rate = np.array(effective_shear_rate)
-        self.__viscosity = np.array(effective_viscosity)
+        self.__viscosity_cSt = np.array(effective_viscosity)
         print('\033[1m------------------------------------------------------')
         print("Calculation Complete.\033[0m")
-        return self.__shear_rate, self.__viscosity
+        return self.__shear_rate, self.__viscosity_cSt
 
     def rheologyViscoelasticity(self, density, max_viscosity: int | float = 30000,
                                 smooth_level: int = 11, ignoreException=False):
@@ -365,11 +369,11 @@ class Analysis:
         self.__coordinate_series *= 0.001
         if self.__cylinder_radius is None:
             raise ValueError("You must define cylinder container Geometry first！")
-        effective_shear_rate = []
+        shear_rate = []
         cost_function = []
-        viscosity_pas = []
-        elasticity = []
-        deltas = np.linspace(0.01, np.pi / 2 - 0.01, 100).reshape((-1, 1))
+        delta = []
+        viscosity = []
+        deltas = np.linspace(0.01, np.pi / 2 - 0.01, 100)
         viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), max_viscosity)
         for window in range(self.__number_of_windows + 1):
             oscillation_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
@@ -382,25 +386,35 @@ class Analysis:
             param_1 = real_part_derivative - (real_part / self.__coordinate_series)
             param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
-            effective_shear_rate.extend(shear_rate_of_now_window)
+            shear_rate.extend(shear_rate_of_now_window)
             # Calculate viscoelastcity.
-            Re = param_1 + (param_2 / np.tan(deltas))
-            Im = -(param_1 / np.tan(deltas)) + param_2
-            Re_derivative = np.gradient(Re, self.__coordinate_series, edge_order=3, axis=1)
-            Im_derivative = np.gradient(Im, self.__coordinate_series, edge_order=3, axis=1)
+            Re = param_1 + (param_2 / np.tan(deltas.reshape((-1, 1))))
+            Im = -(param_1 / np.tan(deltas.reshape((-1, 1)))) + param_2
+            Re_derivative = np.gradient(Re, self.__coordinate_series, edge_order=2, axis=1)
+            Im_derivative = np.gradient(Im, self.__coordinate_series, edge_order=2, axis=1)
             for coordinate_index in range(len(self.__coordinate_series)):
                 Re_r = Re[:, coordinate_index]
                 Im_r = Im[:, coordinate_index]
                 Re_derivative_r = Re_derivative[:, coordinate_index]
                 Im_derivative_r = Im_derivative[:, coordinate_index]
                 coordinate = self.__coordinate_series[coordinate_index]
-                param_2_1 = (Re_derivative_r + (Re_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
-                param_2_2 = (Im_derivative_r + (Im_r * 2 / coordinate)).reshape((-1, 1)) * (np.sin(deltas) ** 2)
+                param_2_1 = (Re_derivative_r + (Re_r * 2 / coordinate)).reshape((-1, 1)) * (
+                            np.sin(deltas.reshape((-1, 1))) ** 2)
+                param_2_2 = (Im_derivative_r + (Im_r * 2 / coordinate)).reshape((-1, 1)) * (
+                            np.sin(deltas.reshape((-1, 1))) ** 2)
                 cost_funciton_r = ((2 * np.pi * oscillation_frequency * density * imag_part[coordinate_index])
                                    + (viscositys * param_2_1)) ** 2 + \
                                   ((2 * np.pi * oscillation_frequency * density * real_part[coordinate_index])
                                    - (viscositys * param_2_2)) ** 2
                 cost_function.append(cost_funciton_r)
+                min_index_flat = np.argmin(cost_funciton_r)
+                min_index = np.unravel_index(min_index_flat, cost_funciton_r.shape)
+                delta.append(deltas[min_index[0]])
+                viscosity.append(viscositys[min_index[1]])
+        self.__shear_rate = np.array(shear_rate)
+        self.__viscoelasticity_viscosity = np.array(viscosity)
+        self.__viscoelastic_delta = np.array(delta)
+        return self.__shear_rate, self.__viscoelasticity_viscosity, self.__viscoelastic_delta, cost_function
 
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]
