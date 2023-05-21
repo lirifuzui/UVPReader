@@ -2,12 +2,13 @@ import matplotlib.pyplot as plt
 
 from pyuvp import uvp
 
-files = ["05hz90deg.mfprof", "05hz105deg.mfprof", "05hz120deg.mfprof", "05hz135deg.mfprof", "05hz150deg.mfprof"]
-
+# files = ["05hz90deg.mfprof", "05hz105deg.mfprof", "05hz120deg.mfprof", "05hz135deg.mfprof", "05hz150deg.mfprof"]
+files = ["1hz60deg.mfprof", "1hz65deg.mfprof", "1hz75deg.mfprof", "1hz80deg.mfprof", "1hz90deg.mfprof", ]
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 plt.ylim(500, 2500)
+plt.xlim(1, 10)
 
 for file in files:
     data = uvp.readData(file)
