@@ -9,8 +9,9 @@ files = ["day2-1hz60deg.mfprof", "day2-1hz90deg.mfprof", "day2-1hz120deg.mfprof"
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
-plt.ylim(500, 2500)
-plt.xlim(1, 10)
+# plt.ylim(500, 2500)
+# plt.ylim(0, 3)
+# plt.xlim(1, 10)
 
 for file in files:
     data = uvp.readData(file)
@@ -20,20 +21,16 @@ for file in files:
     analysis = data.createUSRAnalysis()
     analysis.channelRange(65, 100)
     analysis.cylinderGeom(77, 79, 10.615)
-    analysis.slicing(20)
-    analysis.sliceSize(5000)
+    # analysis.slicing(20)
+    # analysis.sliceSize(5000)
 
-    shearrate, visc = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
+    # shearrate, visc = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
+    # plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
 
-    # analysis.slicing(0)
-    # shearrate, viscoic, elastic, _ = analysis.rheologyViscoelasticity(1000)
-
-    '''visc_t = visc.reshape((6, 30))
-    shearrate_t = shearrate.reshape((6, 30))
-    visc = np.sum(visc_t, axis=0) / 41
-    shearrate = np.sum(shearrate_t, axis=0) / 41
-    plt.scatter(shearrate, visc, label=file)'''
-    plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
+    analysis.slicing(2)
+    # analysis.sliceSize(2500)
+    shearrate, viscoic, elastic, _ = analysis.rheologyViscoelasticity(1000)
+    plt.scatter(shearrate, viscoic, s=5, alpha=0.3, label=file)
 
 plt.grid()
 # plt.legend()

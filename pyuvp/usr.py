@@ -129,6 +129,9 @@ class Analysis:
             self.__vel_data[i] = self.__vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]
 
+    def expandChannels(self, level: int = 1):
+        None
+
     def slicing(self, number_of_slice: int = 5, slice_size: None | int = None, ignoreException=False):
         self.__number_of_windows = number_of_slice
         max_index = self.__slice[0][1]
@@ -251,6 +254,8 @@ class Analysis:
                           smooth_level: int = 11, ignoreException=False):
         # max_viscosity _cSt
         # viscosity_range_tolerance _cSt
+        if len(self.__coordinate_series) < 20:
+            raise USRException("The number of coordinate must be greater than 20!")
         if self.__cylinder_radius is None and self.__pipe_TDXangle is None:
             raise ValueError("You must define Container Geometry first！")
         effective_shear_rate = []
@@ -366,9 +371,8 @@ class Analysis:
                                 smooth_level: int = 11, ignoreException=False):
         # density _kg/m3
         # max_viscosity _cSt
-        for i in range(len(self.__vel_data)):
-            self.__vel_data[i] *= 0.001
-        self.__coordinate_series *= 0.001
+        if len(self.__coordinate_series) < 20:
+            raise USRException("The number of channels is less than 20!")
         if self.__cylinder_radius is None:
             raise ValueError("You must define cylinder container Geometry first！")
         shear_rate = []
@@ -377,36 +381,38 @@ class Analysis:
         viscosity = []
         deltas = np.linspace(0.01, np.pi / 2 - 0.01, 100)
         viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), max_viscosity)
+
+        coordinate_series = self.__coordinate_series * 0.001
         for window in range(self.__number_of_windows + 1):
             oscillation_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
                                                                                  derivative_smoother_factor=smooth_level)
             # Calculate effective shear rate.
-            real_part_derivative = Tools.derivative(real_part, self.__coordinate_series,
+            real_part_derivative = Tools.derivative(real_part * 0.001, coordinate_series,
                                                     derivative_smoother_factor=5)
-            imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series,
+            imag_part_derivative = Tools.derivative(imag_part * 0.001, coordinate_series,
                                                     derivative_smoother_factor=5)
-            param_1 = real_part_derivative - (real_part / self.__coordinate_series)
-            param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
+            param_1 = real_part_derivative - (real_part * 0.001 / coordinate_series)
+            param_2 = imag_part_derivative - (imag_part * 0.001 / coordinate_series)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
             shear_rate.extend(shear_rate_of_now_window)
             # Calculate viscoelastcity.
             Re = param_1 + (param_2 / np.tan(deltas.reshape((-1, 1))))
             Im = -(param_1 / np.tan(deltas.reshape((-1, 1)))) + param_2
-            Re_derivative = np.gradient(Re, self.__coordinate_series, edge_order=2, axis=1)
-            Im_derivative = np.gradient(Im, self.__coordinate_series, edge_order=2, axis=1)
-            for coordinate_index in range(len(self.__coordinate_series)):
+            Re_derivative = np.gradient(Re, coordinate_series, edge_order=2, axis=1)
+            Im_derivative = np.gradient(Im, coordinate_series, edge_order=2, axis=1)
+            for coordinate_index in range(len(coordinate_series)):
                 Re_r = Re[:, coordinate_index]
                 Im_r = Im[:, coordinate_index]
                 Re_derivative_r = Re_derivative[:, coordinate_index]
                 Im_derivative_r = Im_derivative[:, coordinate_index]
-                coordinate = self.__coordinate_series[coordinate_index]
+                coordinate = coordinate_series[coordinate_index]
                 param_2_1 = (Re_derivative_r + (Re_r * 2 / coordinate)).reshape((-1, 1)) * (
-                            np.sin(deltas.reshape((-1, 1))) ** 2)
+                        np.sin(deltas.reshape((-1, 1))) ** 2)
                 param_2_2 = (Im_derivative_r + (Im_r * 2 / coordinate)).reshape((-1, 1)) * (
-                            np.sin(deltas.reshape((-1, 1))) ** 2)
-                cost_funciton_r = ((2 * np.pi * oscillation_frequency * density * imag_part[coordinate_index])
+                        np.sin(deltas.reshape((-1, 1))) ** 2)
+                cost_funciton_r = ((2 * np.pi * oscillation_frequency * density * imag_part[coordinate_index] * 0.001)
                                    + (viscositys * param_2_1)) ** 2 + \
-                                  ((2 * np.pi * oscillation_frequency * density * real_part[coordinate_index])
+                                  ((2 * np.pi * oscillation_frequency * density * real_part[coordinate_index] * 0.001)
                                    - (viscositys * param_2_2)) ** 2
                 cost_function.append(cost_funciton_r)
                 min_index_flat = np.argmin(cost_funciton_r)
