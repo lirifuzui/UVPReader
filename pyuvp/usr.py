@@ -383,6 +383,15 @@ class Analysis:
         deltas = np.linspace(0.01, np.pi / 2 - 0.01, 100)
         viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), max_viscosity)
 
+        # Format the output.
+        slice_width = 8
+        index_width = 8
+        search_range_width = 26
+        viscosity_width = 16
+        shear_rate_width = 10
+        print("\033[1mCalculation Start:")
+        print('------------------------------------------------------')
+
         coordinate_series = self.__coordinate_series * 0.001
         for window in range(self.__number_of_windows + 1):
             oscillation_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
