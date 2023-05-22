@@ -10,8 +10,8 @@ plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 # plt.ylim(500, 2500)
-# plt.ylim(0, 3)
-# plt.xlim(1, 10)
+plt.ylim(0, 3)
+plt.xlim(1, 10)
 
 for file in files:
     data = uvp.readData(file)
@@ -30,7 +30,7 @@ for file in files:
     analysis.slicing(2)
     # analysis.sliceSize(2500)
     shearrate, viscoic, elastic, _ = analysis.rheologyViscoelasticity(1000)
-    plt.scatter(shearrate, viscoic, s=5, alpha=0.3, label=file)
+    plt.scatter(shearrate, elastic, s=5, alpha=0.3, label=file)
 
 plt.grid()
 # plt.legend()

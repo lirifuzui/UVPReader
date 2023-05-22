@@ -375,6 +375,7 @@ class Analysis:
             raise USRException("The number of channels is less than 20!")
         if self.__cylinder_radius is None:
             raise ValueError("You must define cylinder container Geometry first！")
+        useful_range = [4, -4]
         shear_rate = []
         cost_function = []
         delta = []
@@ -394,12 +395,16 @@ class Analysis:
             param_1 = real_part_derivative - (real_part * 0.001 / coordinate_series)
             param_2 = imag_part_derivative - (imag_part * 0.001 / coordinate_series)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
-            shear_rate.extend(shear_rate_of_now_window)
+            shear_rate.extend(shear_rate_of_now_window[useful_range[0]: useful_range[1]])
             # Calculate viscoelastcity.
             Re = param_1 + (param_2 / np.tan(deltas.reshape((-1, 1))))
             Im = -(param_1 / np.tan(deltas.reshape((-1, 1)))) + param_2
-            Re_derivative = np.gradient(Re, coordinate_series, edge_order=2, axis=1)
-            Im_derivative = np.gradient(Im, coordinate_series, edge_order=2, axis=1)
+            Re_derivative = np.gradient(Re, coordinate_series, axis=1)
+            Im_derivative = np.gradient(Im, coordinate_series, axis=1)
+
+            cost_function_of_now_window = []
+            delta_of_now_window = []
+            viscosity_of_now_window = []
             for coordinate_index in range(len(coordinate_series)):
                 Re_r = Re[:, coordinate_index]
                 Im_r = Im[:, coordinate_index]
@@ -414,15 +419,22 @@ class Analysis:
                                    + (viscositys * param_2_1)) ** 2 + \
                                   ((2 * np.pi * oscillation_frequency * density * real_part[coordinate_index] * 0.001)
                                    - (viscositys * param_2_2)) ** 2
-                cost_function.append(cost_funciton_r)
                 min_index_flat = np.argmin(cost_funciton_r)
                 min_index = np.unravel_index(min_index_flat, cost_funciton_r.shape)
-                delta.append(deltas[min_index[0]])
-                viscosity.append(viscositys[min_index[1]])
+
+                cost_function_of_now_window.append(cost_funciton_r)
+                delta_of_now_window.append(deltas[min_index[0]])
+                viscosity_of_now_window.append(viscositys[min_index[1]])
+
+            cost_function.extend(cost_function_of_now_window[useful_range[0]: useful_range[1]])
+            delta.extend(delta_of_now_window[useful_range[0]: useful_range[1]])
+            viscosity.extend(viscosity_of_now_window[useful_range[0]: useful_range[1]])
+            print("ok")
+
         self.__shear_rate = np.array(shear_rate)
-        self.__viscoelasticity_viscosity = np.array(viscosity)
+        self.__viscoelastic_viscosity_Pas = np.array(viscosity)
         self.__viscoelastic_delta = np.array(delta)
-        return self.__shear_rate, self.__viscoelasticity_viscosity, self.__viscoelastic_delta, cost_function
+        return self.__shear_rate, self.__viscoelastic_viscosity_Pas, self.__viscoelastic_delta, cost_function
 
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]
