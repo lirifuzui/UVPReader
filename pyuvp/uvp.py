@@ -53,6 +53,8 @@ class readData:
         # self.statistic = Statistic(vel_data=self.velTable, echo_data=self.echoTable)
 
     def __output_files(self) -> None:
+        # Output some basic information about UVP.
+        # Write to a file called "UVPconfig.txt".
         os.mkdir(self.__output_path)
         with open(self.__output_path + "/" + "UVPconfig.csv", "w") as outputfile:
             None
