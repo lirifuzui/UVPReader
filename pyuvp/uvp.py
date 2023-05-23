@@ -54,6 +54,8 @@ class readData:
 
     def __output_files(self) -> None:
         os.mkdir(self.__output_path)
+        with open(self.__output_path + "/" + "UVPconfig.csv", "w") as outputfile:
+            None
 
     def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
