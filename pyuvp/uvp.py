@@ -254,9 +254,3 @@ class readData:
     def coordinateSeries(self):
         # coordinate _mm
         return self.__coordinate_series_list
-
-    def show_info(self):
-        None
-
-    def get_log(self):
-        None
