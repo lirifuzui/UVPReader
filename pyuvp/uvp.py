@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from struct import unpack
 
 import numpy as np
@@ -19,8 +20,12 @@ class FileException(Exception):
 
 class readData:
     def __init__(self, file_path):
-        # Read the file root path.
-        self.__mfporfFile_root_path = os.path.abspath(os.path.join(file_path, os.pardir))
+        # Defines the output files location.
+        # If file_path is not a full path, write the output file to the "temp" folder.
+        is_complete = os.path.isabs(file_path)
+        current_time = datetime.now()
+        output_folder_name = current_time.strftime("%Y%m%d%H%M%S")
+        self.__output_path = os.path.abspath(os.path.join(file_path, os.pardir)) + "/" + output_folder_name
 
         # To store the important UVP configuration parameters
         self.__measurement_info = {}
@@ -44,9 +49,11 @@ class readData:
         # Run the function “__read_data”, and store the data in the corresponding class variables respectively.
         self.__read_data(file_path)
 
-
         # 实例化统计和分析数据类。
         # self.statistic = Statistic(vel_data=self.velTable, echo_data=self.echoTable)
+
+    def __output_files(self) -> None:
+        os.mkdir(self.__output_path)
 
     def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
@@ -214,6 +221,8 @@ class readData:
 
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
         self.redefineSoundSpeed(self.__measurement_info['SoundSpeed'])
+        # Output Data.
+        self.__output_files()
 
     def createUSRAnalysis(self, tdx_num=0, ignoreException=False):
         return pyuvp.usr.Analysis(tdx_num=tdx_num, vel_data=self.velTables, time_series=self.timeSeries,
