@@ -1,3 +1,4 @@
+import os
 from struct import unpack
 
 import numpy as np
@@ -18,6 +19,9 @@ class FileException(Exception):
 
 class readData:
     def __init__(self, file_path):
+        # Read the file root path.
+        self.__mfporfFile_root_path = os.path.abspath(os.path.join(file_path, os.pardir))
+
         # To store the important UVP configuration parameters
         self.__measurement_info = {}
         self.__mux_config_params = {}
@@ -181,28 +185,32 @@ class readData:
             self.__coordinate_series_list.append(coordinate_series)
 
     def __read_data(self, file_path) -> None:
-        with open(file_path, 'rb') as uvpDatafile:
-            try:
-                self.__read_params_part_I(uvpDatafile)
-                self.__read_params_part_II(uvpDatafile)
-                # read velocity file_data and echo_data file_data
-                self.__raw_vel_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
-                                                self.__measurement_info['NumberOfChannels']))
-                self.__raw_echo_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
-                                                 self.__measurement_info['NumberOfChannels']))
-            except np.core._exceptions._ArrayMemoryError:
-                raise FileException("'.mfprof' file may be corrupted or altered."
-                                    "'Number of Profiles' and 'Number of Channels' are beyond normal limits.")
-            uvpDatafile.seek(104)
-            for i in range(self.__measurement_info['NumberOfProfiles']):
-                uvpDatafile.seek(16, 1)
-                if self.__measurement_info['DoNotStoreDoppler'] != 1:
-                    encode_vel_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
-                    datatype = '{}h'.format(self.__measurement_info['NumberOfChannels'])
-                    self.__raw_vel_data[i] = unpack(datatype, encode_vel_data)
-                if self.__measurement_info['AmplitudeStored']:
-                    encode_echo_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
-                    self.__raw_echo_data[i] = unpack(datatype, encode_echo_data)
+        try:
+            uvpDatafile = open(file_path, 'rb')
+        except FileNotFoundError:
+            raise FileException("File not found.")
+        try:
+            self.__read_params_part_I(uvpDatafile)
+            self.__read_params_part_II(uvpDatafile)
+            # read velocity file_data and echo_data file_data
+            self.__raw_vel_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
+                                            self.__measurement_info['NumberOfChannels']))
+            self.__raw_echo_data = np.zeros((self.__measurement_info['NumberOfProfiles'],
+                                             self.__measurement_info['NumberOfChannels']))
+        except np.core._exceptions._ArrayMemoryError:
+            raise FileException("'.mfprof' file may be corrupted or altered."
+                                "'Number of Profiles' and 'Number of Channels' are beyond normal limits.")
+        uvpDatafile.seek(104)
+        datatype = '{}h'.format(self.__measurement_info['NumberOfChannels'])
+        for i in range(self.__measurement_info['NumberOfProfiles']):
+            uvpDatafile.seek(16, 1)
+            if self.__measurement_info['DoNotStoreDoppler'] != 1:
+                encode_vel_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
+                self.__raw_vel_data[i] = unpack(datatype, encode_vel_data)
+            if self.__measurement_info['AmplitudeStored']:
+                encode_echo_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
+                self.__raw_echo_data[i] = unpack(datatype, encode_echo_data)
+        uvpDatafile.close()
 
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
         self.redefineSoundSpeed(self.__measurement_info['SoundSpeed'])

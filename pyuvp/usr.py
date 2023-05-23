@@ -80,7 +80,7 @@ class Analysis:
         self.__shear_rate: np.ndarray | None = None
         self.__viscosity_cSt: np.ndarray | None = None
 
-        self.__viscoelastic_viscosity_Pas: np.ndarray | None = None
+        self.__viscosity_Pas: np.ndarray | None = None
         self.__viscoelastic_delta: np.ndarray | None = None
 
         self.__ignoreUSRException = ignoreException
@@ -386,7 +386,7 @@ class Analysis:
         # Format the output.
         slice_width = 8
         index_width = 8
-        search_range_width = 26
+        viscoelasticity_width = 16
         viscosity_width = 16
         shear_rate_width = 10
         print("\033[1mCalculation Start:")
@@ -441,9 +441,9 @@ class Analysis:
             print("ok")
 
         self.__shear_rate = np.array(shear_rate)
-        self.__viscoelastic_viscosity_Pas = np.array(viscosity)
+        self.__viscosity_Pas = np.array(viscosity)
         self.__viscoelastic_delta = np.array(delta)
-        return self.__shear_rate, self.__viscoelastic_viscosity_Pas, self.__viscoelastic_delta, cost_function
+        return self.__shear_rate, self.__viscosity_Pas, self.__viscoelastic_delta, cost_function
 
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]

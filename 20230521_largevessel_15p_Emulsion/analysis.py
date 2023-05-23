@@ -27,9 +27,9 @@ for file in files:
     # shearrate, visc = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
     # plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
 
-    analysis.slicing(10)
+    analysis.slicing(0)
     # analysis.sliceSize(2500)
-    shearrate, viscoic, elastic, _ = analysis.rheologyViscoelasticity(1000)
+    shearrate, viscoic, viscoelastic, _ = analysis.rheologyViscoelasticity(1000)
     plt.scatter(shearrate, viscoic, s=5, alpha=0.3, label=file)
 
 plt.grid()
