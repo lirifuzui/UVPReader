@@ -12,8 +12,8 @@ files = ["day3-15hz60deg.mfprof", "day3-15hz75deg.mfprof", "day3-15hz90deg.mfpro
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
-plt.ylim(500, 2500)
-# plt.ylim(0, 3)
+#plt.ylim(500, 2500)
+plt.ylim(0, 3)
 plt.xlim(1, 15)
 
 for file in files:
@@ -27,13 +27,13 @@ for file in files:
     analysis.slicing(20)
     analysis.sliceSize(5000)
 
-    shearrate, visc = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
-    plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
+    #shearrate, visc = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
+    #plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
 
-    # analysis.slicing(0)
-    # analysis.sliceSize(2500)
-    # shearrate, viscoic, viscoelastic, _ = analysis.rheologyViscoelasticity(1000)
-    # plt.scatter(shearrate, viscoic, s=5, alpha=0.3, label=file)
+    analysis.slicing(5)
+    analysis.sliceSize(3000)
+    shearrate, viscoic, viscoelastic, _ = analysis.rheologyViscoelasticity(1000)
+    plt.scatter(shearrate, viscoelastic, s=5, alpha=0.3, label=file)
 
 plt.grid()
 # plt.legend()
