@@ -19,7 +19,7 @@ plt.xlim(1, 15)
 for file in files:
     data = uvp.readData(file)
     # data.redefineSoundSpeed(1029)
-    vel_origin = data.velTables[0]
+    '''vel_origin = data.velTables[0]
     coords_origin = data.coordinateSeries[0]
     analysis = data.createUSRAnalysis()
     analysis.channelRange(65, 100)
@@ -33,7 +33,7 @@ for file in files:
     analysis.slicing(5)
     analysis.sliceSize(3000)
     shearrate, viscoic, viscoelastic, _ = analysis.rheologyViscoelasticity(1000)
-    plt.scatter(shearrate, viscoelastic, s=5, alpha=0.3, label=file)
+    plt.scatter(shearrate, viscoelastic, s=5, alpha=0.3, label=file)'''
 
 plt.grid()
 # plt.legend()

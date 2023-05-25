@@ -6,8 +6,7 @@ import numpy as np
 
 import pyuvp
 
-ON = 1
-OFF = 0
+ON, OFF = 1, 0
 
 
 class FileException(Exception):
@@ -48,7 +47,6 @@ class readData:
 
         # Run the function “__read_data”, and store the data in the corresponding class variables respectively.
         self.__read_data(file_path)
-
         # 实例化统计和分析数据类。
         # self.statistic = Statistic(vel_data=self.velTable, echo_data=self.echoTable)
 
@@ -56,8 +54,40 @@ class readData:
         # Output some basic information about UVP.
         # Write to a file called "UVPconfig.txt".
         os.mkdir(self.__output_path)
-        with open(self.__output_path + "/" + "UVPconfig.csv", "w") as outputfile:
-            None
+        if self.__measurement_info['UseMultiplexer']:
+            configs = self.__mux_config_params['MultiplexerConfiguration']
+            for n, config in enumerate(configs):
+                if config[0] == 1:
+                    rows, cols = self.__vel_data_list[n].shape
+                    output_vel_data = np.zeros((rows + 1, cols + 1), dtype=self.__vel_data_list[n].dtype)
+                    output_vel_data[1:, 1:] = self.__vel_data_list[n]
+                    output_vel_data[0, 1:] = self.__coordinate_series_list[n]
+                    output_vel_data[1:, 0] = self.__time_series_list[n]
+                    rows, cols = self.__echo_data_list[n].shape
+                    output_echo_data = np.zeros((rows + 1, cols + 1), dtype=self.__echo_data_list[n].dtype)
+                    output_echo_data[1:, 1:] = self.__echo_data_list[n]
+                    output_echo_data[0, 1:] = self.__coordinate_series_list[n]
+                    output_echo_data[1:, 0] = self.__time_series_list[n]
+
+                    np.savetxt(self.__output_path + "/" + "UVP_sourceData_multiplexer#" + str(int(config[1])) +
+                               "_vel_data.csv", output_vel_data, delimiter=',')
+                    np.savetxt(self.__output_path + "/" + "UVP_sourceData_multiplexer#" + str(int(config[1])) +
+                               "_echo_data.csv", output_echo_data, delimiter=',')
+        else:
+            rows, cols = self.__vel_data_list[0].shape
+            output_vel_data = np.zeros((rows + 1, cols + 1), dtype=self.__vel_data_list[0].dtype)
+            output_vel_data[1:, 1:] = self.__vel_data_list[0]
+            output_vel_data[0, 1:] = self.__coordinate_series_list[0]
+            output_vel_data[1:, 0] = self.__time_series_list[0]
+            rows, cols = self.__echo_data_list[0].shape
+            output_echo_data = np.zeros((rows + 1, cols + 1), dtype=self.__echo_data_list[0].dtype)
+            output_echo_data[1:, 1:] = self.__echo_data_list[0]
+            output_echo_data[0, 1:] = self.__coordinate_series_list[0]
+            output_echo_data[1:, 0] = self.__time_series_list[0]
+            np.savetxt(self.__output_path + "/" + "UVP_sourceData_singleTDX_vel_data.csv",
+                       output_vel_data, delimiter=',')
+            np.savetxt(self.__output_path + "/" + "UVP_sourceData_singleTDX_echo_data.csv",
+                       output_echo_data, delimiter=',')
 
     def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
@@ -125,7 +155,6 @@ class readData:
             self.__mux_config_params[name] = value
         mux_config = [list(map(float, item.split())) for item in mux_config_params_list[index_3 + 1:]]
         self.__mux_config_params['MultiplexerConfiguration'] = mux_config
-
 
     # Redefine the speed of sound and modify the data.
     def redefineSoundSpeed(self, new_sound_speed) -> None:
@@ -254,3 +283,7 @@ class readData:
     def coordinateSeries(self):
         # coordinate _mm
         return self.__coordinate_series_list
+
+    @property
+    def output_path(self):
+        return self.__output_path
