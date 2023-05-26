@@ -68,7 +68,6 @@ class readData:
                     output_echo_data[1:, 1:] = self.__echo_data_list[n]
                     output_echo_data[0, 1:] = self.__coordinate_series_list[n]
                     output_echo_data[1:, 0] = self.__time_series_list[n]
-
                     np.savetxt(self.__output_path + "/" + "UVP_sourceData_multiplexer#" + str(int(config[1])) +
                                "_vel_data.csv", output_vel_data, delimiter=',')
                     np.savetxt(self.__output_path + "/" + "UVP_sourceData_multiplexer#" + str(int(config[1])) +
