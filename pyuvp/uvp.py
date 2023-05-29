@@ -6,8 +6,6 @@ import numpy as np
 
 import pyuvp
 
-ON, OFF = 1, 0
-
 
 class FileException(Exception):
     def __init__(self, message):
@@ -18,10 +16,10 @@ class FileException(Exception):
 
 
 class readData:
-    def __init__(self, file_path):
+    def __init__(self, file_path, is_output=False):
         # Defines the output files location.
         # If file_path is not a full path, write the output file to the "temp" folder.
-        is_complete = os.path.isabs(file_path)
+        self.__is_output = is_output
         current_time = datetime.now()
         output_folder_name = current_time.strftime("%Y%m%d%H%M%S")
         self.__output_path = os.path.abspath(os.path.join(file_path, os.pardir)) + "/" + output_folder_name
@@ -254,7 +252,8 @@ class readData:
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
         self.redefineSoundSpeed(self.__measurement_info['SoundSpeed'])
         # Output Data.
-        self.__output_files()
+        if self.__is_output is True:
+            self.__output_files()
 
     def createUSRAnalysis(self, tdx_num=0, ignoreException=False):
         return pyuvp.usr.Analysis(tdx_num=tdx_num, vel_data=self.velTables, time_series=self.timeSeries,
