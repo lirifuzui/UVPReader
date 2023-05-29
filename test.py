@@ -1,3 +1,4 @@
-from pyuvp import uvp
+import multiprocessing
 
-data = uvp.readData("uvp073008.mfprof")
+cpu_count = multiprocessing.cpu_count()
+print("CPU 线程数:", cpu_count)

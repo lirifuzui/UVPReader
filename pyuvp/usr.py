@@ -53,7 +53,9 @@ class Statistic:
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
-                 ignoreException=False):
+                 multithreads: int = OFF, ignoreException=False):
+        # number of threads used.
+        self.__multithreading = multithreads
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
@@ -129,8 +131,6 @@ class Analysis:
             self.__vel_data[i] = self.__vel_data[i][:, start:end]
         self.__coordinate_series = self.__coordinate_series[start:end]
 
-    def expandChannels(self, level: int = 1):
-        None
 
     def slicing(self, number_of_slice: int = 5, slice_size: None | int = None, ignoreException=False):
         self.__number_of_windows = number_of_slice

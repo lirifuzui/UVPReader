@@ -1,3 +1,5 @@
+import multiprocessing
+
 import numpy as np
 from scipy.signal import savgol_filter
 
@@ -36,3 +38,17 @@ def derivative(array_y, array_x, derivative_smoother_factor: int = OFF):
     else:
         array_y_smooth = savgol_filter(array_y, window_length=derivative_smoother_factor, polyorder=1)
         return np.gradient(array_y_smooth, array_x)
+
+
+def logical_processors():
+    # The number of logical cores of the cpu.
+    cpu_count = multiprocessing.cpu_count()
+    # enable multithreading.
+    multithread = OFF
+    if 4 < cpu_count <= 8:
+        multithread = 4
+    elif 8 < cpu_count <= 12:
+        multithread = 8
+    elif 12 < cpu_count:
+        multithread = 12
+    return multithread
