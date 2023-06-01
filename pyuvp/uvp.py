@@ -15,7 +15,7 @@ class FileException(Exception):
         return f"{self.message}"
 
 
-class readData:
+class readUvpFile:
     def __init__(self, file_path, is_output=False):
         # Defines the output files location.
         # If file_path is not a full path, write the output file to the "temp" folder.
@@ -36,12 +36,12 @@ class readData:
         # Notice! ! !
         # When using mux, due to the physical conversion of the signal output of tdx,
         # The time delay set by the user should meet at least 200 ms.
-        self.__vel_data_list = []
-        self.__echo_data_list = []
-        self.__time_series_list = []
+        self.__vel_arr_tdxs = []
+        self.__echo_arr_tdxs = []
+        self.__time_arr_tdxs = []
         # Although the coordinate series of each tdx data is the same, it is still stored in a list for ease of use.
         # Each item of the list is the same coordinate series.
-        self.__coordinate_series_list = []
+        self.__coords_arr_tdxs = []
 
         # Run the function “__read_data”, and store the data in the corresponding class variables respectively.
         self.__read_data(file_path)
@@ -52,39 +52,26 @@ class readData:
         # Output some basic information about UVP.
         # Write to a file called "UVPconfig.txt".
         os.mkdir(self.__output_path)
+
+        def save_data_to_csv(data, filename):
+            rows, cols = data.shape
+            output_data = np.zeros((rows + 1, cols + 1), dtype=data.dtype)
+            output_data[1:, 1:] = data
+            output_data[0, 1:] = self.__coords_arr_tdxs[0]
+            output_data[1:, 0] = self.__time_arr_tdxs[0]
+            np.savetxt(self.__output_path + "/" + filename, output_data, delimiter=',')
+
         if self.__measurement_info['UseMultiplexer']:
             configs = self.__mux_config_params['MultiplexerConfiguration']
-            for n, config in enumerate(configs):
+            for tdx_num, config in enumerate(configs):
                 if config[0] == 1:
-                    rows, cols = self.__vel_data_list[n].shape
-                    output_vel_data = np.zeros((rows + 1, cols + 1), dtype=self.__vel_data_list[n].dtype)
-                    output_vel_data[1:, 1:] = self.__vel_data_list[n]
-                    output_vel_data[0, 1:] = self.__coordinate_series_list[n]
-                    output_vel_data[1:, 0] = self.__time_series_list[n]
-                    rows, cols = self.__echo_data_list[n].shape
-                    output_echo_data = np.zeros((rows + 1, cols + 1), dtype=self.__echo_data_list[n].dtype)
-                    output_echo_data[1:, 1:] = self.__echo_data_list[n]
-                    output_echo_data[0, 1:] = self.__coordinate_series_list[n]
-                    output_echo_data[1:, 0] = self.__time_series_list[n]
-                    np.savetxt(self.__output_path + "/" + "UVP_sourceData_multiplexer#" + str(int(config[1])) +
-                               "_vel_data.csv", output_vel_data, delimiter=',')
-                    np.savetxt(self.__output_path + "/" + "UVP_sourceData_multiplexer#" + str(int(config[1])) +
-                               "_echo_data.csv", output_echo_data, delimiter=',')
+                    save_data_to_csv(self.__vel_arr_tdxs[tdx_num],
+                                     "UVP_sourceData_multiplexer#" + str(int(config[1])) + "_vel_data.csv")
+                    save_data_to_csv(self.__echo_arr_tdxs[tdx_num],
+                                     "UVP_sourceData_multiplexer#" + str(int(config[1])) + "_echo_data.csv")
         else:
-            rows, cols = self.__vel_data_list[0].shape
-            output_vel_data = np.zeros((rows + 1, cols + 1), dtype=self.__vel_data_list[0].dtype)
-            output_vel_data[1:, 1:] = self.__vel_data_list[0]
-            output_vel_data[0, 1:] = self.__coordinate_series_list[0]
-            output_vel_data[1:, 0] = self.__time_series_list[0]
-            rows, cols = self.__echo_data_list[0].shape
-            output_echo_data = np.zeros((rows + 1, cols + 1), dtype=self.__echo_data_list[0].dtype)
-            output_echo_data[1:, 1:] = self.__echo_data_list[0]
-            output_echo_data[0, 1:] = self.__coordinate_series_list[0]
-            output_echo_data[1:, 0] = self.__time_series_list[0]
-            np.savetxt(self.__output_path + "/" + "UVP_sourceData_singleTDX_vel_data.csv",
-                       output_vel_data, delimiter=',')
-            np.savetxt(self.__output_path + "/" + "UVP_sourceData_singleTDX_echo_data.csv",
-                       output_echo_data, delimiter=',')
+            save_data_to_csv(self.__vel_arr_tdxs[0], "UVP_sourceData_singleTDX_vel_data.csv")
+            save_data_to_csv(self.__echo_arr_tdxs[0], "UVP_sourceData_singleTDX_echo_data.csv")
 
     def __read_params_part_I(self, uvp_datafile) -> None:
         # Read parameter information at the beginning of the file.
@@ -165,9 +152,9 @@ class readData:
 
         # 这段代码中时间序列没弄好，
         if self.__measurement_info['UseMultiplexer']:
-            self.__vel_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
-            self.__echo_data_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
-            self.__time_series_list = [[] for _ in range(int(self.__mux_config_params['Table']))]
+            self.__vel_arr_tdxs = [[] for _ in range(int(self.__mux_config_params['Table']))]
+            self.__echo_arr_tdxs = [[] for _ in range(int(self.__mux_config_params['Table']))]
+            self.__time_arr_tdxs = [[] for _ in range(int(self.__mux_config_params['Table']))]
 
             time_series = np.arange(0, self.__measurement_info['NumberOfProfiles'] *
                                     self.__measurement_info['SampleTime'], self.__measurement_info['SampleTime'])
@@ -179,12 +166,12 @@ class readData:
                 for tdx in range(int(self.__mux_config_params['Table'])):
                     if self.__mux_config_params['MultiplexerConfiguration'][tdx][0]:
                         number_of_read_lines = int(self.__mux_config_params['MultiplexerConfiguration'][tdx][2])
-                        self.__vel_data_list[tdx].extend(
+                        self.__vel_arr_tdxs[tdx].extend(
                             temp_vel_data[now_index:now_index + number_of_read_lines])
-                        self.__echo_data_list[tdx].extend(
+                        self.__echo_arr_tdxs[tdx].extend(
                             temp_echo_data[now_index:now_index + number_of_read_lines])
                         now_index += number_of_read_lines
-                        self.__time_series_list[tdx].extend(
+                        self.__time_arr_tdxs[tdx].extend(
                             time_series[now_index:now_index + number_of_read_lines] + time_plus)
                         if tdx + 1 < int(self.__mux_config_params['Table']):
                             time_plus += self.__mux_config_params['MultiplexerConfiguration'][tdx + 1][3]
@@ -196,20 +183,20 @@ class readData:
                 temp_echo_data = temp_echo_data[now_index:]
                 time_series = time_series[now_index:]
                 time_plus += self.__mux_config_params['CycleDelay']
-            self.__vel_data_list = [np.array(item) for item in self.__vel_data_list]
-            self.__echo_data_list = [np.array(item) for item in self.__echo_data_list]
+            self.__vel_arr_tdxs = [np.array(item) for item in self.__vel_arr_tdxs]
+            self.__echo_arr_tdxs = [np.array(item) for item in self.__echo_arr_tdxs]
 
         else:
             angle_coefficient = 1.0 / np.sin(self.__measurement_info['Angle'] * np.pi / 180)
             vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
             vel_data = self.__raw_vel_data * vel_resolution
             echo_data = self.__raw_echo_data
-            self.__vel_data_list.append(vel_data)
-            self.__echo_data_list.append(echo_data)
+            self.__vel_arr_tdxs.append(vel_data)
+            self.__echo_arr_tdxs.append(echo_data)
 
             time_series = np.arange(0, self.__measurement_info['NumberOfProfiles'] *
                                     self.__measurement_info['SampleTime'], self.__measurement_info['SampleTime'])
-            self.__time_series_list.append(time_series * 0.001)
+            self.__time_arr_tdxs.append(time_series * 0.001)
 
         # Store multiple coordinate series of tdx data into a list
         coordinate_series = np.arange(self.__measurement_info['StartChannel'], self.__measurement_info['StartChannel'] +
@@ -217,9 +204,9 @@ class readData:
                                           'ChannelDistance'] - self.__measurement_info['ChannelDistance'] * 0.5,
                                       self.__measurement_info['ChannelDistance']) * (new_sound_speed / sound_speed)
         if int(self.__mux_config_params['Table']):
-            self.__coordinate_series_list = [coordinate_series for _ in range(int(self.__mux_config_params['Table']))]
+            self.__coords_arr_tdxs = [coordinate_series for _ in range(int(self.__mux_config_params['Table']))]
         else:
-            self.__coordinate_series_list.append(coordinate_series)
+            self.__coords_arr_tdxs.append(coordinate_series)
 
     def __read_data(self, file_path) -> None:
         try:
@@ -266,21 +253,21 @@ class readData:
     @property
     def velTables(self):
         # velocity _mm/s
-        return self.__vel_data_list
+        return self.__vel_arr_tdxs
 
     @property
     def echoTables(self):
-        return self.__echo_data_list
+        return self.__echo_arr_tdxs
 
     @property
     def timeSeries(self):
         # time _s
-        return self.__time_series_list
+        return self.__time_arr_tdxs
 
     @property
     def coordinateSeries(self):
         # coordinate _mm
-        return self.__coordinate_series_list
+        return self.__coords_arr_tdxs
 
     @property
     def output_path(self):

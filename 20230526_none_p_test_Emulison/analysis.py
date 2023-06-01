@@ -11,7 +11,7 @@ plt.ylim(500, 2500)
 plt.xlim(1, 20)
 
 for file in files:
-    data = uvp.readData(file)
+    data = uvp.readUvpFile(file)
     # data.redefineSoundSpeed(1029)
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateSeries[0]

@@ -51,7 +51,8 @@ class Statistic:
 
 
 class Analysis:
-    def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list[np.ndarray] | None = None,
+    def __init__(self, datas: pyuvp.uvp.readUvpFile = None, tdx_num: int = OFF,
+                 vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
                  ignoreException=False):
         # Considering that the speed data will be time-sliced later,

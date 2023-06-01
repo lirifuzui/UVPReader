@@ -12,7 +12,7 @@ plt.xlim(3,15)
 plt.grid()
 
 for file in files:
-    data = uvp.readData(file)
+    data = uvp.readUvpFile(file)
     analysis = data.createUSRAnalysis()
 
     analysis.cylinderGeom(72.5, 38, 11.7)
