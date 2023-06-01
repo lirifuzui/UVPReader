@@ -210,7 +210,7 @@ class readUvpFile:
 
             times = np.arange(0, self.__measurement_info['NumberOfProfiles'] *
                               self.__measurement_info['SampleTime'], self.__measurement_info['SampleTime'])
-            time_plus = 0
+            time_plus = self.__mux_config_params['MultiplexerConfiguration'][0][3]
             temp_vel_data = self.__raw_vel_arr
             temp_echo_data = self.__raw_echo_arr
             while list(temp_vel_data):
@@ -223,12 +223,15 @@ class readUvpFile:
                         self.__echo_arr_tdxs[tdx].extend(
                             temp_echo_data[now_index:now_index + number_of_read_lines])
                         now_index += number_of_read_lines
-                        self.__time_arr_tdxs[tdx].extend(
-                            times[now_index:now_index + number_of_read_lines] + time_plus)
-                        if tdx + 1 < int(self.__mux_config_params['Table']):
-                            time_plus += self.__mux_config_params['MultiplexerConfiguration'][tdx + 1][3]
+
+                        if times[now_index] != 0:
+                            self.__time_arr_tdxs[tdx].extend(times[now_index:now_index + number_of_read_lines] +
+                                                             time_plus - self.__measurement_info['SampleTime'])
                         else:
-                            time_plus += self.__mux_config_params['MultiplexerConfiguration'][0][3]
+                            self.__time_arr_tdxs[tdx].extend(times[now_index:now_index + number_of_read_lines])
+
+                        if tdx + 1 <= int(self.__mux_config_params['Table']):
+                            time_plus += self.__mux_config_params['MultiplexerConfiguration'][tdx + 1][3]
                     else:
                         continue
                 temp_vel_data = temp_vel_data[now_index:]
