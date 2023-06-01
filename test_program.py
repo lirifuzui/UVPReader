@@ -1,7 +1,16 @@
+import matplotlib.pyplot as plt
+
 from pyuvp import uvp
 
 data = uvp.readUvpFile("1000min.mfprof", is_output=True)
 vel = data.velTables[0]
+times = data.timeSeries[0]
+coords = data.coordinateSeries[0]
+
+plt.figure()
+plt.contour(coords, times, vel)
+plt.show()
+
 '''anaylsis = data.createUSRAnalysis()
 anaylsis.cylinderGeom(77, 66, 15)
 anaylsis.channelRange(77, 110)
