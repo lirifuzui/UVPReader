@@ -14,7 +14,7 @@ for file in files:
     data = uvp.readUvpFile(file)
     data.defineSoundSpeed(1066)
     vel_origin = data.velTables[0]
-    coords_origin = data.coordinateSeries[0]
+    coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()
     analysis.cylinderGeom(72.5, 16.09, 11.115)
     analysis.channelRange(25, 55)
@@ -23,7 +23,7 @@ for file in files:
 
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
-    times = analysis.timeSeries()
+    times = analysis.timeArrays()
     visc, shearrate = analysis.viscosity(smooth_level=9, ignoreException=True)
 
     visc_t = visc.reshape((41, 30))

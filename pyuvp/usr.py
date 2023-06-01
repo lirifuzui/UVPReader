@@ -61,11 +61,11 @@ class Analysis:
         # self.__vel_data and self.__time series should be equal in length.
         # self.__vel_data store the pruned analyzable data, and initialize to store the complete data.
         self.__vel_data: list[np.ndarray] = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
-        self.__time_series: list[np.ndarray] = [datas.timeSeries[tdx_num] if datas else time_series[tdx_num]]
-        self.__coordinate_series: np.ndarray = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
+        self.__time_series: list[np.ndarray] = [datas.timeArrays[tdx_num] if datas else time_series[tdx_num]]
+        self.__coordinate_series: np.ndarray = datas.coordinateArrays[tdx_num] if datas else coordinate_series[tdx_num]
 
         self.__temp_vel: list[np.ndarray] = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
-        self.__temp_coords: np.ndarray = datas.coordinateSeries[tdx_num] if datas else coordinate_series[tdx_num]
+        self.__temp_coords: np.ndarray = datas.coordinateArrays[tdx_num] if datas else coordinate_series[tdx_num]
         # Store the pruned analyzable data, and initialize to store the complete data.
         # number of windows, default 1.
         self.__number_of_windows: int = 0

@@ -26,7 +26,7 @@ for file in files:
     analysis.sliceSize(5000)
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
-    times = analysis.timeSeries()
+    times = analysis.timeArrays()
 
     visc, shearrate = analysis.viscosity(smooth_level=9, ignoreException=True)
     visc_t = visc.reshape((slice_num + 1, 35))

@@ -12,16 +12,16 @@ data.__multiplying_coefficient()
 
 # -------------------------------------------------------------
 # return datas.
-use_mux = data.muxStatus                                # return 'OFF'
-u_xi = data.velTables(tdx_num=0)                        # return a two-dimensional numpy matrix
-echo = data.echoTables(tdx_num=0)                       # return a two-dimensional numpy matrix
-times = data.timeSeries(tdx_num=0)                      # return a one-dimensional numpy matrix
-coordinates_xi = data.coordinateSeries(tdx_num=0)       # return a one-dimensional numpy matrix
-
+use_mux = data.muxStatus  # return 'OFF'
+u_xi = data.velTables(tdx_num=0)  # return a two-dimensional numpy matrix
+echo = data.echoTables(tdx_num=0)  # return a two-dimensional numpy matrix
+times = data.timeArrays(tdx_num=0)  # return a one-dimensional numpy matrix
+coordinates_xi = data.coordinateArrays(tdx_num=0)  # return a one-dimensional numpy matrix
 
 # -------------------------------------------------------------
 # create an analysis from data.
-analysis = data.createUSRAnalysis(tdx_num=0, ignoreException=False)  # 'analysis' is an instantiate object, cannot be print
+analysis = data.createUSRAnalysis(tdx_num=0,
+                                  ignoreException=False)  # 'analysis' is an instantiate object, cannot be print
 # Another way.
 analysis = usr.Analysis(data, ignoreException=False)
 # ignoreUSRException means whether to ignore automatic checks and warnings for USR.

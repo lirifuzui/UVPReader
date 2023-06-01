@@ -24,6 +24,9 @@ class readUvpFile:
         Args:
             file_path (str): The path to the input file.
             is_output (bool): Flag indicating whether to enable output. Defaults to False.
+
+        Example:
+            data = pyuvp.uvp.readUvpFile("file_path", True)
         """
         # Defines the output files location.
         # If file_path is not a full path, write the output file to the "temp" folder.
@@ -192,56 +195,107 @@ class readUvpFile:
         mux_config = [list(map(float, item.split())) for item in mux_config_params_list[index_3 + 1:]]
         self.__mux_config_params['MultiplexerConfiguration'] = mux_config
 
-    # Redefine the speed of sound and modify the data.
     def defineSoundSpeed(self, new_sound_speed) -> None:
+        """
+        Defines the sound speed and modifies the data accordingly.
+
+        Args:
+            new_sound_speed (float): The new sound speed value to be set.
+
+        Returns:
+            None
+
+        Description:
+            This method sets the sound speed to the provided value and adjusts the data based on the new sound speed.
+
+            The function performs the following steps:
+
+            1. Update the internal attribute `self.__new_sound_speed` with the provided value.
+            2. Calculate the Doppler coefficient and sound speed coefficient based on the measurement info.
+            3. If the measurement uses a multiplexer:
+                - Initialize empty lists to store velocity, echo, and time data for each table in the configuration.
+                - Calculate the time array based on the number of profiles and sample time.
+                - Iterate over the velocity and echo data and assign them to the respective transducers.
+                - Adjust the time array based on the configured multiplexer delay times.
+                - Convert the velocity and echo data to NumPy arrays.
+            4. If the measurement uses a single transducer:
+                - Calculate the angle coefficient and velocity resolution based on the measurement info.
+                - Adjust the velocity data and assign it to the velocity array.
+                - Assign the echo data to the echo array.
+                - Calculate the time array based on the number of profiles and sample time.
+            5. Store the coordinate array in a list based on the start channel, number of channels, and channel distance.
+            6. Assign the coordinate array list to the coordinate arrays for each transducer (if applicable).
+
+        Note:
+            - This method assumes that the necessary attributes and configuration parameters are already set
+              before calling this function.
+            - The modified data will be stored in the internal attribute [self.__vel_arr_tdxs], [self.__echo_arr_tdxs],
+              [self.__time_arr_tdxs], and [self.__coords_arr_tdxs] for each transducer (if applicable).
+              They can be accessed through class methods [self.velTables], [self.echoTables], [self.timeArrays],
+              and [self.coordinateArrays].
+        """
+
         self.__new_sound_speed = new_sound_speed
         sound_speed = self.__measurement_info['SoundSpeed']
         max_depth = self.__measurement_info['MaximumDepth']
         doppler_coefficient = sound_speed / (max_depth * 2.0) / 256.0 * 1000.0
         sounds_speed_coefficient = new_sound_speed / (self.__measurement_info['Frequency'] * 2.0)
 
-        # Modifies the velocity and echo data according to the newly defined sound speed.
-
-        # 这段代码中时间序列没弄好，
         if self.__measurement_info['UseMultiplexer']:
-            self.__vel_arr_tdxs = [[] for _ in range(int(self.__mux_config_params['Table']))]
-            self.__echo_arr_tdxs = [[] for _ in range(int(self.__mux_config_params['Table']))]
-            self.__time_arr_tdxs = [[] for _ in range(int(self.__mux_config_params['Table']))]
+            # Data initialization for multiplexer.
+            num_tables = int(self.__mux_config_params['Table'])
 
-            times = np.arange(0, self.__measurement_info['NumberOfProfiles'] *
-                              self.__measurement_info['SampleTime'], self.__measurement_info['SampleTime'])
+            # Initialize lists to store velocity, echo, and time data for each tdx.
+            self.__vel_arr_tdxs = [[] for _ in range(num_tables)]
+            self.__echo_arr_tdxs = [[] for _ in range(num_tables)]
+            self.__time_arr_tdxs = [[] for _ in range(num_tables)]
+
+            # Generate time array.
+            times = np.arange(0, self.__measurement_info['NumberOfProfiles'] * self.__measurement_info['SampleTime'],
+                              self.__measurement_info['SampleTime'])
+
+            # Initialize variables for data manipulation.
             time_plus = self.__mux_config_params['MultiplexerConfiguration'][0][3]
             temp_vel_data = self.__raw_vel_arr
             temp_echo_data = self.__raw_echo_arr
-            while list(temp_vel_data):
+
+            # Process the data until all data is consumed.
+            while len(temp_vel_data) > 0:
                 now_index = 0
-                for tdx in range(int(self.__mux_config_params['Table'])):
+                for tdx in range(num_tables):
                     if self.__mux_config_params['MultiplexerConfiguration'][tdx][0]:
                         number_of_read_lines = int(self.__mux_config_params['MultiplexerConfiguration'][tdx][2])
-                        self.__vel_arr_tdxs[tdx].extend(
-                            temp_vel_data[now_index:now_index + number_of_read_lines])
-                        self.__echo_arr_tdxs[tdx].extend(
-                            temp_echo_data[now_index:now_index + number_of_read_lines])
-                        now_index += number_of_read_lines
+
+                        # Modify velocity and echo data.
+                        self.__vel_arr_tdxs[tdx].extend(temp_vel_data[now_index:now_index + number_of_read_lines])
+                        self.__echo_arr_tdxs[tdx].extend(temp_echo_data[now_index:now_index + number_of_read_lines])
 
                         if times[now_index] != 0:
+                            # Add time offset if times[now_index] is not zero
                             self.__time_arr_tdxs[tdx].extend(times[now_index:now_index + number_of_read_lines] +
-                                                             time_plus - self.__measurement_info['SampleTime'])
+                                                             [time_plus - self.__measurement_info['SampleTime']])
                         else:
                             self.__time_arr_tdxs[tdx].extend(times[now_index:now_index + number_of_read_lines])
 
-                        if tdx + 1 <= int(self.__mux_config_params['Table']):
+                        now_index += number_of_read_lines
+
+                        if tdx + 1 < num_tables:
                             time_plus += self.__mux_config_params['MultiplexerConfiguration'][tdx + 1][3]
                     else:
                         continue
+
+                # Update vel and echo data and time for next cycle.
                 temp_vel_data = temp_vel_data[now_index:]
                 temp_echo_data = temp_echo_data[now_index:]
                 times = times[now_index:]
                 time_plus += self.__mux_config_params['CycleDelay']
+
+            # Convert to NumPy arrays
             self.__vel_arr_tdxs = [np.array(item) for item in self.__vel_arr_tdxs]
             self.__echo_arr_tdxs = [np.array(item) for item in self.__echo_arr_tdxs]
 
         else:
+            # Data modification for single-channel configuration
             angle_coefficient = 1.0 / np.sin(self.__measurement_info['Angle'] * np.pi / 180)
             vel_resolution = doppler_coefficient * sounds_speed_coefficient * 1000 * angle_coefficient
             vel_data = self.__raw_vel_arr * vel_resolution
@@ -253,13 +307,17 @@ class readUvpFile:
                               self.__measurement_info['SampleTime'], self.__measurement_info['SampleTime'])
             self.__time_arr_tdxs.append(times * 0.001)
 
-        # Store multiple coordinate series of tdx data into a list
-        coordinate_series = np.arange(self.__measurement_info['StartChannel'], self.__measurement_info['StartChannel'] +
-                                      self.__measurement_info['NumberOfChannels'] * self.__measurement_info[
-                                          'ChannelDistance'] - self.__measurement_info['ChannelDistance'] * 0.5,
-                                      self.__measurement_info['ChannelDistance']) * (new_sound_speed / sound_speed)
-        if int(self.__mux_config_params['Table']):
-            self.__coords_arr_tdxs = [coordinate_series for _ in range(int(self.__mux_config_params['Table']))]
+        # Store coordinate series in a list
+        start_channel = self.__measurement_info['StartChannel']
+        num_channels = self.__measurement_info['NumberOfChannels']
+        channel_distance = self.__measurement_info['ChannelDistance']
+        coordinate_series = np.arange(start_channel,
+                                      start_channel + num_channels * channel_distance - channel_distance * 0.5,
+                                      channel_distance) * (new_sound_speed / sound_speed)
+
+        if self.__mux_config_params['Table']:
+            num_tables = int(self.__mux_config_params['Table'])
+            self.__coords_arr_tdxs = [coordinate_series for _ in range(num_tables)]
         else:
             self.__coords_arr_tdxs.append(coordinate_series)
 
@@ -298,8 +356,8 @@ class readUvpFile:
             self.__output_files()
 
     def createUSRAnalysis(self, tdx_num=0, ignoreException=False):
-        return pyuvp.usr.Analysis(tdx_num=tdx_num, vel_data=self.velTables, time_series=self.timeSeries,
-                                  coordinate_series=self.coordinateSeries, ignoreException=ignoreException)
+        return pyuvp.usr.Analysis(tdx_num=tdx_num, vel_data=self.velTables, time_series=self.timeArrays,
+                                  coordinate_series=self.coordinateArrays, ignoreException=ignoreException)
 
     @property
     def muxStatus(self):
@@ -315,12 +373,12 @@ class readUvpFile:
         return self.__echo_arr_tdxs
 
     @property
-    def timeSeries(self):
+    def timeArrays(self):
         # time _s
         return self.__time_arr_tdxs
 
     @property
-    def coordinateSeries(self):
+    def coordinateArrays(self):
         # coordinate _mm
         return self.__coords_arr_tdxs
 

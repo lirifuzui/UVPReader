@@ -20,7 +20,7 @@ for file in files:
     analysis.slicing(5)
     u_theta = analysis.velTableTheta()
     '''coordinates_r = analysis.coordSeries
-    times = analysis.timeSeries()
+    times = analysis.timeArrays()
     x = [i for i in range(len(coordinates_r))]
     vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.doFFT()
     plt.plot(phase_delay_derivative, coordinates_r)

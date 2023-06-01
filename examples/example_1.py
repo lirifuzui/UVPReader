@@ -12,19 +12,18 @@ data.__multiplying_coefficient()
 
 # -------------------------------------------------------------
 # return datas.
-use_mux = data.muxStatus                       # return 'OFF'
-u_xi = data.velTables[0]                       # return a two-dimensional numpy matrix
-echo = data.echoTables[0]                      # return a two-dimensional numpy matrix
-times = data.timeSeries[0]                     # return a one-dimensional numpy matrix
-coordinates_xi = data.coordinateSeries[0]      # return a one-dimensional numpy matrix
-
+use_mux = data.muxStatus  # return 'OFF'
+u_xi = data.velTables[0]  # return a two-dimensional numpy matrix
+echo = data.echoTables[0]  # return a two-dimensional numpy matrix
+times = data.timeArrays[0]  # return a one-dimensional numpy matrix
+coordinates_xi = data.coordinateArrays[0]  # return a one-dimensional numpy matrix
 
 # -------------------------------------------------------------
 # create an analysis from data.
-analysis = data.createUSRAnalysis(tdx_num=0, ignoreException=False)  # 'analysis' is an instantiate object, cannot be print
+analysis = data.createUSRAnalysis(tdx_num=0,
+                                  ignoreException=False)  # 'analysis' is an instantiate object, cannot be print
 # Another way.
 analysis = usr.Analysis(data, ignoreException=False)
-
 
 # -------------------------------------------------------------
 # According to the location, extract data that can be analyzed.

@@ -14,7 +14,7 @@ for file in files:
     data = uvp.readUvpFile(file)
     # data.redefineSoundSpeed(1029)
     vel_origin = data.velTables[0]
-    coords_origin = data.coordinateSeries[0]
+    coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()
     analysis.channelRange(35, 70)
     analysis.cylinderGeom(77, 35, 10.615)

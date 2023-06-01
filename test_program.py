@@ -2,10 +2,11 @@ import matplotlib.pyplot as plt
 
 from pyuvp import uvp
 
-data = uvp.readUvpFile("1000min.mfprof", is_output=False)
+data = uvp.readUvpFile("uvp073008.mfprof", is_output=True)
+data.defineSoundSpeed(1000)
 vel = data.velTables[0]
-times = data.timeSeries[0]
-coords = data.coordinateSeries[0]
+times = data.timeArrays[0]
+coords = data.coordinateArrays[0]
 
 plt.figure()
 plt.contour(coords, times, vel)
@@ -15,7 +16,7 @@ plt.show()
 anaylsis.cylinderGeom(77, 66, 15)
 anaylsis.channelRange(77, 110)
 anaylsis.slicing(5, 500)
-aa = anaylsis.timeSeries(1)
+aa = anaylsis.timeArrays(1)
 bb = anaylsis.velTableTheta(1)
 
 # viscoity, shearrate = anaylsis.rheologyViscosity()
