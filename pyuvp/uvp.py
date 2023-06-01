@@ -367,9 +367,9 @@ class readUvpFile:
             pyuvp.usr.Analysis: An instance of the USR Analysis class.
 
         Note:
-        - Before calling this method, make sure that the necessary data has been loaded and prepared using other methods and attributes of the class.
-        - The velocity data, time series, and coordinate series for the specified transducer table should be available and properly set up.
-        - The returned USR Analysis instance can be used to perform various analysis operations on the ultrasonic data.
+            - Before calling this method, make sure that the necessary data has been loaded and prepared using other methods and attributes of the class.
+            - The velocity data, time array, and coordinate array for the specified transducer should be available.
+            - The returned USR Analysis instance can be used to perform various analysis operations on the ultrasonic data.
 
         Example:
         analysis = data.createUSRAnalysis(tdx_num=1, ignoreException=True)
