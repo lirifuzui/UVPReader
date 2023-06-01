@@ -53,9 +53,7 @@ class Statistic:
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readData = None, tdx_num: int = OFF, vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
-                 multithreads: int = OFF, ignoreException=False):
-        # number of threads used.
-        self.__multithreading = multithreads
+                 ignoreException=False):
         # Considering that the speed data will be time-sliced later,
         # self.__vel data and self.__time series are stored in a list,
         # and each item corresponds to a window.
@@ -270,118 +268,109 @@ class Analysis:
         shear_rate_width = 10
         print("\033[1mCalculation Start:")
         print('------------------------------------------------------')
-        if self.__multithreading == 0:
-            err_time = 0
-            for window in range(self.__number_of_windows + 1):
-                oscillation_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
-                    self.fftInUSR(window_num=window, derivative_smoother_factor=smooth_level)
-                self.__cylinder_freq = oscillation_frequency if self.__cylinder_freq is None else self.__cylinder_freq
+        err_time = 0
+        for window in range(self.__number_of_windows + 1):
+            oscillation_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
+                self.fftInUSR(window_num=window, derivative_smoother_factor=smooth_level)
+            self.__cylinder_freq = oscillation_frequency if self.__cylinder_freq is None else self.__cylinder_freq
 
-                # Determine whether the frequency of the input container matches the experimental results.
-                if np.abs(oscillation_frequency - self.__cylinder_freq) > \
-                        np.abs(
-                            oscillation_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
-                        and not self.__ignoreUSRException and not ignoreException:
-                    raise USRException(
-                        "The defined vibration frequency of the cylinder does not match the results of the "
-                        "experimental data! [" + f"{oscillation_frequency:.3g}" + ", " + str(
-                            self.__cylinder_freq) + "]")
+            # Determine whether the frequency of the input container matches the experimental results.
+            if np.abs(oscillation_frequency - self.__cylinder_freq) > \
+                    np.abs(
+                        oscillation_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
+                    and not self.__ignoreUSRException and not ignoreException:
+                raise USRException(
+                    "The defined vibration frequency of the cylinder does not match the results of the "
+                    "experimental data! [" + f"{oscillation_frequency:.3g}" + ", " + str(
+                        self.__cylinder_freq) + "]")
 
-                # print title
-                print(f"{'slice':<{8}}{'time_range':<{16}}{'vessel_freq':<{8}}")
-                print(f"{window:<{8}}{str(self.__slice[window]):<{16}}{oscillation_frequency:<{8}.7g}")
-                print(f"{'slice':<{slice_width}}{'index':<{index_width}}{'search_range(cycles)':<{search_range_width}}"
-                      f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
+            # print title
+            print(f"{'slice':<{8}}{'time_range':<{16}}{'vessel_freq':<{8}}")
+            print(f"{window:<{8}}{str(self.__slice[window]):<{16}}{oscillation_frequency:<{8}.7g}")
+            print(f"{'slice':<{slice_width}}{'index':<{index_width}}{'search_range(cycles)':<{search_range_width}}"
+                  f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
 
-                # Calculate effective shear rate.
-                real_part_derivative = Tools.derivative(real_part, self.__coordinate_series,
-                                                        derivative_smoother_factor=5)
-                imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series,
-                                                        derivative_smoother_factor=5)
-                param_1 = real_part_derivative - (real_part / self.__coordinate_series)
-                param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
-                shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
-                effective_shear_rate.extend(shear_rate_of_now_window)
+            # Calculate effective shear rate.
+            real_part_derivative = Tools.derivative(real_part, self.__coordinate_series,
+                                                    derivative_smoother_factor=5)
+            imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series,
+                                                    derivative_smoother_factor=5)
+            param_1 = real_part_derivative - (real_part / self.__coordinate_series)
+            param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
+            shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
+            effective_shear_rate.extend(shear_rate_of_now_window)
 
-                # Calculate viscosity.
-                viscosity_limits = [0.5, max_viscosity]
-                visc_range = int((max_viscosity - 0.5) / 40)
-                for coordinate_index in range(len(self.__coordinate_series)):
-                    loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
-                    middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
-                    first_search_range_of_loop = viscosity_limits.copy()
-                    for loop in range(loop_count):
-                        alpha_min = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
-                                                        viscosity_limits[0],
-                                                        self.__coordinate_series)
-                        alpha_min -= alpha_min[np.argmax(self.__coordinate_series)]
-                        alpha_min = np.abs(alpha_min)
-                        alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_series)[coordinate_index]
-                        alpha_max = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
-                                                        viscosity_limits[1],
-                                                        self.__coordinate_series)
-                        alpha_max -= alpha_max[np.argmax(self.__coordinate_series)]
-                        alpha_max = np.abs(alpha_max)
-                        alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_series)[coordinate_index]
-                        alpha_middle = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
-                                                           middle_viscosity, self.__coordinate_series)
-                        alpha_middle -= alpha_middle[np.argmax(self.__coordinate_series)]
-                        alpha_middle = np.abs(alpha_middle)
-                        alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_series)[
-                            coordinate_index]
-                        simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
-                        idx = np.searchsorted(simulate_value, phase_delay_derivative[coordinate_index])
-                        if idx == 1:
-                            temp = [viscosity_limits[0], middle_viscosity]
-                        elif idx == 2:
-                            temp = [middle_viscosity, viscosity_limits[1]]
-                        else:
-                            print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
-                                  f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
-                                  f'   '
-                                  f'{"ERROR":<{viscosity_width}}'
-                                  f'{shear_rate_of_now_window[coordinate_index]:<{shear_rate_width}.5g}')
-                            print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
-                                  "The effective_viscosity value at this location may exceed the defined maximum"
-                                  "(" + str(max_viscosity) + ').')
-                            effective_viscosity.append(-1)
-                            viscosity_limits = [0.5, max_viscosity]
-                            err_time += 1
-                            break
-                        if np.abs(temp[0] - temp[1]) < viscosity_range_tolerance:
-                            print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
-                                  f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
-                                  f'   '
-                                  f'{middle_viscosity:<{viscosity_width}.7g}'
-                                  f'{shear_rate_of_now_window[coordinate_index]:<{shear_rate_width}.5g}')
-                            effective_viscosity.append(middle_viscosity)
-                            viscosity_limits = [
-                                middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
-                                middle_viscosity + visc_range]
-                            break
-                        else:
-                            viscosity_limits = temp
-                            middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
-                    if err_time > err_lim and not self.__ignoreUSRException and not ignoreException:
+            # Calculate viscosity.
+            viscosity_limits = [0.5, max_viscosity]
+            visc_range = int((max_viscosity - 0.5) / 40)
+            for coordinate_index in range(len(self.__coordinate_series)):
+                loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
+                middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
+                first_search_range_of_loop = viscosity_limits.copy()
+                for loop in range(loop_count):
+                    alpha_min = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
+                                                    viscosity_limits[0],
+                                                    self.__coordinate_series)
+                    alpha_min -= alpha_min[np.argmax(self.__coordinate_series)]
+                    alpha_min = np.abs(alpha_min)
+                    alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_series)[coordinate_index]
+                    alpha_max = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
+                                                    viscosity_limits[1],
+                                                    self.__coordinate_series)
+                    alpha_max -= alpha_max[np.argmax(self.__coordinate_series)]
+                    alpha_max = np.abs(alpha_max)
+                    alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_series)[coordinate_index]
+                    alpha_middle = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
+                                                       middle_viscosity, self.__coordinate_series)
+                    alpha_middle -= alpha_middle[np.argmax(self.__coordinate_series)]
+                    alpha_middle = np.abs(alpha_middle)
+                    alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_series)[
+                        coordinate_index]
+                    simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
+                    idx = np.searchsorted(simulate_value, phase_delay_derivative[coordinate_index])
+                    if idx == 1:
+                        temp = [viscosity_limits[0], middle_viscosity]
+                    elif idx == 2:
+                        temp = [middle_viscosity, viscosity_limits[1]]
+                    else:
+                        print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
+                              f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
+                              f'   '
+                              f'{"ERROR":<{viscosity_width}}'
+                              f'{shear_rate_of_now_window[coordinate_index]:<{shear_rate_width}.5g}')
+                        print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
+                              "The effective_viscosity value at this location may exceed the defined maximum"
+                              "(" + str(max_viscosity) + ').')
+                        effective_viscosity.append(-1)
+                        viscosity_limits = [0.5, max_viscosity]
+                        err_time += 1
                         break
-                if err_time > err_lim:
-                    if not self.__ignoreUSRException and not ignoreException:
-                        print("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
-                        raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
-            self.__shear_rate = np.array(effective_shear_rate)
-            self.__viscosity_cSt = np.array(effective_viscosity)
-        else:
-            self.__multithreading_rheologyViscosity(max_viscosity, viscosity_range_tolerance,
-                                                    smooth_level, ignoreException)
+                    if np.abs(temp[0] - temp[1]) < viscosity_range_tolerance:
+                        print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
+                              f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
+                              f'   '
+                              f'{middle_viscosity:<{viscosity_width}.7g}'
+                              f'{shear_rate_of_now_window[coordinate_index]:<{shear_rate_width}.5g}')
+                        effective_viscosity.append(middle_viscosity)
+                        viscosity_limits = [
+                            middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
+                            middle_viscosity + visc_range]
+                        break
+                    else:
+                        viscosity_limits = temp
+                        middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
+                if err_time > err_lim and not self.__ignoreUSRException and not ignoreException:
+                    break
+            if err_time > err_lim:
+                if not self.__ignoreUSRException and not ignoreException:
+                    print("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
+                    raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
+        self.__shear_rate = np.array(effective_shear_rate)
+        self.__viscosity_cSt = np.array(effective_viscosity)
+
         print('\033[1m------------------------------------------------------')
         print("Calculation Complete.\033[0m")
         return self.__shear_rate, self.__viscosity_cSt
-
-    # 写一个多线程
-    def __multithreading_rheologyViscosity(self, max_viscosity: int | float = 20000,
-                                           viscosity_range_tolerance: int | float = 1,
-                                           smooth_level: int = 11, ignoreException=False):
-        None
 
     def rheologyViscoelasticity(self, density, max_viscosity: int | float = 30000,
                                 smooth_level: int = 11, ignoreException=False):
