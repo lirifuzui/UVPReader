@@ -55,12 +55,10 @@ class readUvpFile:
 
     def __output_files(self) -> None:
         """
-        Output basic information about the UVP and save data to files.
+        Output the UVP data and save it to files.
 
-        Writes the information to a file called "UVPconfig.txt". Additionally,
-        if multiplexer is used, saves velocity and echo data for each multiplexer
-        configuration to separate CSV files. Otherwise, saves data for a single TDX
-        to CSV files.
+        If multiplexer is used, saves velocity and echo data for each multiplexer to separate CSV files.
+        Otherwise, saves data for a single TDX to CSV files.
 
         Returns:
             None
