@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 from pyuvp import uvp
 
-data = uvp.readUvpFile("1000min.mfprof", is_output=True)
+data = uvp.readUvpFile("1000min.mfprof", is_output=False)
 vel = data.velTables[0]
 times = data.timeSeries[0]
 coords = data.coordinateSeries[0]
