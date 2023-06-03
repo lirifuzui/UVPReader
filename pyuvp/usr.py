@@ -1,7 +1,5 @@
-import numpy as np
 from scipy.special import jv
 
-import pyuvp.uvp
 from pyuvp import Tools
 
 ON = 1
@@ -50,26 +48,43 @@ class Statistic:
         None
 
 
+import pyuvp.uvp
+import numpy as np
+
+
 class Analysis:
     def __init__(self, datas: pyuvp.uvp.readUvpFile = None, tdx_num: int = OFF,
                  vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
                  ignoreException=False):
-        # Considering that the speed data will be time-sliced later,
-        # self.__vel data and self.__time series are stored in a list,
-        # and each item corresponds to a window.
-        # self.__vel_data and self.__time series should be equal in length.
-        # self.__vel_data store the pruned analyzable data, and initialize to store the complete data.
+        """
+        analysis class for creating rheological analyzes from Uvp datas.
+
+        Parameters:
+            - datas: pyuvp.uvp.readUvpFile object containing the data for analysis. Default is None.
+            - tdx_num: int, data index. Default is OFF.
+            - vel_data: list[np.ndarray] | None, list of velocity data. Default is None.
+            - time_series: list[np.ndarray] | None, list of time series. Default is None.
+            - coordinate_series: list[np.ndarray] | None, list of coordinate series. Default is None.
+            - ignoreException: bool, whether to ignore exceptions. Default is False.
+        """
+
+        # Considering that the velocity data will be time-sliced later,
+        # self.__vel_data and self.__time_array are stored in a list,
+        # where each item corresponds to a window.
+        # The lengths of self.__vel_data and self.__time_array should be equal.
+        # self.__vel_data stores the pruned analyzable data and is initialized to store the complete data.
         self.__vel_data: list[np.ndarray] = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
-        self.__time_series: list[np.ndarray] = [datas.timeArrays[tdx_num] if datas else time_series[tdx_num]]
-        self.__coordinate_series: np.ndarray = datas.coordinateArrays[tdx_num] if datas else coordinate_series[tdx_num]
+        self.__time_array: list[np.ndarray] = [datas.timeArrays[tdx_num] if datas else time_series[tdx_num]]
+        self.__coordinate_array: np.ndarray = datas.coordinateArrays[tdx_num] if datas else coordinate_series[tdx_num]
 
         self.__temp_vel: list[np.ndarray] = [datas.velTables[tdx_num] if datas else vel_data[tdx_num]]
         self.__temp_coords: np.ndarray = datas.coordinateArrays[tdx_num] if datas else coordinate_series[tdx_num]
-        # Store the pruned analyzable data, and initialize to store the complete data.
-        # number of windows, default 1.
+
+        # Store the pruned analyzable data and initialize it to store the complete data.
+        # Number of windows, default is 1.
         self.__number_of_windows: int = 0
-        self.__slice: list[list[int]] = [[0, len(self.__time_series[0]) - 1]]
+        self.__slice: list[list[int]] = [[0, len(self.__time_array[0]) - 1]]
 
         self.__cylinder_radius: float | None = None
         self.__delta_y = None
@@ -86,10 +101,10 @@ class Analysis:
 
         self.__ignoreUSRException = ignoreException
 
-    # Update the variable self.__coordinate_series and self.__vel_data,
+    # Update the variable self.__coordinate_array and self.__vel_data,
     # to store the data in the radial coordinate system.
     # If you don't execute these two functions, the variable will store the coordinates in the xi coordinate system.
-    # Running this function will modify the data in self.__coordinate_series and self.__vel_data,
+    # Running this function will modify the data in self.__coordinate_array and self.__vel_data,
     # to represent the coordinates in the radial coordinate system.
     def cylinderGeom(self, radius: int | float, wall_coordinate: int | float | None = None,
                      delta_y: int | float | None = None, vibration_params: list[float] | None = None,
@@ -107,28 +122,28 @@ class Analysis:
             self.__cylinder_freq = vibration_params[0]
             max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_radius * (vibration_params[1] * np.pi / 180)
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
-            self.__coordinate_series, self.__temp_coords = self.__temp_coords, self.__coordinate_series
+            self.__coordinate_array, self.__temp_coords = self.__temp_coords, self.__coordinate_array
             vibration_frequency, max_magnitude, _, _, _, _ = self.fftInUSR()
-            wall_coordinate = self.__coordinate_series[np.argmax(max_magnitude)]
-            self.__coordinate_series, self.__temp_coords = self.__temp_coords, self.__coordinate_series
+            wall_coordinate = self.__coordinate_array[np.argmax(max_magnitude)]
+            self.__coordinate_array, self.__temp_coords = self.__temp_coords, self.__coordinate_array
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
             self.__delta_y = self.__cylinder_radius * np.max(max_magnitude) / max_vel
             if self.__delta_y > self.__cylinder_radius:
                 raise ValueError("Delta y is greater than the cylinder radius!")
-        # Update the variable self.__coordinate_series
+        # Update the variable self.__coordinate_array
         half_chord = np.sqrt(radius ** 2 - self.__delta_y ** 2)
-        self.__coordinate_series = np.sqrt((wall_coordinate + half_chord -
-                                            self.__coordinate_series) ** 2 + self.__delta_y ** 2)
+        self.__coordinate_array = np.sqrt((wall_coordinate + half_chord -
+                                           self.__coordinate_array) ** 2 + self.__delta_y ** 2)
         # Update the variable self.__vel_data
         for i in range(self.__number_of_windows + 1):
-            self.__vel_data[i] = self.__vel_data[i] * self.__coordinate_series / self.__delta_y
-        return self.__vel_data, self.__coordinate_series
+            self.__vel_data[i] = self.__vel_data[i] * self.__coordinate_array / self.__delta_y
+        return self.__vel_data, self.__coordinate_array
 
     # Extracted vaild data according to the position coordinates.
     def channelRange(self, start: int = 0, end: int = -1):
         for i in range(self.__number_of_windows + 1):
             self.__vel_data[i] = self.__vel_data[i][:, start:end]
-        self.__coordinate_series = self.__coordinate_series[start:end]
+        self.__coordinate_array = self.__coordinate_array[start:end]
 
 
     def slicing(self, number_of_slice: int = 5, slice_size: None | int = None, ignoreException=False):
@@ -137,14 +152,14 @@ class Analysis:
 
         if number_of_slice == 1 or number_of_slice == 0:
             self.__number_of_windows = 0
-            self.__time_series = self.__time_series[:1]
+            self.__time_array = self.__time_array[:1]
             self.__vel_data = self.__vel_data[:1]
             self.__slice = self.__slice[:1]
 
         elif number_of_slice == 2:
-            self.__time_series = [self.__time_series[0],
-                                  self.__time_series[0][0: max_index // 2],
-                                  self.__time_series[0][max_index // 2: max_index]]
+            self.__time_array = [self.__time_array[0],
+                                 self.__time_array[0][0: max_index // 2],
+                                 self.__time_array[0][max_index // 2: max_index]]
             self.__vel_data = [self.__vel_data[0],
                                self.__vel_data[0][0: max_index // 2, :],
                                self.__vel_data[0][max_index // 2: max_index:, :]]
@@ -153,14 +168,14 @@ class Analysis:
                             [max_index // 2, max_index]]
 
         else:  # number_of_size >= 3
-            self.__time_series = [self.__time_series[0]]
+            self.__time_array = [self.__time_array[0]]
             self.__vel_data = [self.__vel_data[0]]
             self.__slice = [self.__slice[0]]
             moving = max_index // ((number_of_slice - 1) * 2)
             for slice_index in range(number_of_slice):
                 start = 0 + slice_index * moving
                 end = max_index - (number_of_slice - 1 - slice_index) * moving
-                self.__time_series.append(self.__time_series[0][start:end])
+                self.__time_array.append(self.__time_array[0][start:end])
                 self.__vel_data.append(self.__vel_data[0][start:end, :])
                 self.__slice.append([start, end])
         if slice_size is not None:
@@ -179,7 +194,7 @@ class Analysis:
             temp_slice.append([0 + moving * (n + 1), slice_length + moving * (n + 1)])
         temp_slice.append([self.__slice[0][1] - slice_length, self.__slice[0][1]])
         self.__slice = temp_slice
-        self.__time_series = [self.__time_series[0][slice_range[0]:slice_range[1]] for slice_range in self.__slice]
+        self.__time_array = [self.__time_array[0][slice_range[0]:slice_range[1]] for slice_range in self.__slice]
         self.__vel_data = [self.__vel_data[0][slice_range[0]:slice_range[1]] for slice_range in self.__slice]
 
     # Unwrapping the phase function.
@@ -228,8 +243,8 @@ class Analysis:
     # do the FFT.
     def fftInUSR(self, window_num: int = 1, derivative_smoother_factor: int = 11):
         my_axis = 0
-        N = len(self.__time_series[window_num - 1])
-        Delta_T = (self.__time_series[window_num - 1][-1] - self.__time_series[window_num - 1][0]) / (N - 1)
+        N = len(self.__time_array[window_num - 1])
+        Delta_T = (self.__time_array[window_num - 1][-1] - self.__time_array[window_num - 1][0]) / (N - 1)
         fft_result = np.fft.rfft(self.__vel_data[window_num - 1], axis=my_axis)
         magnitude = np.abs(fft_result)
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
@@ -238,10 +253,10 @@ class Analysis:
         max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / N
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         phase_delay = self.__phase_unwrap(phase_delay)
-        phase_delay -= phase_delay[np.argmax(self.__coordinate_series)]
+        phase_delay -= phase_delay[np.argmax(self.__coordinate_array)]
         phase_delay = np.abs(phase_delay)
 
-        phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_series, derivative_smoother_factor)
+        phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_array, derivative_smoother_factor)
 
         real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / N
         imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / N
@@ -253,13 +268,13 @@ class Analysis:
                           smooth_level: int = 11, ignoreException=False):
         # max_viscosity _cSt
         # viscosity_range_tolerance _cSt
-        if len(self.__coordinate_series) < 20:
+        if len(self.__coordinate_array) < 20:
             raise USRException("The number of coordinate must be greater than 20!")
         if self.__cylinder_radius is None and self.__pipe_TDXangle is None:
             raise ValueError("You must define Container Geometry first！")
         effective_shear_rate = []
         effective_viscosity = []
-        err_lim = len(self.__coordinate_series) // \
+        err_lim = len(self.__coordinate_array) // \
                   (1 / ExceptionConfig['Allowable proportion of calculation error points'])
         # Format the output.
         slice_width = 8
@@ -292,40 +307,40 @@ class Analysis:
                   f"{'Viscosity':<{viscosity_width}}{'effective_shear_rate':<{shear_rate_width}}\033[0m")
 
             # Calculate effective shear rate.
-            real_part_derivative = Tools.derivative(real_part, self.__coordinate_series,
+            real_part_derivative = Tools.derivative(real_part, self.__coordinate_array,
                                                     derivative_smoother_factor=5)
-            imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_series,
+            imag_part_derivative = Tools.derivative(imag_part, self.__coordinate_array,
                                                     derivative_smoother_factor=5)
-            param_1 = real_part_derivative - (real_part / self.__coordinate_series)
-            param_2 = imag_part_derivative - (imag_part / self.__coordinate_series)
+            param_1 = real_part_derivative - (real_part / self.__coordinate_array)
+            param_2 = imag_part_derivative - (imag_part / self.__coordinate_array)
             shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
             effective_shear_rate.extend(shear_rate_of_now_window)
 
             # Calculate viscosity.
             viscosity_limits = [0.5, max_viscosity]
             visc_range = int((max_viscosity - 0.5) / 40)
-            for coordinate_index in range(len(self.__coordinate_series)):
+            for coordinate_index in range(len(self.__coordinate_array)):
                 loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
                 middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
                 first_search_range_of_loop = viscosity_limits.copy()
                 for loop in range(loop_count):
                     alpha_min = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
                                                     viscosity_limits[0],
-                                                    self.__coordinate_series)
-                    alpha_min -= alpha_min[np.argmax(self.__coordinate_series)]
+                                                    self.__coordinate_array)
+                    alpha_min -= alpha_min[np.argmax(self.__coordinate_array)]
                     alpha_min = np.abs(alpha_min)
-                    alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_series)[coordinate_index]
+                    alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_array)[coordinate_index]
                     alpha_max = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
                                                     viscosity_limits[1],
-                                                    self.__coordinate_series)
-                    alpha_max -= alpha_max[np.argmax(self.__coordinate_series)]
+                                                    self.__coordinate_array)
+                    alpha_max -= alpha_max[np.argmax(self.__coordinate_array)]
                     alpha_max = np.abs(alpha_max)
-                    alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_series)[coordinate_index]
+                    alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_array)[coordinate_index]
                     alpha_middle = self.__Alpha_Bessel(self.__cylinder_radius, oscillation_frequency,
-                                                       middle_viscosity, self.__coordinate_series)
-                    alpha_middle -= alpha_middle[np.argmax(self.__coordinate_series)]
+                                                       middle_viscosity, self.__coordinate_array)
+                    alpha_middle -= alpha_middle[np.argmax(self.__coordinate_array)]
                     alpha_middle = np.abs(alpha_middle)
-                    alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_series)[
+                    alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_array)[
                         coordinate_index]
                     simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
                     idx = np.searchsorted(simulate_value, phase_delay_derivative[coordinate_index])
@@ -377,7 +392,7 @@ class Analysis:
                                 smooth_level: int = 11, ignoreException=False):
         # density _kg/m3
         # max_viscosity _cSt
-        if len(self.__coordinate_series) < 20:
+        if len(self.__coordinate_array) < 20:
             raise USRException("The number of channels is less than 20!")
         if self.__cylinder_radius is None:
             raise ValueError("You must define cylinder container Geometry first！")
@@ -398,7 +413,7 @@ class Analysis:
         print("\033[1mCalculation Start:")
         print('------------------------------------------------------')
 
-        coordinate_series = self.__coordinate_series * 0.001
+        coordinate_series = self.__coordinate_array * 0.001
         for window in range(self.__number_of_windows + 1):
             oscillation_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
                                                                                  derivative_smoother_factor=smooth_level)
@@ -455,11 +470,11 @@ class Analysis:
         return self.__vel_data[window_num]
 
     def timeSeries(self, window_num=OFF):
-        return self.__time_series[window_num]
+        return self.__time_array[window_num]
 
     @property
     def coordSeries(self):
-        return self.__coordinate_series
+        return self.__coordinate_array
 
     @property
     def geometry(self):

@@ -205,27 +205,6 @@ class readUvpFile:
         Returns:
             None
 
-        Description:
-            This method sets the sound speed to the provided value and adjusts the data based on the new sound speed.
-
-            The function performs the following steps:
-
-            1. Update the internal attribute `self.__new_sound_speed` with the provided value.
-            2. Calculate the Doppler coefficient and sound speed coefficient based on the measurement info.
-            3. If the measurement uses a multiplexer:
-                - Initialize empty lists to store velocity, echo, and time data for each table in the configuration.
-                - Calculate the time array based on the number of profiles and sample time.
-                - Iterate over the velocity and echo data and assign them to the respective transducers.
-                - Adjust the time array based on the configured multiplexer delay times.
-                - Convert the velocity and echo data to NumPy arrays.
-            4. If the measurement uses a single transducer:
-                - Calculate the angle coefficient and velocity resolution based on the measurement info.
-                - Adjust the velocity data and assign it to the velocity array.
-                - Assign the echo data to the echo array.
-                - Calculate the time array based on the number of profiles and sample time.
-            5. Store the coordinate array in a list based on the start channel, number of channels, and channel distance.
-            6. Assign the coordinate array list to the coordinate arrays for each transducer (if applicable).
-
         Note:
             - This method assumes that the necessary attributes and configuration parameters are already set
               before calling this function.
