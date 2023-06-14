@@ -33,7 +33,7 @@ for k in K:
     y_r = np.array([i/50 for i in range(52,126)])
     phi_e =0.637/(0.75/(np.sqrt(y_r*((2*y_r + 5*k)/(2+5*k))**(3/2))-1)+1)
     de_phi = np.gradient(phi_e,y_r)
-    plt.plot(phi_e, y_r*0.05*de_phi, label=k)
+    plt.plot(phi_e, y_r*0.05*de_phi/phi_e, label=k)
     #plt.plot(y_r, phi_e)
 '''last_181_rows = phi[:,:181]
 max_values = np.zeros(181)
