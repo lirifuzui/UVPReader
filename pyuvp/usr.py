@@ -268,7 +268,7 @@ class Analysis:
                           smooth_level: int = 11, ignoreException=False):
         # max_viscosity _cSt
         # viscosity_range_tolerance _cSt
-        if len(self.__coordinate_array) < 20:
+        if len(self.__coordinate_array) < 20 and ignoreException == False:
             raise USRException("The number of coordinate must be greater than 20!")
         if self.__cylinder_radius is None and self.__pipe_TDXangle is None:
             raise ValueError("You must define Container Geometry first！")
