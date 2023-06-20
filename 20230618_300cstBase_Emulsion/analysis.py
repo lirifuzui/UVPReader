@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 from pyuvp import uvp
 
@@ -10,7 +11,7 @@ plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 plt.ylim(0, 1000)
 # plt.ylim(0, 3)
 plt.xlim(4, 15)
-
+Viscs= []
 for file in files:
     data = uvp.readUvpFile(file)
     # data.redefineSoundSpeed(1029)
@@ -29,7 +30,8 @@ for file in files:
     analysis.sliceSize(3000)
     shearrate, viscoic, viscoelastic, _ = analysis.rheologyViscoelasticity(1000)
     plt.scatter(shearrate, viscoelastic, s=5, alpha=0.3, label=file)'''
-
+    Viscs.extend(visc)
+print(np.average(Viscs))
 plt.grid()
 # plt.legend()
 plt.show()
