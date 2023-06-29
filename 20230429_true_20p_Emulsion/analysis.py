@@ -3,12 +3,12 @@ import numpy as np
 
 from pyuvp import uvp
 
-files = ["05hz120deg.mfprof","1hz60deg.mfprof", "1hz60deg.mfprof",]
+files = ["10p_05hz120deg.mfprof","10p_1hz60deg.mfprof", "10p_1hz60deg.mfprof",]
 # files = ["1hz45deg.mfprof", "1hz45deg02.mfprof"]
-# files = ["05hz60deg.mfprof","05hz90deg02.mfprof","05hz120deg.mfprof","05hz150deg.mfprof",]
-# files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg.mfprof",]
-# files = ["05hz90deg.mfprof", "05hz90deg02.mfprof", "05hz90deg03.mfprof"]
-# files = ["05hz150deg.mfprof", "05hz150deg02.mfprof"]
+# files = ["05hz60deg.mfprof","05hz90deg02.mfprof","10p_05hz120deg.mfprof","10p_05hz150deg.mfprof",]
+# files = ["1hz30deg.mfprof","1hz45deg.mfprof","10p_1hz60deg.mfprof",]
+# files = ["10p_05hz90deg.mfprof", "05hz90deg02.mfprof", "05hz90deg03.mfprof"]
+# files = ["10p_05hz150deg.mfprof", "05hz150deg02.mfprof"]
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')

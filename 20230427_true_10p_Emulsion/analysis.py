@@ -3,9 +3,9 @@ import numpy as np
 
 from pyuvp import uvp
 
-# files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof","05hz60deg03.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg.mfprof"]
+# files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof","05hz60deg03.mfprof","10p_05hz90deg.mfprof","10p_05hz120deg.mfprof","10p_05hz150deg.mfprof"]
 # files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof"]
-# files = ["05hz60deg02.mfprof","05hz90deg.mfprof","05hz120deg.mfprof","05hz150deg.mfprof"]
+# files = ["05hz60deg02.mfprof","10p_05hz90deg.mfprof","10p_05hz120deg.mfprof","10p_05hz150deg.mfprof"]
 files = ["05hz60deg.mfprof","05hz60deg02.mfprof","05hz60deg03.mfprof"]
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')

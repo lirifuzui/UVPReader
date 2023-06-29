@@ -3,14 +3,14 @@ import numpy as np
 
 from pyuvp import uvp
 
-files = ["05hz90deg.mfprof", "05hz105deg.mfprof", "05hz120deg.mfprof", "05hz135deg.mfprof", "05hz150deg.mfprof",
-         "1hz60deg.mfprof", "1hz65deg.mfprof", "1hz75deg.mfprof", "1hz80deg.mfprof", "1hz90deg.mfprof"]
-# files = ["05hz90deg.mfprof", "05hz105deg.mfprof", "05hz120deg.mfprof", "05hz135deg.mfprof", "05hz150deg.mfprof"]
-# files = ["1hz60deg.mfprof", "1hz65deg.mfprof", "1hz75deg.mfprof", "1hz80deg.mfprof", "1hz90deg.mfprof"]
-# files = ["day2-1hz60deg.mfprof", "day2-1hz90deg.mfprof", "day2-1hz120deg.mfprof", "day2-1hz75deg.mfprof","day2-1hz105deg.mfprof"]
-# files = ["day2-05hz90deg.mfprof", "day2-05hz120deg.mfprof", "day2-05hz150deg.mfprof", ]
-# files = ["day3-1hz60deg.mfprof", "day3-1hz90deg.mfprof", "day3-1hz120deg.mfprof"]
-# files = ["day3-05hz90deg.mfprof", "day3-05hz120deg.mfprof", "day3-05hz150deg.mfprof", ]
+files = ["10p_05hz90deg.mfprof", "05hz105deg.mfprof", "10p_05hz120deg.mfprof", "05hz135deg.mfprof", "10p_05hz150deg.mfprof",
+         "10p_1hz60deg.mfprof", "1hz65deg.mfprof", "1hz75deg.mfprof", "1hz80deg.mfprof", "10p_1hz90deg.mfprof"]
+# files = ["10p_05hz90deg.mfprof", "05hz105deg.mfprof", "10p_05hz120deg.mfprof", "05hz135deg.mfprof", "10p_05hz150deg.mfprof"]
+# files = ["10p_1hz60deg.mfprof", "1hz65deg.mfprof", "1hz75deg.mfprof", "1hz80deg.mfprof", "10p_1hz90deg.mfprof"]
+# files = ["day2-10p_1hz60deg.mfprof", "day2-10p_1hz90deg.mfprof", "day2-10p_1hz120deg.mfprof", "day2-1hz75deg.mfprof","day2-1hz105deg.mfprof"]
+# files = ["day2-10p_05hz90deg.mfprof", "day2-10p_05hz120deg.mfprof", "day2-10p_05hz150deg.mfprof", ]
+# files = ["day3-10p_1hz60deg.mfprof", "day3-10p_1hz90deg.mfprof", "day3-10p_1hz120deg.mfprof"]
+# files = ["day3-10p_05hz90deg.mfprof", "day3-10p_05hz120deg.mfprof", "day3-10p_05hz150deg.mfprof", ]
 # files = ["day3-15hz60deg.mfprof", "day3-15hz75deg.mfprof", "day3-15hz90deg.mfprof", ]
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')

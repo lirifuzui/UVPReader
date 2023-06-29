@@ -2,11 +2,11 @@ import matplotlib.pyplot as plt
 
 from pyuvp import uvp
 
-files = ["05hz90deg.mfprof", "05hz100deg.mfprof", "05hz110deg.mfprof", "05hz120deg.mfprof", "05hz130deg.mfprof",
-         "05hz140deg.mfprof", "05hz150deg.mfprof", "05hz160deg.mfprof", "05hz170deg.mfprof"]
-# files = ["1hz45deg.mfprof", "1hz60deg.mfprof", "1hz70deg.mfprof", "1hz80deg.mfprof", "1hz90deg.mfprof","1hz100deg.mfprof"]
+files = ["10p_05hz90deg.mfprof", "05hz100deg.mfprof", "05hz110deg.mfprof", "10p_05hz120deg.mfprof", "05hz130deg.mfprof",
+         "05hz140deg.mfprof", "10p_05hz150deg.mfprof", "05hz160deg.mfprof", "05hz170deg.mfprof"]
+# files = ["1hz45deg.mfprof", "10p_1hz60deg.mfprof", "1hz70deg.mfprof", "1hz80deg.mfprof", "10p_1hz90deg.mfprof","1hz100deg.mfprof"]
 # files = ["05hz60deg10000step.mfprof", "05hz90deg10000step.mfprof", "05hz120deg10000step.mfprof", ]
-# files = ["1hz45deg.mfprof","1hz60deg.mfprof","1hz70deg.mfprof","1hz80deg.mfprof","1hz90deg.mfprof","1hz100deg.mfprof","05hz90deg.mfprof", "05hz100deg.mfprof", "05hz110deg.mfprof", "05hz120deg.mfprof", "05hz130deg.mfprof","05hz140deg.mfprof", "05hz150deg.mfprof", "05hz160deg.mfprof", "05hz170deg.mfprof"]
+# files = ["1hz45deg.mfprof","10p_1hz60deg.mfprof","1hz70deg.mfprof","1hz80deg.mfprof","10p_1hz90deg.mfprof","1hz100deg.mfprof","10p_05hz90deg.mfprof", "05hz100deg.mfprof", "05hz110deg.mfprof", "10p_05hz120deg.mfprof", "05hz130deg.mfprof","05hz140deg.mfprof", "10p_05hz150deg.mfprof", "05hz160deg.mfprof", "05hz170deg.mfprof"]
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
