@@ -20,7 +20,7 @@ for file in files:
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()
-    analysis.channelRange(50, 72)
+    analysis.channelRange(55, 65)
     analysis.cylinderGeom(77, 76, 10.62)
 
     analysis.slicing(5)
