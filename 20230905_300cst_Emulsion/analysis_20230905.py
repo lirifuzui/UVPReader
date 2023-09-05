@@ -4,8 +4,8 @@ import numpy as np
 from pyuvp import uvp
 
 # files = ["10p_05hz90deg.mfprof", "10p_05hz120deg_2.mfprof", "10p_05hz150deg.mfprof", "10p_1hz60deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"]
-files = ["15p_05hz90deg.mfprof", "15p_05hz120deg.mfprof", "15p_05hz150deg.mfprof", "15p_1hz60deg_2.mfprof",
-         "15p_1hz90deg_2.mfprof", "15p_1hz120deg.mfprof"]
+# files = ["05hz90deg.mfprof"]
+files = ["05hz120deg.mfprof", "05hz150deg.mfprof", "1hz60deg.mfprof", "1hz90deg.mfprof", "1hz120deg.mfprof"]
 # files = ["20p_1hz90deg.mfprof","20p_1hz120deg.mfprof","20p_1hz60deg.mfprof","20p_05hz120deg.mfprof","20p_05hz90deg.mfprof","20p_05hz150deg.mfprof",]
 # files = ["25p_1hz90deg.mfprof","25p_1hz120deg.mfprof","25p_1hz60deg.mfprof","25p_05hz120deg.mfprof","25p_05hz90deg.mfprof","25p_05hz150deg.mfprof",]
 # files = ["30p_1hz90deg_2.mfprof","30p_1hz60deg.mfprof","30p_05hz120deg.mfprof","30p_05hz90deg.mfprof","30p_05hz150deg.mfprof",]
@@ -17,8 +17,8 @@ plt.rcParams['axes.linewidth'] = 3
 plt.tick_params(axis='both', which='both', width=1.5, length=6)
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
-plt.ylim(0, 800)
-plt.xlim(5, 12)
+# plt.ylim(0, 800)
+# plt.xlim(5, 12)
 Visc = []
 for file in files:
     data = uvp.readUvpFile(file)
@@ -26,8 +26,8 @@ for file in files:
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()
-    analysis.channelRange(90, 100)
-    analysis.cylinderGeom(77, 106.77, 10.62)
+    analysis.channelRange(25, 35)
+    analysis.cylinderGeom(77, 26.80, 24.3)
 
     analysis.slicing(20)
 
