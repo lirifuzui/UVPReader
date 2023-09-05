@@ -1,15 +1,0 @@
-
-~python:S4487+"_Remove this unread private attribute '__new_sound_speed' or refactor the code to use its value.(…‘†ê8ğÊ©íü0
-ˆpython:S101"eRename class "readUvpFile" to match the regular expression ^_?([A-Z_][a-zA-Z0-9]*|[a-z_][a-z0-9_]*)$.(Ì“Ûÿÿÿÿÿ8õóû²‡1
-{python:S100j"XRename method "__read_params_part_I" to match the regular expression ^[a-z_][a-z0-9_]*$.(îÑÖ§úÿÿÿÿ8ğÊ©íü0
-}python:S100"YRename method "__read_params_part_II" to match the regular expression ^[a-z_][a-z0-9_]*$.(±Ï˜Ìıÿÿÿÿ8ğÊ©íü0
-spython:S100Æ"TRename method "defineSoundSpeed" to match the regular expression ^[a-z_][a-z0-9_]*$.(É°–Ş8öóû²‡1
-tpython:S3776Æ"TRefactor this function to reduce its Cognitive Complexity from 25 to the 15 allowed.(É°–Ş8öóû²‡1
-{python:S117±"\Rename this local variable "uvpDatafile" to match the regular expression ^[_a-z][a-z0-9_]*$.(ú¾½”8öóû²‡1
-python:S117Ñ"[Rename this parameter "ignoreException" to match the regular expression ^[_a-z][a-z0-9_]*$.(˜Ÿÿğúÿÿÿÿ8öóû²‡1
-ypython:S100Ñ"URename method "createUSRAnalysis" to match the regular expression ^[a-z_][a-z0-9_]*$.(˜Ÿÿğúÿÿÿÿ8öóû²‡1
-qpython:S100é"MRename method "muxStatus" to match the regular expression ^[a-z_][a-z0-9_]*$.(ÔŠÃáùÿÿÿÿ8ñÊ©íü0
-lpython:S100í"MRename method "velTables" to match the regular expression ^[a-z_][a-z0-9_]*$.(™ªª8ñÊ©íü0
-rpython:S100ò"NRename method "echoTables" to match the regular expression ^[a-z_][a-z0-9_]*$.(€½Ä†øÿÿÿÿ8ñÊ©íü0
-lpython:S100ö"NRename method "timeArrays" to match the regular expression ^[a-z_][a-z0-9_]*$.(£¶”Z8÷óû²‡1
-spython:S100û"TRename method "coordinateArrays" to match the regular expression ^[a-z_][a-z0-9_]*$.(éûÍŒ8÷óû²‡1
