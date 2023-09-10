@@ -1,11 +1,12 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
 K=1/300
 y_r = np.array([i/20 for i in range(20,41)])
 
 y = y_r*((2*y_r + 5*K)/(2+5*K))**(3/2)
 
-phi_m = 0.637
+phi_m = 0.45
 
 plt.figure()
 

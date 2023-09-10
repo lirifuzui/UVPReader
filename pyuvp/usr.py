@@ -91,7 +91,7 @@ class Analysis:
 
         self.__pipe_TDXangle: float | None = None
 
-        self.__cylinder_freq = None
+        self.__shear_freq = None
 
         self.__shear_rate: np.ndarray | None = None
         self.__viscosity_cSt: np.ndarray | None = None
@@ -119,11 +119,11 @@ class Analysis:
         if delta_y is not None:
             self.__delta_y = delta_y
         else:
-            self.__cylinder_freq = vibration_params[0]
-            max_vel = 2 * np.pi * self.__cylinder_freq * self.__cylinder_radius * (vibration_params[1] * np.pi / 180)
+            self.__shear_freq = vibration_params[0]
+            max_vel = 2 * np.pi * self.__shear_freq * self.__cylinder_radius * (vibration_params[1] * np.pi / 180)
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
             self.__coordinate_array, self.__temp_coords = self.__temp_coords, self.__coordinate_array
-            vibration_frequency, max_magnitude, _, _, _, _ = self.fftInUSR()
+            _, max_magnitude, _, _, _, _ = self.fftInUSR()
             wall_coordinate = self.__coordinate_array[np.argmax(max_magnitude)]
             self.__coordinate_array, self.__temp_coords = self.__temp_coords, self.__coordinate_array
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
@@ -139,12 +139,19 @@ class Analysis:
             self.__vel_data[i] = self.__vel_data[i] * self.__coordinate_array / self.__delta_y
         return self.__vel_data, self.__coordinate_array
 
+    def pipeGeom(self, pipe_TDXangle, flow_freq):
+        # 这里的角度是与半径方向的夹角
+        self.__pipe_TDXangle = pipe_TDXangle
+        self.__shear_freq = flow_freq
+        self.__coordinate_array = self.__coordinate_array * np.cos(self.__pipe_TDXangle / 180 * np.pi)
+        for i in range(self.__number_of_windows + 1):
+            self.__vel_data[i] = self.__vel_data[i] * np.sin(self.__pipe_TDXangle / 180 * np.pi)
+
     # Extracted vaild data according to the position coordinates.
     def channelRange(self, start: int = 0, end: int = -1):
         for i in range(self.__number_of_windows + 1):
             self.__vel_data[i] = self.__vel_data[i][:, start:end]
         self.__coordinate_array = self.__coordinate_array[start:end]
-
 
     def slicing(self, number_of_slice: int = 5, slice_size: None | int = None, ignoreException=False):
         self.__number_of_windows = number_of_slice
@@ -288,17 +295,17 @@ class Analysis:
         for window in range(self.__number_of_windows + 1):
             oscillation_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
                 self.fftInUSR(window_num=window, derivative_smoother_factor=smooth_level)
-            self.__cylinder_freq = oscillation_frequency if self.__cylinder_freq is None else self.__cylinder_freq
+            self.__shear_freq = oscillation_frequency if self.__shear_freq is None else self.__shear_freq
 
             # Determine whether the frequency of the input container matches the experimental results.
-            if np.abs(oscillation_frequency - self.__cylinder_freq) > \
+            if np.abs(oscillation_frequency - self.__shear_freq) > \
                     np.abs(
                         oscillation_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
                     and not self.__ignoreUSRException and not ignoreException:
                 raise USRException(
                     "The defined vibration frequency of the cylinder does not match the results of the "
                     "experimental data! [" + f"{oscillation_frequency:.3g}" + ", " + str(
-                        self.__cylinder_freq) + "]")
+                        self.__shear_freq) + "]")
 
             # print title
             print(f"{'slice':<{8}}{'time_range':<{16}}{'vessel_freq':<{8}}")
