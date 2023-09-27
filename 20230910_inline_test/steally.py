@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
 import numpy as np
-import csv
 
 from pyuvp import uvp
 
@@ -17,12 +15,5 @@ for file in files:
     csv_file = emulsion_name + file + '.csv'
     combined_array = np.column_stack((coords_origin, vel_ave))
 
-    # 使用CSV模块将二维数组写入CSV文件
-    with open(csv_file, mode='w', newline='') as csv_file:
-        writer = csv.writer(csv_file)
-        # 写入标题行（可选）
-        writer.writerow(['coords', 'vel_ave'])
-        # 写入数据行
-        writer.writerows(combined_array)
 
 

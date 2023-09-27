@@ -226,13 +226,6 @@ class Analysis:
         br = beta * coordinates_r
         J_r = jv(1, br)
         Phi_r, Psi_r = np.real(J_r), np.imag(J_r)
-        '''beta = (1 + 1j) * np.sqrt(np.pi * freq_0 / visc) * cylinder_R
-        br = coordinates_r / cylinder_R * beta
-        bR = beta
-        J_r = jv(1, br)
-        J_R = jv(1, bR)
-        Phi_R, Psi_R = np.real(J_R), np.imag(J_R)
-        Phi_r, Psi_r = np.real(J_r), np.imag(J_r)'''
         alphas = np.arctan(((Phi_r * Psi_R) - (Phi_R * Psi_r)) / ((Phi_r * Phi_R) + (Psi_r * Psi_R)))
         dphase = np.diff(alphas)
         offsets = np.zeros_like(alphas)
