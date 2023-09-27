@@ -16,14 +16,12 @@ for n, file in enumerate(files):
     for i in range(len(coords_origin)):
         coords.append(np.abs(coords_origin[i] - (10.26 + 25)))
 
-    coords = np.array(coords[16:33])
-    vel = vel[:, 16:33]
+    coords = np.array(coords[21:33])
+    vel = vel[:, 21:33]
     vel = np.mean(vel, axis=0)
     du_dr = np.abs(np.gradient(vel, coords))
-    u_r = vel / coords
-    shear_rate = du_dr
-    alpha = float(press_diff[n] / 460)
-    visc = alpha * coords / (2 * shear_rate)
+    alpha = float(press_diff[n] / 0.46)
+    visc = alpha * coords / (2 * du_dr)
 
-    plt.scatter(shear_rate, visc)
+    plt.scatter(du_dr, visc)
 plt.show()
