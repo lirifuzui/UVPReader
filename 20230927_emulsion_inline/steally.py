@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import curve_fit
 
 from pyuvp import uvp
 
@@ -7,6 +8,13 @@ files = np.array([65, 70, 72])
 press_diff = 151.98 * files - 7407.7 - (151 * files - 2203.7) + 5145.618068
 
 plt.figure()
+
+
+# 定义拟合函数
+def linear_function(x, m, b):
+    return m * x + b
+
+
 for n, file in enumerate(files):
     data = uvp.readUvpFile(str(file) + ".mfprof")
     # data.redefineSoundSpeed(1029)
