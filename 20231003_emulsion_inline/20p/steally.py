@@ -22,10 +22,10 @@ for n, file in enumerate(files):
     data.defineSoundSpeed(1010)
     vel = data.velTables[0] * 2
     coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
-    coords_origin = coords_origin - 32
-    coords = coords_origin[21:30]
+    coords_origin = coords_origin - 21
+    coords = coords_origin[16:39]
     vel = np.mean(vel, axis=0)
-    vel = vel[21:30]
+    vel = vel[16:39]
     params, covariance = curve_fit(velosity_perfile, coords / 1000, vel / 1000, p0=0.5)
     plt.figure()
     plt.scatter(coords / 1000, vel / 1000)
