@@ -20,6 +20,6 @@ phi = phi_m / (0.75 / (y ** (1 / 2) - 1) + 1)
 plt.plot(y_r, phi)
 
 phi_data = [0.05, 0.1, 0.15, 0.2]
-y_r_data = [776 / 757, 798 / 734, 927 / 734, 1060 / 734]
+y_r_data = [776 / 757, 798 / 734, 927 / 734, 1230 / 734]
 plt.scatter(y_r_data, phi_data)
 plt.show()
