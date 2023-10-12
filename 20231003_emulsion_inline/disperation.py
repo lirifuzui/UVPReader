@@ -16,7 +16,7 @@ for file in files:
     # 绘制密度分布函数图
     plt.plot(D, freq, label='Density')
     D_ba = np.mean(data)
-    phi_m0 = 0.523
+    phi_m0 = 0.45
     part_1 = 0
     part_2 = 0
     part_3 = 0
