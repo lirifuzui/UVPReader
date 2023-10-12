@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 f_s = np.array([i/100 for i in range(101)])
 y_r = np.array([i/20 for i in range(20,201)])
-K = [0.001, 1]
+K = 0.5
 f_s, y_r = np.meshgrid(f_s, y_r)
 
 f_b = 1-f_s
@@ -15,9 +15,14 @@ phi_m = (125*f_b + f_s)/((5-D_ba)**3*f_b + (((5+D_ba)**3-(5-D_ba)**3)*f_b+(1+D_b
 y = y_r*((2*y_r + 5*K)/(2+5*K))**(3/2)
 phi =(1-y**(-1/2.5))*phi_m
 
-plt.figure()
+fig, ax = plt.subplots()
+ax.spines['top'].set_linewidth(2)
+ax.spines['right'].set_linewidth(2)
+ax.spines['bottom'].set_linewidth(2)
+ax.spines['left'].set_linewidth(2)
+ax.tick_params(axis='both', which='both', width=2)
 plt.yscale('log')
-plt.grid()
+# plt.grid()
 plt.ylabel("Relative viscosity")
 plt.xlabel("Vol. fraction of fine particle")
 plt.contour(f_s, y_r, phi, levels=np.arange(0, 1.1, 0.1), cmap='jet')
