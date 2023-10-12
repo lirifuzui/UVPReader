@@ -14,7 +14,7 @@ for file in files:
     D = np.linspace(0, max(data), 100)
     freq = kde(D)
     # 绘制密度分布函数图
-    plt.plot(D, freq, label='Density')
+    plt.plot(D, freq, label=file)
     D_ba = np.mean(data)
     phi_m0 = 0.45
     part_1 = 0
