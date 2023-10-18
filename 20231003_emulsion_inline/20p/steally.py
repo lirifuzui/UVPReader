@@ -21,8 +21,8 @@ for n, file in enumerate(files):
     data = uvp.readUvpFile(str(file) + ".mfprof")
     data.defineSoundSpeed(1010)
     vel = data.velTables[0] * 2
-    coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
-    coords_origin = coords_origin - 32
+    coords_origin = data.coordinateArrays[0] * np.arcsin(30 / 180 * np.pi)
+    coords_origin = coords_origin - 29
     coords = coords_origin[16:39]
     vel = np.mean(vel, axis=0)
     vel = vel[16:39]

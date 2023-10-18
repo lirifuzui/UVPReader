@@ -11,7 +11,7 @@ for file in files:
     kde = gaussian_kde(data)
 
     # 生成一组X值，用于绘制密度曲线
-    D = np.linspace(0, max(data), 100)
+    D = np.linspace(0, max(data), 200)
     freq = kde(D)
     # 绘制密度分布函数图
     plt.plot(D, freq, label=file)
