@@ -1,14 +1,14 @@
 import matplotlib.pyplot as plt
-
+import time
 from pyuvp import uvp
-
-data = uvp.readUvpFile("1000min.mfprof", is_output=False)
+start = time.time()
+data = uvp.readUvpFile("1000min.mfprof", num_threads=10, is_output=False)
 data.defineSoundSpeed(1000)
 vel = data.velTables[0]
 times = data.timeArrays[0]
 coords = data.coordinateArrays[0]
 
-plt.figure()
+'''plt.figure()
 plt.contour(coords, times, vel)
 plt.show()
 
@@ -21,10 +21,13 @@ anaylsis.slicing(5, 500)
 a, b, c, d = anaylsis.rheologyViscoelasticity(1000, 2000)
 plt.scatter(a, c)
 plt.grid()
-plt.show()
+plt.show()'''
 
 '''
 plt.scatter(shearrate, viscoity, s=3, alpha=0.5)
 plt.grid()
 plt.ylim(500, 1500)
 plt.show()'''
+end = time.time()
+print('程序执行时间: ',end - start)
+

@@ -1,7 +1,8 @@
 import os
 from datetime import datetime
 from struct import unpack
-
+from multiprocessing import cpu_count
+import threading
 import numpy as np
 
 import pyuvp
@@ -16,7 +17,7 @@ class FileException(Exception):
 
 
 class readUvpFile:
-    def __init__(self, file_path, is_output=False):
+    def __init__(self, file_path, num_threads=1, is_output=False):
         """
         Reads the '.mfprof' file containing profile data and parameter values from 'MET-FLOW uvp for OptekFirmware'
         and stores them in an instance variable.
@@ -52,6 +53,16 @@ class readUvpFile:
         # Although the coordinate series of each tdx data is the same, it is still stored in a list for ease of use.
         # Each item of the list contains the same coordinate series.
         self.__coords_arr_tdxs = []
+
+        #
+        def check_value(input_value, threshold):
+            if input_value > threshold:
+                raise ValueError("The number of calling threads exceeds")
+        try:
+            check_value(num_threads, cpu_count())
+            self.__num_threads = num_threads
+        except ValueError as e:
+            print(e)
 
         # Run the "__read_data" function and store the data in the corresponding class variables.
         self.__read_data(file_path)
@@ -306,8 +317,17 @@ class readUvpFile:
         except FileNotFoundError:
             raise FileException("File not found.")
         try:
-            self.__read_params_part_I(uvpDatafile)
-            self.__read_params_part_II(uvpDatafile)
+            # Executive multithreading,maximum 2 multithreading.
+            if self.__num_threads >= 2:
+                thread1 = threading.Thread(target=self.__read_params_part_I(uvpDatafile))
+                thread2 = threading.Thread(target=self.__read_params_part_II(uvpDatafile))
+                thread1.start()
+                thread2.start()
+                thread1.join()
+                thread2.join()
+            else:
+                self.__read_params_part_I(uvpDatafile)
+                self.__read_params_part_II(uvpDatafile)
             # read velocity file_data and echo_data file_data
             self.__raw_vel_arr = np.zeros((self.__measurement_info['NumberOfProfiles'],
                                            self.__measurement_info['NumberOfChannels']))
@@ -316,16 +336,49 @@ class readUvpFile:
         except np.core._exceptions._ArrayMemoryError:
             raise FileException("'.mfprof' file may be corrupted or altered."
                                 "'Number of Profiles' and 'Number of Channels' are beyond normal limits.")
-        uvpDatafile.seek(104)
+        uvpDatafile.seek(104, 0)
         datatype = '{}h'.format(self.__measurement_info['NumberOfChannels'])
         for i in range(self.__measurement_info['NumberOfProfiles']):
-            uvpDatafile.seek(16, 1)
+            uvpDatafile.seek(16,1)
             if self.__measurement_info['DoNotStoreDoppler'] != 1:
                 encode_vel_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
                 self.__raw_vel_arr[i] = unpack(datatype, encode_vel_data)
             if self.__measurement_info['AmplitudeStored']:
                 encode_echo_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
                 self.__raw_echo_arr[i] = unpack(datatype, encode_echo_data)
+
+        '''def process_data(Start, End):
+            with threading.Lock():
+                datatype = '{}h'.format(self.__measurement_info['NumberOfChannels'])
+                uvpDatafile.seek(104 + 16*Start, 0)
+                if self.__measurement_info['DoNotStoreDoppler'] != 1:
+                    uvpDatafile.seek(Start * (self.__measurement_info['NumberOfChannels'] * 2), 1)
+                if self.__measurement_info['AmplitudeStored']:
+                    uvpDatafile.seek(Start * (self.__measurement_info['NumberOfChannels'] * 2), 1)
+
+                for i in range(Start, End):
+                    uvpDatafile.seek(16, 1)
+                    if self.__measurement_info['DoNotStoreDoppler'] != 1:
+                        encode_vel_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
+                        self.__raw_vel_arr[i] = unpack(datatype, encode_vel_data)
+                    if self.__measurement_info['AmplitudeStored']:
+                        encode_echo_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
+                        self.__raw_echo_arr[i] = unpack(datatype, encode_echo_data)
+
+        threads = []
+        profiles_per_thread = self.__measurement_info['NumberOfProfiles'] // self.__num_threads
+        for thread_number in range(self.__num_threads):
+            start = thread_number * profiles_per_thread
+            end = start + profiles_per_thread if thread_number < self.__num_threads - 1 else self.__measurement_info['NumberOfProfiles']
+            thread = threading.Thread(target=process_data, args=(start, end))
+            threads.append(thread)
+
+        for thread in threads:
+            thread.start()
+
+        for thread in threads:
+            thread.join()'''
+
         uvpDatafile.close()
 
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.

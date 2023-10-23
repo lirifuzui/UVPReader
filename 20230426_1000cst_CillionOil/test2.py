@@ -10,7 +10,7 @@ plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 plt.ylim(0, 2000)
 
 for file in files:
-    data = uvp.readUvpFile(file)
+    data = uvp.readUvpFile(file,num_threads=20)
     vel_origin = data.velTables[0]
 
     analysis = data.createUSRAnalysis()
@@ -19,7 +19,7 @@ for file in files:
     analysis.slicing(0)
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
-    times = analysis.timeArrays()
+    times = analysis.timeSeries()
     '''x = [i for i in range(len(coordinates_r))]
     vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.doFFT()
     plt.plot(phase_delay_derivative, coordinates_r)
@@ -36,7 +36,7 @@ for file in files:
     plt.colorbar()
     plt.show()'''
 
-    visc, shearrate = analysis.viscosity(ignoreException=True)
+    visc, shearrate = analysis.rheologyViscosity(ignoreException=True)
     plt.scatter(shearrate, visc)
 
 plt.grid()
