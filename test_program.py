@@ -8,26 +8,26 @@ vel = data.velTables[0]
 times = data.timeArrays[0]
 coords = data.coordinateArrays[0]
 
-'''plt.figure()
+plt.figure()
 plt.contour(coords, times, vel)
-plt.show()
+#plt.show()
 
-anaylsis = data.createUSRAnalysis()
+anaylsis = data.createUSRAnalysis(num_threads = 1)
 anaylsis.cylinderGeom(77, 66, 15)
-anaylsis.channelRange(77, 110)
-anaylsis.slicing(5, 500)
+anaylsis.channelRange(77, 100)
+anaylsis.slicing(40)
 
-# viscoity, shearrate = anaylsis.rheologyViscosity()
-a, b, c, d = anaylsis.rheologyViscoelasticity(1000, 2000)
+viscoity, shearrate = anaylsis.rheologyViscosity()
+'''a, b, c, d = anaylsis.rheologyViscoelasticity(1000, 2000)
 plt.scatter(a, c)
 plt.grid()
 plt.show()'''
 
-'''
-plt.scatter(shearrate, viscoity, s=3, alpha=0.5)
+
+plt.scatter(viscoity, shearrate, s=3, alpha=0.5)
 plt.grid()
 plt.ylim(500, 1500)
-plt.show()'''
+#plt.show()
 end = time.time()
-print('程序执行时间: ',end - start)
+print('程序执行时间: ', end - start)
 

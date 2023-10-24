@@ -54,7 +54,7 @@ class readUvpFile:
         # Each item of the list contains the same coordinate series.
         self.__coords_arr_tdxs = []
 
-        #
+        # Number of calling threads
         def check_value(input_value, threshold):
             if input_value > threshold:
                 raise ValueError("The number of calling threads exceeds")
@@ -387,7 +387,7 @@ class readUvpFile:
         if self.__is_output is True:
             self.__output_files()
 
-    def createUSRAnalysis(self, tdx_num: int = 0, ignoreException: bool = False):
+    def createUSRAnalysis(self, tdx_num: int = 0, ignoreException: bool = False, num_threads: int = 1):
         """
         Creates an instance of the USR Analysis class for the specified transducer's datas.
 
@@ -408,7 +408,8 @@ class readUvpFile:
 
         """
         return pyuvp.usr.Analysis(tdx_num=tdx_num, vel_data=self.velTables, time_series=self.timeArrays,
-                                  coordinate_series=self.coordinateArrays, ignoreException=ignoreException)
+                                  coordinate_series=self.coordinateArrays, ignoreException=ignoreException,
+                                  num_threads=num_threads)
 
     @property
     def muxStatus(self):
