@@ -20,16 +20,16 @@ for n, file in enumerate(files):
 
     # 文件数据
     data = uvp.readUvpFile(str(file) + ".mfprof")
-    data.defineSoundSpeed(1026)
+    data.defineSoundSpeed(1010)
     vel = data.velTables[0] * 2
-    coords_origin = data.coordinateArrays[0] * np.arcsin(30 / 180 * np.pi)
-    coords_origin = coords_origin - 25
-    coords = coords_origin[35:130]
+    coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
+    coords_origin = coords_origin - 24
+    coords = coords_origin[50:120]
     vel = np.mean(vel, axis=0)
-    vel = vel[35:130]
+    vel = vel[50:120]
     params, covariance = curve_fit(velosity_perfile, coords / 1000, vel / 1000, p0=0.5)
-    plt.figure()
     plt.scatter(coords / 1000, vel / 1000)
     plt.plot(coords / 1000, velosity_perfile(coords / 1000, params[0]))
-    plt.show()
     print(params[0])
+plt.grid()
+plt.show()
