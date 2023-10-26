@@ -1,7 +1,9 @@
 import threading
 
+import numpy as np
 from scipy.special import jv
 
+import pyuvp.uvp
 from pyuvp import Tools
 
 ON = 1
@@ -48,10 +50,6 @@ class Statistic:
 
     def movvar(self):
         None
-
-
-import pyuvp.uvp
-import numpy as np
 
 
 class Analysis:
