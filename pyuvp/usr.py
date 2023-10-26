@@ -1,7 +1,13 @@
+# 两个目标
+# 改成多进程
+# 那anaylsis的tdx_num给删掉，把这个选择只放在uvp库中
+
 import threading
 
+import numpy as np
 from scipy.special import jv
 
+import pyuvp.ForMetflowUvp
 from pyuvp import Tools
 
 ON = 1
@@ -48,10 +54,6 @@ class Statistic:
 
     def movvar(self):
         None
-
-
-import pyuvp.uvp
-import numpy as np
 
 
 class Analysis:
