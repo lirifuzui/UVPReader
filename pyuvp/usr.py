@@ -1,7 +1,8 @@
-import queue
-from multiprocessing import cpu_count
-from scipy.special import jv
 import threading
+from multiprocessing import cpu_count
+
+from scipy.special import jv
+
 from pyuvp import Tools
 
 ON = 1
@@ -58,7 +59,7 @@ class Analysis:
     def __init__(self, datas: pyuvp.uvp.readUvpFile = None, tdx_num: int = OFF,
                  vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
-                 ignoreException = False,
+                 ignoreException=False,
                  num_threads: int = 1):
         """
         analysis class for creating rheological analyzes from Uvp datas.
@@ -328,17 +329,17 @@ class Analysis:
                                                     derivative_smoother_factor=5)
             param_1 = real_part_derivative - (real_part / self.__coordinate_array)
             param_2 = imag_part_derivative - (imag_part / self.__coordinate_array)
-            shear_rate_of_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
-            effective_shear_rate.extend(shear_rate_of_now_window)
+            shear_rate_for_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
+            effective_shear_rate.extend(shear_rate_for_now_window)
 
-            # Create output queue.
-            output_queue = queue.Queue()
+            effective_viscosity_for_now_window = [0] * len(self.__coordinate_array)
+
             def multithread_Calculate_viscosity(Start, End):
                 # Calculate viscosity.
                 viscosity_limits = [0.5, max_viscosity]
                 visc_range = int((max_viscosity - 0.5) / 40)
 
-                for coordinate_index in range(Start, End):
+                for n, coordinate_index in enumerate(range(Start, End)):
                     loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
                     middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
                     first_search_range_of_loop = viscosity_limits.copy()
@@ -368,25 +369,25 @@ class Analysis:
                         elif idx == 2:
                             temp = [middle_viscosity, viscosity_limits[1]]
                         else:
-                            output_queue.put(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
+                            print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
                                   f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
                                   f'   '
                                   f'{"ERROR":<{viscosity_width}}'
-                                  f'{shear_rate_of_now_window[coordinate_index]:<{shear_rate_width}.5g}')
-                            output_queue.put("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
+                                  f'{shear_rate_for_now_window[coordinate_index]:<{shear_rate_width}.5g}')
+                            print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
                                   "The effective_viscosity value at this location may exceed the defined maximum"
                                   "(" + str(max_viscosity) + ').')
-                            effective_viscosity.append(-1)
+                            effective_viscosity_for_now_window[Start + n] = -1
                             viscosity_limits = [0.5, max_viscosity]
                             self.__err_time += 1
                             break
                         if np.abs(temp[0] - temp[1]) < viscosity_range_tolerance:
-                            output_queue.put(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
+                            print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
                                   f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
                                   f'   '
                                   f'{middle_viscosity:<{viscosity_width}.7g}'
-                                  f'{shear_rate_of_now_window[coordinate_index]:<{shear_rate_width}.5g}')
-                            effective_viscosity.append(middle_viscosity)
+                                  f'{shear_rate_for_now_window[coordinate_index]:<{shear_rate_width}.5g}')
+                            effective_viscosity_for_now_window[Start + n] = middle_viscosity
                             viscosity_limits = [
                                 middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
                                 middle_viscosity + visc_range]
@@ -398,24 +399,16 @@ class Analysis:
                         break
                 if self.__err_time > err_lim:
                     if not self.__ignoreUSRException and not ignoreException:
-                        output_queue.put("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
+                        print("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
                         raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
-                output_queue.put(None)
-
-            def output_result():
-                while True:
-                    item = output_queue.get()
-                    if item is None:
-                        break
-                    print(item)
-                    output_queue.task_done()
 
             threads = []
             if len(self.__coordinate_array) // self.__num_threads >= 1:
                 point_per_thread = len(self.__coordinate_array) // self.__num_threads
                 for thread_number in range(self.__num_threads):
                     start = thread_number * point_per_thread
-                    end = start + point_per_thread if thread_number < self.__num_threads - 1 else len(self.__coordinate_array)
+                    end = start + point_per_thread if thread_number < self.__num_threads - 1 else len(
+                        self.__coordinate_array)
                     thread = threading.Thread(target=multithread_Calculate_viscosity, args=(start, end))
                     threads.append(thread)
             else:
@@ -425,19 +418,19 @@ class Analysis:
                     end = start + 1
                     thread = threading.Thread(target=multithread_Calculate_viscosity, args=(start, end))
                     threads.append(thread)
-            threads.append(threading.Thread(target=output_result))
 
             for thread in threads:
                 thread.start()
             for thread in threads:
                 thread.join()
+            effective_viscosity.extend(effective_viscosity_for_now_window)
 
         self.__shear_rate = np.array(effective_shear_rate)
         self.__viscosity_cSt = np.array(effective_viscosity)
 
         print('\033[1m------------------------------------------------------')
         print("Calculation Complete.\033[0m")
-        return self.__shear_rate, self.__viscosity_cSt
+        return self.__viscosity_cSt, self.__shear_rate
 
     def rheologyViscoelasticity(self, density, max_viscosity: int | float = 30000,
                                 smooth_level: int = 11, ignoreException=False):
