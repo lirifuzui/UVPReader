@@ -1,5 +1,4 @@
 import threading
-from multiprocessing import cpu_count
 
 from scipy.special import jv
 
@@ -60,7 +59,7 @@ class Analysis:
                  vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
                  ignoreException=False,
-                 num_threads: int = 1):
+                 num_processes: int = 1):
         """
         analysis class for creating rheological analyzes from Uvp datas.
 
@@ -112,11 +111,7 @@ class Analysis:
             if input_value > threshold:
                 raise ValueError("The number of calling threads exceeds")
 
-        try:
-            check_value(num_threads, cpu_count())
-            self.__num_threads = num_threads
-        except ValueError as e:
-            print(e)
+        self.__num_processes = num_processes
 
     # Update the variable self.__coordinate_array and self.__vel_data,
     # to store the data in the radial coordinate system.
@@ -334,7 +329,7 @@ class Analysis:
 
             effective_viscosity_for_now_window = [0] * len(self.__coordinate_array)
 
-            def multithread_Calculate_viscosity(Start, End):
+            def multiprocessing_Calculate_viscosity(Start, End):
                 # Calculate viscosity.
                 viscosity_limits = [0.5, max_viscosity]
                 visc_range = int((max_viscosity - 0.5) / 40)
@@ -403,20 +398,20 @@ class Analysis:
                         raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
 
             threads = []
-            if len(self.__coordinate_array) // self.__num_threads >= 1:
-                point_per_thread = len(self.__coordinate_array) // self.__num_threads
-                for thread_number in range(self.__num_threads):
+            if len(self.__coordinate_array) // self.__num_processes >= 1:
+                point_per_thread = len(self.__coordinate_array) // self.__num_processes
+                for thread_number in range(self.__num_processes):
                     start = thread_number * point_per_thread
-                    end = start + point_per_thread if thread_number < self.__num_threads - 1 else len(
+                    end = start + point_per_thread if thread_number < self.__num_processes - 1 else len(
                         self.__coordinate_array)
-                    thread = threading.Thread(target=multithread_Calculate_viscosity, args=(start, end))
+                    thread = threading.Thread(target=multiprocessing_Calculate_viscosity, args=(start, end))
                     threads.append(thread)
             else:
                 point_per_thread = 1
                 for thread_number in range(len(self.__coordinate_array)):
                     start = thread_number * point_per_thread
                     end = start + 1
-                    thread = threading.Thread(target=multithread_Calculate_viscosity, args=(start, end))
+                    thread = threading.Thread(target=multiprocessing_Calculate_viscosity, args=(start, end))
                     threads.append(thread)
 
             for thread in threads:

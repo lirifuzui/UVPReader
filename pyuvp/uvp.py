@@ -1,8 +1,9 @@
 import os
-from datetime import datetime
-from struct import unpack
-from multiprocessing import cpu_count
 import threading
+from datetime import datetime
+from multiprocessing import cpu_count
+from struct import unpack
+
 import numpy as np
 
 import pyuvp
@@ -387,7 +388,7 @@ class readUvpFile:
         if self.__is_output is True:
             self.__output_files()
 
-    def createUSRAnalysis(self, tdx_num: int = 0, ignoreException: bool = False, num_threads: int = 1):
+    def createUSRAnalysis(self, tdx_num: int = 0, ignoreException: bool = False, num_processes: int = 1):
         """
         Creates an instance of the USR Analysis class for the specified transducer's datas.
 
@@ -404,12 +405,15 @@ class readUvpFile:
             - The returned USR Analysis instance can be used to perform various analysis operations on the ultrasonic data.
 
         Example:
-        analysis = data.createUSRAnalysis(tdx_num=1, ignoreException=True)
+        analysis = data.createUSRAnalysis(tdx_num=1, ignoreException=True, num_processes: int = 4)
+        :param tdx_num:
+        :param ignoreException:
+        :param num_processes:
 
         """
         return pyuvp.usr.Analysis(tdx_num=tdx_num, vel_data=self.velTables, time_series=self.timeArrays,
                                   coordinate_series=self.coordinateArrays, ignoreException=ignoreException,
-                                  num_threads=num_threads)
+                                  num_processes=num_processes)
 
     @property
     def muxStatus(self):
