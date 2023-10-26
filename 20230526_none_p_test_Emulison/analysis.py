@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 
-from pyuvp import uvp
-
 files = ["10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"]
 plt.figure()
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')

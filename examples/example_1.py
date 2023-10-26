@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from pyuvp import uvp, usr
+from pyuvp import usr
 
 # example of single tdx.
 # Viscosity analysis using USR, 1 Hz_120 deg.

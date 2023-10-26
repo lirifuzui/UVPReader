@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import csv
-from pyuvp import uvp
 
 # files = ["10p_05hz90deg.mfprof", "10p_05hz120deg_2.mfprof", "10p_05hz150deg.mfprof", "10p_1hz60deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"]
 # files = ["15p_05hz90deg.mfprof","15p_05hz120deg.mfprof","15p_05hz150deg.mfprof","15p_1hz60deg_2.mfprof", "15p_1hz90deg_2.mfprof", "15p_1hz120deg.mfprof"]

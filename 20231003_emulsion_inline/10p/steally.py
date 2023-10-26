@@ -2,8 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
-from pyuvp import uvp
-
 files = [55, 60, 65, 70, 75, 80]
 diff_P = np.array([-222.2703275, -221.7397238, -212.7412841, -201.0435016, -195.5468875, -191.1198566]) + 234.9178592
 

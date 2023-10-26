@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 
-from pyuvp import uvp
-
 files = ["10p_05hz90deg.mfprof", "05hz100deg.mfprof", "05hz110deg.mfprof", "10p_05hz120deg.mfprof", "05hz130deg.mfprof",
          "05hz140deg.mfprof", "10p_05hz150deg.mfprof", "05hz160deg.mfprof", "05hz170deg.mfprof"]
 # files = ["1hz45deg.mfprof", "10p_1hz60deg.mfprof", "1hz70deg.mfprof", "1hz80deg.mfprof", "10p_1hz90deg.mfprof","1hz100deg.mfprof"]

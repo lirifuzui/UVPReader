@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from pyuvp import uvp
-
 files = ["05hz60deg.mfprof", "05hz75deg.mfprof", "10p_05hz90deg.mfprof", "05hz105deg.mfprof", "10p_05hz120deg.mfprof"
     , "05hz135deg.mfprof", "10p_05hz150deg.mfprof"]
 plt.figure()

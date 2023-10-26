@@ -2,8 +2,6 @@ import time
 
 import matplotlib.pyplot as plt
 
-from pyuvp import uvp
-
 start = time.time()
 data = uvp.readUvpFile("1000min.mfprof", num_threads=2, is_output=False)
 data.defineSoundSpeed(1000)

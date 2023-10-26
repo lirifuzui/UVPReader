@@ -1,7 +1,5 @@
 import numpy as np
 
-from pyuvp import uvp
-
 files = [55, 60, 65, 70, 75, 80]
 
 for n, file in enumerate(files):

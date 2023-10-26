@@ -1,7 +1,5 @@
 import numpy as np
 
-from pyuvp import uvp
-
 emulsion_name = 'emulsion30'
 
 files = ["_duty60", "_duty65", "_duty70", "_duty75", "_duty80"]
