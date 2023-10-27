@@ -57,7 +57,7 @@ class Statistic:
 
 
 class Analysis:
-    def __init__(self, datas: pyuvp.uvp.readUvpFile = None, tdx_num: int = OFF,
+    def __init__(self, datas: pyuvp.ForMetflowUvp.readUvpFile = None, tdx_num: int = OFF,
                  vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
                  ignoreException=False,
