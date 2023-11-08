@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from pyuvp import ForMetflowUvp
+
 # files = ["10p_05hz90deg.mfprof", "10p_05hz120deg_2.mfprof", "10p_05hz150deg.mfprof", "10p_1hz60deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"]
 # files = ["05hz90deg.mfprof"]
-files = ["05hz120deg.mfprof", "05hz150deg.mfprof", "1hz60deg.mfprof", "1hz90deg.mfprof", "1hz120deg.mfprof"]
+files = ["1hz120deg.mfprof"]
+# files = ["05hz120deg.mfprof", "05hz150deg.mfprof", "1hz60deg.mfprof", "1hz90deg.mfprof", "1hz120deg.mfprof"]
 # files = ["20p_1hz90deg.mfprof","20p_1hz120deg.mfprof","20p_1hz60deg.mfprof","20p_05hz120deg.mfprof","20p_05hz90deg.mfprof","20p_05hz150deg.mfprof",]
 # files = ["25p_1hz90deg.mfprof","25p_1hz120deg.mfprof","25p_1hz60deg.mfprof","25p_05hz120deg.mfprof","25p_05hz90deg.mfprof","25p_05hz150deg.mfprof",]
 # files = ["30p_1hz90deg_2.mfprof","30p_1hz60deg.mfprof","30p_05hz120deg.mfprof","30p_05hz90deg.mfprof","30p_05hz150deg.mfprof",]
@@ -19,7 +22,7 @@ plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 # plt.xlim(5, 12)
 Visc = []
 for file in files:
-    data = uvp.readUvpFile(file)
+    data = ForMetflowUvp.readUvpFile(file)
     # data.redefineSoundSpeed(1029)
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
@@ -29,7 +32,7 @@ for file in files:
 
     analysis.slicing(20)
 
-    shearrate, visc = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
+    visc, shearrate = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
     plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file, color="black")
     Visc.append(visc)
     coord = analysis.coordSeries

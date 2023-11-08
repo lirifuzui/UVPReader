@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
+from pyuvp import ForMetflowUvp
+
 files = [55, 60, 65, 70, 75, 80]
 diff_P = np.array([-225.0692118, -220.6969055, -212.3003921, -206.2043178, -199.6272439, -193.4427466]) + 234.9178592
 
@@ -17,7 +19,7 @@ for n, file in enumerate(files):
 
 
     # 文件数据
-    data = uvp.readUvpFile(str(file) + ".mfprof")
+    data = ForMetflowUvp.readUvpFile(str(file) + ".mfprof")
     data.defineSoundSpeed(1010)
     vel = data.velTables[0] * 2
     coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)

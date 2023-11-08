@@ -264,7 +264,7 @@ class Analysis:
         max_magnitude_indices = np.argmax(magnitude, axis=my_axis)
         freq_array = np.fft.rfftfreq(N, Delta_T)
         oscillation_frequency = np.mean(np.abs(freq_array[max_magnitude_indices]))
-        max_magnitude = np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / N
+        max_magnitude = 2 * np.abs(fft_result[max_magnitude_indices, range(fft_result.shape[1])]) / N
         phase_delay = np.angle(fft_result[max_magnitude_indices, range(fft_result.shape[1])])
         phase_delay = self.__phase_unwrap(phase_delay)
         phase_delay -= phase_delay[np.argmax(self.__coordinate_array)]
@@ -272,8 +272,8 @@ class Analysis:
 
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_array, derivative_smoother_factor)
 
-        real_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / N
-        imag_part = fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / N
+        real_part = 2 * fft_result[max_magnitude_indices, range(fft_result.shape[1])].real / N
+        imag_part = 2 * fft_result[max_magnitude_indices, range(fft_result.shape[1])].imag / N
         return oscillation_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
