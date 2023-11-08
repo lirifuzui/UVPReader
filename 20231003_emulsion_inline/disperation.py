@@ -11,10 +11,10 @@ for file in files:
     kde = gaussian_kde(data)
 
     # 生成一组X值，用于绘制密度曲线
-    D = np.linspace(0, max(data), 200)
+    D = np.linspace(0, max(data), 15)
     freq = kde(D)
     # 绘制密度分布函数图
-    plt.plot(D, freq, label=file)
+    plt.step(D, freq, where='mid', label='Density')
     D_ba = np.mean(data)
     phi_m0 = 0.45
     part_1 = 0
@@ -22,7 +22,7 @@ for file in files:
     part_3 = 0
     part_4 = 0
     part_5 = 0
-    for n in range(17):
+    for n in range(15):
         part_1 += (D_ba + D[n]) ** 2 * (1 - 3 / 8 * D_ba / (D_ba + D[n])) * freq[n]
         part_2 += (D[n] ** 3 - ((D[n] - D_ba) if D[n] > D_ba else 0) ** 3) * freq[n]
         part_3 += D[n] ** 3 * freq[n]
