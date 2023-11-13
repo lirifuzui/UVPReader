@@ -3,7 +3,11 @@ import numpy as np
 import pandas as pd
 from scipy.stats import gaussian_kde
 
-files = ['5p/5p_d.csv', '10p/10p_d.csv', '15p/15p_d.csv', '20p/20p_d.csv', '25p/25p_d.csv', '30p/30p_d.csv']
+plt.figure(figsize=(7, 6))
+plt.rcParams['axes.linewidth'] = 2
+plt.tick_params(axis='both', which='both', width=1.5, length=6)
+
+files = ['5p/5p_d.csv', '10p/10p_d.csv', '15p/15p_d.csv', '25p/25p_d.csv', '30p/30p_d.csv']
 for file in files:
     df = pd.read_csv(file, header=None)
     data = df.iloc[:, 0]
@@ -22,7 +26,7 @@ for file in files:
     part_3 = 0
     part_4 = 0
     part_5 = 0
-    for n in range(15):
+    for n in range(12):
         part_1 += (D_ba + D[n]) ** 2 * (1 - 3 / 8 * D_ba / (D_ba + D[n])) * freq[n]
         part_2 += (D[n] ** 3 - ((D[n] - D_ba) if D[n] > D_ba else 0) ** 3) * freq[n]
         part_3 += D[n] ** 3 * freq[n]
