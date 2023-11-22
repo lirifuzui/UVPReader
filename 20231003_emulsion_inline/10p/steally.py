@@ -2,9 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
-files = [55, 60, 65, 70, 75, 80]
-diff_P = np.array([-222.2703275, -221.7397238, -212.7412841, -201.0435016, -195.5468875, -191.1198566]) + 234.9178592
+from pyuvp import ForMetflowUvp
 
+files = [60, 65, 70, 75, 80]
+diff_P = np.array([-221.7397238, -212.7412841, -201.0435016, -195.5468875, -191.1198566]) + 234.9178592
+result = []
 for n, file in enumerate(files):
     # 定义拟合函数
     delta_P = diff_P[n] * 10
@@ -17,17 +19,24 @@ for n, file in enumerate(files):
 
 
     # 文件数据
-    data = uvp.readUvpFile(str(file) + ".mfprof")
+    data = ForMetflowUvp.readUvpFile(str(file) + ".mfprof")
     data.defineSoundSpeed(1010)
     vel = data.velTables[0] * 2
     coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
     coords_origin = coords_origin - 29
     coords = coords_origin[15:60]
-    vel = np.mean(vel, axis=0)
-    vel = vel[15:60]
-    params, covariance = curve_fit(velosity_perfile, coords / 1000, vel / 1000, p0=0.5)
-    plt.scatter(coords / 1000, vel / 1000)
-    plt.plot(coords / 1000, velosity_perfile(coords / 1000, params[0]))
-    print(params[0])
+    subarrays = np.vsplit(vel, 20)
+    for subarr in subarrays:
+        subarr = np.mean(subarr, axis=0)
+        subarr = subarr[15:60]
+        params, covariance = curve_fit(velosity_perfile, coords / 1000, subarr / 1000, p0=0.5)
+        plt.scatter(coords / 1000, subarr / 1000)
+        plt.plot(coords / 1000, velosity_perfile(coords / 1000, params[0]))
+        print(params[0])
+        result.append(params[0])
+
+    print('=================')
+result = np.array(result)
+np.savetxt('result.csv', result, delimiter=',')
 plt.grid()
 plt.show()
