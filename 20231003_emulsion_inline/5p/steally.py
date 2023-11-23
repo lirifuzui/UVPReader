@@ -6,11 +6,8 @@ from pyuvp import ForMetflowUvp
 from pyuvp import ForMetflowUvp
 
 files = [60, 65, 70, 75, 80]
-makers = ['x','o','v','s', 'p']
 diff_P = np.array([-220.6969055, -212.3003921, -206.2043178, -199.6272439, -193.4427466]) + 234.9178592
-plt.figure(figsize=(5, 5))
-plt.rcParams['axes.linewidth'] = 2
-plt.tick_params(axis='both', which='both', width=1.5, length=6)
+result = []
 for n, file in enumerate(files):
     # 定义拟合函数
     delta_P = diff_P[n] * 10
@@ -29,15 +26,18 @@ for n, file in enumerate(files):
     coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
     coords_origin = coords_origin - 29
     coords = coords_origin[15:60]
-    vel = np.mean(vel, axis=0)
-    vel = vel[15:60]
-    params, covariance = curve_fit(velosity_perfile, coords / 1000, vel / 1000, p0=0.5)
-    x = np.linspace(-0.025, 0.025, 200)
-    plt.plot(x, velosity_perfile(x, params[0]), color = 'red')
-    plt.scatter(coords / 1000, vel / 1000, color = "black",marker= makers[n], label = '1')
-    print(params[0])
+    subarrays = np.vsplit(vel, 20)
+    for subarr in subarrays:
+        subarr = np.mean(subarr, axis=0)
+        subarr = subarr[15:60]
+        params, covariance = curve_fit(velosity_perfile, coords / 1000, subarr / 1000, p0=0.5)
+        plt.scatter(coords / 1000, subarr / 1000)
+        plt.plot(coords / 1000, velosity_perfile(coords / 1000, params[0]))
+        print(params[0])
+        result.append(params[0])
 
-plt.xlim(-0.020, 0)
-plt.ylim(0,0.2)
-plt.legend()
+    print('=================')
+result = np.array(result)
+np.savetxt('result.csv', result, delimiter=',')
+plt.grid()
 plt.show()
