@@ -3,9 +3,14 @@ import numpy as np
 
 from pyuvp import ForMetflowUvp
 
-# files = ["10p_05hz90deg.mfprof", "10p_05hz120deg_2.mfprof", "10p_05hz150deg.mfprof", "10p_1hz60deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"]
+files = ["05hz90deg.mfprof", "05hz120deg.mfprof", "05hz150deg.mfprof", "1hz60deg.mfprof", "1hz90deg.mfprof",
+         "1hz120deg.mfprof",
+         "05hz90deg.mfprof", "05hz120deg.mfprof", "05hz150deg.mfprof", "1hz60deg.mfprof", "1hz90deg.mfprof",
+         "1hz120deg.mfprof",
+         "05hz90deg.mfprof", "05hz120deg.mfprof", "05hz150deg.mfprof", "1hz60deg.mfprof", "1hz90deg.mfprof",
+         "1hz120deg.mfprof"]
 # files = ["05hz90deg.mfprof"]
-files = ["1hz120deg.mfprof"]
+# files = ["1hz120deg.mfprof"]
 # files = ["05hz120deg.mfprof", "05hz150deg.mfprof", "1hz60deg.mfprof", "1hz90deg.mfprof", "1hz120deg.mfprof"]
 # files = ["20p_1hz90deg.mfprof","20p_1hz120deg.mfprof","20p_1hz60deg.mfprof","20p_05hz120deg.mfprof","20p_05hz90deg.mfprof","20p_05hz150deg.mfprof",]
 # files = ["25p_1hz90deg.mfprof","25p_1hz120deg.mfprof","25p_1hz60deg.mfprof","25p_05hz120deg.mfprof","25p_05hz90deg.mfprof","25p_05hz150deg.mfprof",]
@@ -26,11 +31,11 @@ for file in files:
     # data.redefineSoundSpeed(1029)
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
-    analysis = data.createUSRAnalysis()
+    analysis = data.createUSRAnalysis(num_processes=10)
     analysis.channelRange(25, 35)
     analysis.cylinderGeom(77, 26.80, 24.3)
 
-    analysis.slicing(20)
+    analysis.slicing(50)
 
     visc, shearrate = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
     plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file, color="black")
