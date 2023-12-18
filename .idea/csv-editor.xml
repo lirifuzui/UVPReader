@@ -10,6 +10,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\20231217-300cst-emulsion-inline\5p70duty.CSV">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\20231217-300cst-emulsion-inline\5p75duty.CSV">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\20231217-300cst-emulsion-inline\5p80duty.CSV">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
