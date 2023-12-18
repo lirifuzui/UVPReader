@@ -44,6 +44,7 @@ for n, volume_f in enumerate(Volume_fraction):
             plt.scatter(coords / 1000, vel / 1000)
             plt.plot(coords / 1000, velosity_perfile(coords / 1000, params[0]))
             print("visco:" + str(params[0]))
+
         except:
             continue
     print('===============================')
