@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
-import numpy as np
+
 from pyuvp import ForMetflowUvp
+
 File = [
     ["10p_05hz90deg.mfprof", "10p_05hz150deg.mfprof", "10p_1hz60deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"],
     ["15p_05hz90deg.mfprof","15p_05hz150deg.mfprof","15p_1hz60deg_2.mfprof", "15p_1hz90deg_2.mfprof", "15p_1hz120deg.mfprof"],
@@ -28,7 +29,7 @@ for file in files:
     analysis = data.createUSRAnalysis()
     analysis.channelRange(85, 95)
     analysis.cylinderGeom(77, 106.77, 10.62)
-    analysis.slicing(5)
+    analysis.slicing(1)
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
     visc, shearrate = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)

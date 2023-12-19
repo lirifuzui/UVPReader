@@ -2,8 +2,10 @@
 # 改成多进程
 # 那anaylsis的tdx_num给删掉，把这个选择只放在uvp库中
 
+import threading
+
 import numpy as np
-from scipy.special import jv, jn
+from scipy.special import jv
 
 import pyuvp.ForMetflowUvp
 from pyuvp import Tools
@@ -164,10 +166,10 @@ class Analysis:
         self.__radius = pipe_radius
         self.__pipe_TDXangle = pipe_TDXangle
         self.__shear_freq = flow_freq
-        self.__coordinate_array = np.abs((wall_coordinate - self.__coordinate_array) * np.cos(
-            self.__pipe_TDXangle / 180 * np.pi) + pipe_radius)
+        self.__coordinate_array = (self.__coordinate_array - wall_coordinate) * np.cos(
+            self.__pipe_TDXangle / 180 * np.pi)
         for i in range(self.__number_of_windows + 1):
-            self.__vel_data[i] = self.__vel_data[i] / np.sin(self.__pipe_TDXangle / 180 * np.pi)
+            self.__vel_data[i] = self.__vel_data[i] * np.sin(self.__pipe_TDXangle / 180 * np.pi)
 
     # Extracted vaild data according to the position coordinates.
     def channelRange(self, start: int = 0, end: int = -1):
@@ -243,17 +245,11 @@ class Analysis:
     def __Alpha_Bessel(self, cylinder_R, freq_0, visc, coordinates_r):
         beta = np.sqrt(-1j * 2 * np.pi * freq_0 / visc)
         bR = beta * cylinder_R
-        br = beta * coordinates_r
-        if self.__pipe_TDXangle is None:
-            J_R = jv(1, bR)
-            J_r = jv(1, br)
-        else:
-            J_R = jn(0, bR)
-            J_r = jn(0, br)
-
+        J_R = jv(1, bR)
         Phi_R, Psi_R = np.real(J_R), np.imag(J_R)
+        br = beta * coordinates_r
+        J_r = jv(1, br)
         Phi_r, Psi_r = np.real(J_r), np.imag(J_r)
-
         if self.__pipe_TDXangle is None:
             alphas = np.arctan(((Phi_r * Psi_R) - (Phi_R * Psi_r)) / ((Phi_r * Phi_R) + (Psi_r * Psi_R)))
         else:
@@ -267,6 +263,11 @@ class Analysis:
             elif p < -np.pi / 2:
                 offsets[idx + 1:] += np.pi
         alphas = np.abs(alphas + offsets - alphas[0])
+
+        import matplotlib.pyplot as plt
+        plt.figure()
+        plt.scatter(coordinates_r, alphas)
+        plt.show()
 
         return alphas
 
@@ -299,12 +300,6 @@ class Analysis:
         real_part = 2 * fft_result[target_indices, range(fft_result.shape[1])].real / N
         imag_part = 2 * fft_result[target_indices, range(fft_result.shape[1])].imag / N
 
-        # ---------------------------------------------------------------------------------------------------------------
-        import matplotlib.pyplot as plt
-        plt.figure()
-        plt.plot(self.__coordinate_array, phase_delay)
-        plt.show()
-        # ---------------------------------------------------------------------------------------------------------------
         return oscillation_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
@@ -362,79 +357,97 @@ class Analysis:
 
             effective_viscosity_for_now_window = [0] * len(self.__coordinate_array)
 
-            # Calculate viscosity.
-            viscosity_limits = [0.5, max_viscosity]
-            visc_range = int((max_viscosity - 0.5) / 40)
+            def multiprocessing_Calculate_viscosity(Start, End):
+                # Calculate viscosity.
+                viscosity_limits = [0.5, max_viscosity]
+                visc_range = int((max_viscosity - 0.5) / 40)
 
-            for coordinate_index in range(len(self.__coordinate_array)):
-                loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
-                middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
-                first_search_range_of_loop = viscosity_limits.copy()
-                for loop in range(loop_count):
-                    alpha_min = self.__Alpha_Bessel(self.__radius, oscillation_frequency,
-                                                    viscosity_limits[0],
-                                                    self.__coordinate_array)
-                    alpha_min -= alpha_min[np.argmax(self.__coordinate_array)]
-                    alpha_min = np.abs(alpha_min)
-                    alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_array)[coordinate_index]
-                    alpha_max = self.__Alpha_Bessel(self.__radius, oscillation_frequency,
-                                                    viscosity_limits[1],
-                                                    self.__coordinate_array)
-                    alpha_max -= alpha_max[np.argmax(self.__coordinate_array)]
-                    alpha_max = np.abs(alpha_max)
-                    alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_array)[coordinate_index]
-                    alpha_middle = self.__Alpha_Bessel(self.__radius, oscillation_frequency,
-                                                       middle_viscosity, self.__coordinate_array)
-                    alpha_middle -= alpha_middle[np.argmax(self.__coordinate_array)]
-                    alpha_middle = np.abs(alpha_middle)
-                    # ---------------------------------------------------------------------------------------------------------------
-                    import matplotlib.pyplot as plt
-                    plt.figure()
-                    plt.plot(self.__coordinate_array, alpha_middle)
-                    plt.show()
-                    # ---------------------------------------------------------------------------------------------------------------
-                    alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_array)[
-                        coordinate_index]
-                    simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
-                    idx = np.searchsorted(simulate_value, phase_delay_derivative[coordinate_index])
-                    if idx == 1:
-                        temp = [viscosity_limits[0], middle_viscosity]
-                    elif idx == 2:
-                        temp = [middle_viscosity, viscosity_limits[1]]
-                    else:
-                        print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
-                              f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
-                              f'   '
-                              f'{"ERROR":<{viscosity_width}}'
-                              f'{shear_rate_for_now_window[coordinate_index]:<{shear_rate_width}.5g}')
-                        print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
-                              "The effective_viscosity value at this location may exceed the defined maximum"
-                              "(" + str(max_viscosity) + ').')
-                        effective_viscosity_for_now_window[coordinate_index] = -1
-                        viscosity_limits = [0.5, max_viscosity]
-                        self.__err_time += 1
+                for n, coordinate_index in enumerate(range(Start, End)):
+                    loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
+                    middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
+                    first_search_range_of_loop = viscosity_limits.copy()
+                    for loop in range(loop_count):
+                        alpha_min = self.__Alpha_Bessel(self.__radius, oscillation_frequency,
+                                                        viscosity_limits[0],
+                                                        self.__coordinate_array)
+                        alpha_min -= alpha_min[np.argmax(self.__coordinate_array)]
+                        alpha_min = np.abs(alpha_min)
+                        alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_array)[coordinate_index]
+                        alpha_max = self.__Alpha_Bessel(self.__radius, oscillation_frequency,
+                                                        viscosity_limits[1],
+                                                        self.__coordinate_array)
+                        alpha_max -= alpha_max[np.argmax(self.__coordinate_array)]
+                        alpha_max = np.abs(alpha_max)
+                        alpha_max_derivative = Tools.derivative(alpha_max, self.__coordinate_array)[coordinate_index]
+                        alpha_middle = self.__Alpha_Bessel(self.__radius, oscillation_frequency,
+                                                           middle_viscosity, self.__coordinate_array)
+                        alpha_middle -= alpha_middle[np.argmax(self.__coordinate_array)]
+                        alpha_middle = np.abs(alpha_middle)
+                        alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_array)[
+                            coordinate_index]
+                        simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
+                        idx = np.searchsorted(simulate_value, phase_delay_derivative[coordinate_index])
+                        if idx == 1:
+                            temp = [viscosity_limits[0], middle_viscosity]
+                        elif idx == 2:
+                            temp = [middle_viscosity, viscosity_limits[1]]
+                        else:
+                            print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
+                                  f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
+                                  f'   '
+                                  f'{"ERROR":<{viscosity_width}}'
+                                  f'{shear_rate_for_now_window[coordinate_index]:<{shear_rate_width}.5g}')
+                            print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
+                                  "The effective_viscosity value at this location may exceed the defined maximum"
+                                  "(" + str(max_viscosity) + ').')
+                            effective_viscosity_for_now_window[Start + n] = -1
+                            viscosity_limits = [0.5, max_viscosity]
+                            self.__err_time += 1
+                            break
+                        if np.abs(temp[0] - temp[1]) < viscosity_range_tolerance:
+                            print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
+                                  f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
+                                  f'   '
+                                  f'{middle_viscosity:<{viscosity_width}.7g}'
+                                  f'{shear_rate_for_now_window[coordinate_index]:<{shear_rate_width}.5g}')
+                            effective_viscosity_for_now_window[Start + n] = middle_viscosity
+                            viscosity_limits = [
+                                middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
+                                middle_viscosity + visc_range]
+                            break
+                        else:
+                            viscosity_limits = temp
+                            middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
+                    if self.__err_time > err_lim and not self.__ignoreUSRException and not ignoreException:
                         break
-                    if np.abs(temp[0] - temp[1]) < viscosity_range_tolerance:
-                        print(f'{window:<{slice_width}}{coordinate_index:<{index_width}}'
-                              f'[{first_search_range_of_loop[0]:<{8}.5g},{first_search_range_of_loop[1]:<{8}.5g}]({loop:<{2}})'
-                              f'   '
-                              f'{middle_viscosity:<{viscosity_width}.7g}'
-                              f'{shear_rate_for_now_window[coordinate_index]:<{shear_rate_width}.5g}')
-                        effective_viscosity_for_now_window[coordinate_index] = middle_viscosity
-                        viscosity_limits = [
-                            middle_viscosity - visc_range if middle_viscosity - visc_range > 0 else 0.5,
-                            middle_viscosity + visc_range]
-                        break
-                    else:
-                        viscosity_limits = temp
-                        middle_viscosity = (viscosity_limits[1] + viscosity_limits[0]) / 2
-                if self.__err_time > err_lim and not self.__ignoreUSRException and not ignoreException:
-                    break
-            if self.__err_time > err_lim:
-                if not self.__ignoreUSRException and not ignoreException:
-                    print("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
-                    raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
-            effective_viscosity.append(effective_viscosity_for_now_window)
+                if self.__err_time > err_lim:
+                    if not self.__ignoreUSRException and not ignoreException:
+                        print("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
+                        raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
+
+            threads = []
+            if len(self.__coordinate_array) // self.__num_processes >= 1:
+                point_per_thread = len(self.__coordinate_array) // self.__num_processes
+                for thread_number in range(self.__num_processes):
+                    start = thread_number * point_per_thread
+                    end = start + point_per_thread if thread_number < self.__num_processes - 1 else len(
+                        self.__coordinate_array)
+                    thread = threading.Thread(target=multiprocessing_Calculate_viscosity, args=(start, end))
+                    threads.append(thread)
+            else:
+                point_per_thread = 1
+                for thread_number in range(len(self.__coordinate_array)):
+                    start = thread_number * point_per_thread
+                    end = start + 1
+                    thread = threading.Thread(target=multiprocessing_Calculate_viscosity, args=(start, end))
+                    threads.append(thread)
+
+            for thread in threads:
+                thread.start()
+            for thread in threads:
+                thread.join()
+            effective_viscosity.extend(effective_viscosity_for_now_window)
+
         self.__shear_rate = np.array(effective_shear_rate)
         self.__viscosity_cSt = np.array(effective_viscosity)
 
