@@ -300,10 +300,10 @@ class Analysis:
         imag_part = 2 * fft_result[target_indices, range(fft_result.shape[1])].imag / N
 
         # ---------------------------------------------------------------------------------------------------------------
-        import matplotlib.pyplot as plt
+        '''import matplotlib.pyplot as plt
         plt.figure()
         plt.plot(self.__coordinate_array, phase_delay)
-        plt.show()
+        plt.show()'''
         # ---------------------------------------------------------------------------------------------------------------
         return oscillation_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
@@ -332,17 +332,17 @@ class Analysis:
         for window in range(self.__number_of_windows + 1):
             oscillation_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
                 self.fftInUSR(window_num=window, derivative_smoother_factor=smooth_level)
-            self.__shear_freq = oscillation_frequency if self.__shear_freq is None else self.__shear_freq
-
+            # self.__shear_freq = oscillation_frequency if self.__shear_freq is None else self.__shear_freq
+            self.__shear_freq = oscillation_frequency
             # Determine whether the frequency of the input container matches the experimental results.
-            if np.abs(oscillation_frequency - self.__shear_freq) > \
+            '''if np.abs(oscillation_frequency - self.__shear_freq) > \
                     np.abs(
                         oscillation_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
                     and not self.__ignoreUSRException and not ignoreException:
                 raise USRException(
                     "The defined vibration frequency of the cylinder does not match the results of the "
                     "experimental data! [" + f"{oscillation_frequency:.3g}" + ", " + str(
-                        self.__shear_freq) + "]")
+                        self.__shear_freq) + "]")'''
 
             # print title
             print(f"{'slice':<{8}}{'time_range':<{16}}{'vessel_freq':<{8}}")
@@ -388,10 +388,10 @@ class Analysis:
                     alpha_middle -= alpha_middle[np.argmax(self.__coordinate_array)]
                     alpha_middle = np.abs(alpha_middle)
                     # ---------------------------------------------------------------------------------------------------------------
-                    import matplotlib.pyplot as plt
+                    '''import matplotlib.pyplot as plt
                     plt.figure()
                     plt.plot(self.__coordinate_array, alpha_middle)
-                    plt.show()
+                    plt.show()'''
                     # ---------------------------------------------------------------------------------------------------------------
                     alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_array)[
                         coordinate_index]

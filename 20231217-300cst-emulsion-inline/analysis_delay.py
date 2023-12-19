@@ -3,7 +3,7 @@ import numpy as np
 
 from pyuvp import ForMetflowUvp
 
-files = ['5p-05hz-5070duty.mfprof']
+files = ['10p-10hz-5070duty.mfprof']
 
 '''plt.figure()
 # 设置坐标轴刻度线条粗度
@@ -21,7 +21,7 @@ for file in files:
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis(num_processes=1)
     analysis.channelRange(40, 75)
-    analysis.pipeGeom(30, 25, 4.7, 0.5)
+    analysis.pipeGeom(30, 25, 4.7, 1)
 
     analysis.slicing(1)
 

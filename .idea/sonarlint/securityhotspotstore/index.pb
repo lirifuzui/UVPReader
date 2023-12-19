@@ -2260,8 +2260,6 @@ T
 $20230426_1000cst_CillionOil/test2.py,5\9\59af9d5274c7ff5683d397386af3b5b93c18b897
 =
 GenUSRdata.py,1\f\1f6988ae3432a82a8f31daaa048869525ef05226
-<
-pyuvp/usr.py,3\a\3add1da413d1035241fd19c78814a7cdc41fc44a
 =
 未命名0.py,d\a\da236cd6f2959ec2f34c157c9187346f42b6ef4c
 ]
@@ -2284,7 +2282,39 @@ i
 920230618_300cstBase_Emulsion/analysis_10p_30p_vicocity.py,5\9\59011f5830059d2287d9eb30a2ff29280a071d92
 W
 '20231003_emulsion_inline/30p/steally.py,b\5\b564ecffd208e4a08fcce516d16d5c54e35a19e0
-F
-max_volume_fraction.py,e\a\eabe832693434fa422c386b41c4a8fb2c0518c75
-`
-020230618_300cstBase_Emulsion/analysis_10p_30p.py,2\b\2b50331a3f98afbec9283905351d9bc8138475eb
+C
+viscosity_max_vf.py,2\7\274394be13f22c5dda4fd1c1749b7ceba181cc98
+?
+test_program.py,d\c\dcaf8fb6af41a1a503df762aeb6a4cce3469cb4f
+O
+Calucate_max_volume_fraction.py,5\5\5596a69d5c0dbe89d6c727df002229266259ffc2
+E
+test_of_GenUSRdata.py,9\1\91a04b5cf13b25c8df3e69b48d35d7ebf8ca4ab2
+K
+viscosity_volumefraction.py,f\f\ffdba99ea86ec1b33b45e32618d73a3648fac492
+]
+-20231217-300cst-emulsion-inline/10p75duty.CSV,3\9\397d3019f8e0a8f23cd98c8f0f453eac9c200e77
+]
+-20231217-300cst-emulsion-inline/10p80duty.CSV,c\4\c4a9d083d2d9db644ac33d576680fdd70be2e8fa
+\
+,20231217-300cst-emulsion-inline/5p80duty.CSV,8\f\8f9fd1b2b3a14c3479143787f3e325812a3b2eaa
+]
+-20231217-300cst-emulsion-inline/15p75duty.CSV,a\0\a0558ce202d0d06c879a6ebe2d9a310f91e3af07
+]
+-20231217-300cst-emulsion-inline/10p50duty.CSV,0\d\0d655e27ebae61b0f61d145250eda1998ca46385
+]
+-20231217-300cst-emulsion-inline/10p70duty.CSV,4\5\451cad82940c2a5c103aa7a7de2704efa7cec888
+\
+,20231217-300cst-emulsion-inline/5p65duty.CSV,d\c\dcb189fd40fe240777b2fa40895434973bca5515
+\
+,20231217-300cst-emulsion-inline/5p70duty.CSV,4\8\48e7ef0d2c26611a83ac9cccdd9a9e175ee5403f
+\
+,20231217-300cst-emulsion-inline/5p75duty.CSV,e\7\e7473216ea28b0c6027ee582e8e0ab72258c10a4
+]
+-20231217-300cst-emulsion-inline/15p50duty.CSV,d\1\d1695d665c9e5db496deeab572fcd05bbfb2c751
+]
+-20231217-300cst-emulsion-inline/15p65duty.CSV,2\9\29c986698f0683a174d16ffc8db83efb98155113
+]
+-20231217-300cst-emulsion-inline/15p70duty.CSV,d\b\db72de09354bee11d95ea31542bbe179ea0a7e3f
+]
+-20231217-300cst-emulsion-inline/10p65duty.CSV,7\c\7c31eda19d67a108af8959ee93e4cf8ff3798adc
