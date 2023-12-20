@@ -3,7 +3,7 @@ import numpy as np
 
 from pyuvp import ForMetflowUvp
 
-files = ['10p-10hz-5070duty.mfprof']
+files = ['30p-10hz-5070duty.mfprof']
 
 '''plt.figure()
 # 设置坐标轴刻度线条粗度
@@ -20,12 +20,13 @@ for file in files:
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis(num_processes=1)
-    analysis.channelRange(40, 75)
+    analysis.channelRange(35, 60)
     analysis.pipeGeom(30, 25, 4.7, 1)
 
-    analysis.slicing(1)
+    analysis.slicing(5)
 
-    visc, shearrate = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
+    visc, shearrate = analysis.rheologyViscosity(min_viscosity=300, max_viscosity=1000, smooth_level=13,
+                                                 ignoreException=True)
     plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file, color="black")
     Visc.append(visc)
     coord = analysis.coordSeries

@@ -3,7 +3,7 @@
 # 那anaylsis的tdx_num给删掉，把这个选择只放在uvp库中
 
 import numpy as np
-from scipy.special import jv, jn
+from scipy.special import jv
 
 import pyuvp.ForMetflowUvp
 from pyuvp import Tools
@@ -244,21 +244,18 @@ class Analysis:
         beta = np.sqrt(-1j * 2 * np.pi * freq_0 / visc)
         bR = beta * cylinder_R
         br = beta * coordinates_r
+
         if self.__pipe_TDXangle is None:
             J_R = jv(1, bR)
             J_r = jv(1, br)
-        else:
-            J_R = jn(0, bR)
-            J_r = jn(0, br)
-
-        Phi_R, Psi_R = np.real(J_R), np.imag(J_R)
-        Phi_r, Psi_r = np.real(J_r), np.imag(J_r)
-
-        if self.__pipe_TDXangle is None:
+            Phi_R, Psi_R = np.real(J_R), np.imag(J_R)
+            Phi_r, Psi_r = np.real(J_r), np.imag(J_r)
             alphas = np.arctan(((Phi_r * Psi_R) - (Phi_R * Psi_r)) / ((Phi_r * Phi_R) + (Psi_r * Psi_R)))
         else:
-            alphas = np.arctan(
-                ((Phi_R * Psi_r) - (Phi_r * Psi_R)) / ((Phi_r * Phi_R) + (Psi_r * Psi_R) - Phi_R ** 2 - Psi_R ** 2))
+            J_R = jv(0, bR)
+            J_r = jv(0, br)
+            alphas = np.angle(1 - J_r / J_R)
+
         dphase = np.diff(alphas)
         offsets = np.zeros_like(alphas)
         for idx, p in enumerate(dphase):
@@ -299,16 +296,17 @@ class Analysis:
         real_part = 2 * fft_result[target_indices, range(fft_result.shape[1])].real / N
         imag_part = 2 * fft_result[target_indices, range(fft_result.shape[1])].imag / N
 
-        # ---------------------------------------------------------------------------------------------------------------
+        # 测试---------------------------------------------------------------------------------------------------------
         '''import matplotlib.pyplot as plt
         plt.figure()
-        plt.plot(self.__coordinate_array, phase_delay)
+        # plt.plot(self.__coordinate_array, phase_delay_derivative)
+        plt.plot(self.__coordinate_array, phase_delay_derivative)
         plt.show()'''
         # ---------------------------------------------------------------------------------------------------------------
         return oscillation_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
 
     # Calculate Viscosity and Shear Rate.
-    def rheologyViscosity(self, max_viscosity: int | float = 20000,
+    def rheologyViscosity(self, min_viscosity: int | float = 150, max_viscosity: int | float = 10000,
                           viscosity_range_tolerance: int | float = 1,
                           smooth_level: int = 11, ignoreException=False):
         # max_viscosity _cSt
@@ -363,8 +361,9 @@ class Analysis:
             effective_viscosity_for_now_window = [0] * len(self.__coordinate_array)
 
             # Calculate viscosity.
-            viscosity_limits = [0.5, max_viscosity]
-            visc_range = int((max_viscosity - 0.5) / 40)
+
+            viscosity_limits = [min_viscosity, max_viscosity]
+            visc_range = int((max_viscosity - min_viscosity) / 40)
 
             for coordinate_index in range(len(self.__coordinate_array)):
                 loop_count = int(np.log2(viscosity_limits[1] - viscosity_limits[0])) + 10
@@ -377,6 +376,13 @@ class Analysis:
                     alpha_min -= alpha_min[np.argmax(self.__coordinate_array)]
                     alpha_min = np.abs(alpha_min)
                     alpha_min_derivative = Tools.derivative(alpha_min, self.__coordinate_array)[coordinate_index]
+                    # ---------------------------------------------------------------------------------------------------------------
+                    '''import matplotlib.pyplot as plt
+                    plt.figure()
+                    plt.plot(self.__coordinate_array, Tools.derivative(alpha_min, self.__coordinate_array))
+                    plt.show()'''
+                    # print(alpha_min_derivative)
+                    # ---------------------------------------------------------------------------------------------------------------
                     alpha_max = self.__Alpha_Bessel(self.__radius, oscillation_frequency,
                                                     viscosity_limits[1],
                                                     self.__coordinate_array)
@@ -387,14 +393,16 @@ class Analysis:
                                                        middle_viscosity, self.__coordinate_array)
                     alpha_middle -= alpha_middle[np.argmax(self.__coordinate_array)]
                     alpha_middle = np.abs(alpha_middle)
+                    alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_array)[
+                        coordinate_index]
                     # ---------------------------------------------------------------------------------------------------------------
                     '''import matplotlib.pyplot as plt
                     plt.figure()
-                    plt.plot(self.__coordinate_array, alpha_middle)
+                    plt.plot(self.__coordinate_array, Tools.derivative(alpha_middle, self.__coordinate_array))
                     plt.show()'''
+                    # print(alpha_middle_derivative)
+                    # print(alpha_max_derivative)
                     # ---------------------------------------------------------------------------------------------------------------
-                    alpha_middle_derivative = Tools.derivative(alpha_middle, self.__coordinate_array)[
-                        coordinate_index]
                     simulate_value = np.array([alpha_min_derivative, alpha_middle_derivative, alpha_max_derivative])
                     idx = np.searchsorted(simulate_value, phase_delay_derivative[coordinate_index])
                     if idx == 1:
@@ -408,10 +416,10 @@ class Analysis:
                               f'{"ERROR":<{viscosity_width}}'
                               f'{shear_rate_for_now_window[coordinate_index]:<{shear_rate_width}.5g}')
                         print("\033[1m\033[31mCALCULATION ERROR：\033[0m" +
-                              "The effective_viscosity value at this location may exceed the defined maximum"
-                              "(" + str(max_viscosity) + ').')
+                              "Unable to find viscosity within defined range"
+                              "(" + str(min_viscosity) + ', ' + str(max_viscosity) + ').')
                         effective_viscosity_for_now_window[coordinate_index] = -1
-                        viscosity_limits = [0.5, max_viscosity]
+                        viscosity_limits = [min_viscosity, max_viscosity]
                         self.__err_time += 1
                         break
                     if np.abs(temp[0] - temp[1]) < viscosity_range_tolerance:
@@ -434,9 +442,13 @@ class Analysis:
                 if not self.__ignoreUSRException and not ignoreException:
                     print("\033[1m\033[31mCALCULATION BREAK!!!\033[0m")
                     raise USRException("Viscosity at above 1/3 numbers of points may exceed the defined maximum!")
-            effective_viscosity.append(effective_viscosity_for_now_window)
+            effective_viscosity.extend(effective_viscosity_for_now_window)
         self.__shear_rate = np.array(effective_shear_rate)
         self.__viscosity_cSt = np.array(effective_viscosity)
+
+        self.__shear_rate = [self.__shear_rate[i] for i in range(len(self.__viscosity_cSt)) if
+                             self.__viscosity_cSt[i] != -1]
+        self.__viscosity_cSt = self.__viscosity_cSt[self.__viscosity_cSt != -1]
 
         print('\033[1m------------------------------------------------------')
         print("Calculation Complete.\033[0m")
