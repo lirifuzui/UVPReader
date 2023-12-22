@@ -1,7 +1,3 @@
-# 两个目标
-# 改成多进程
-# 那anaylsis的tdx_num给删掉，把这个选择只放在uvp库中
-
 import numpy as np
 from scipy.special import jv
 
@@ -454,7 +450,7 @@ class Analysis:
         print("Calculation Complete.\033[0m")
         return self.__viscosity_cSt, self.__shear_rate
 
-    def rheologyViscoelasticity(self, density, max_viscosity: int | float = 30000,
+    def rheologyViscoelasticity(self, density, min_viscosity: int | float = 10, max_viscosity: int | float = 15000,
                                 smooth_level: int = 11, ignoreException=False):
         # density _kg/m3
         # max_viscosity _cSt
@@ -468,7 +464,8 @@ class Analysis:
         delta = []
         viscosity = []
         deltas = np.linspace(0.01, np.pi / 2 - 0.01, 100)
-        viscositys = np.linspace(0.001, max_viscosity * density / (10 ** 6), max_viscosity)
+        viscositys = np.linspace(min_viscosity * density / (10 ** 6), max_viscosity * density / (10 ** 6),
+                                 (max_viscosity - min_viscosity) * 2)
 
         # Format the output.
         slice_width = 8
@@ -531,6 +528,11 @@ class Analysis:
         self.__viscosity_Pas = np.array(viscosity)
         self.__viscoelastic_delta = np.array(delta)
         return self.__shear_rate, self.__viscosity_Pas, self.__viscoelastic_delta, cost_function
+
+    def rheologyViscocity_UIR(self, min_viscosity: int | float = 150, max_viscosity: int | float = 15000,
+                              min_pressuredrop: int | float = 0, max_pressuredrop: int | float = 1000,
+                              smooth_level: int = 11, ignoreException=False):
+        None
 
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]
