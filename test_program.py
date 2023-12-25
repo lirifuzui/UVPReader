@@ -2,8 +2,10 @@ import time
 
 import matplotlib.pyplot as plt
 
+import pyuvp
+
 start = time.time()
-data = uvp.readUvpFile("1000min.mfprof", num_threads=2, is_output=False)
+data = pyuvp.ForMetflowUvp.readUvpFile("1000min.mfprof", num_threads=2, is_output=False)
 data.defineSoundSpeed(1000)
 vel = data.velTables[0]
 times = data.timeArrays[0]
@@ -13,7 +15,7 @@ plt.figure()
 plt.contour(coords, times, vel)
 #plt.show()
 
-anaylsis = data.createUSRAnalysis(num_threads=1)
+anaylsis = data.createUSRAnalysis()
 anaylsis.cylinderGeom(77, 66, 15)
 anaylsis.channelRange(77, 100)
 anaylsis.slicing(50)

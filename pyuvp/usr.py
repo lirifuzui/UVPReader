@@ -273,12 +273,13 @@ class Analysis:
         Delta_T = (self.__time_array[window_num - 1][-1] - self.__time_array[window_num - 1][0]) / (N - 1)
         fft_result = np.fft.rfft(self.__vel_data[window_num - 1], axis=my_axis)
         freq_array = np.fft.rfftfreq(N, Delta_T)
-
+        offset = None
         magnitude = np.abs(fft_result)
         if self.__shear_freq is None:
             target_indices = np.argmax(magnitude, axis=my_axis)
         else:
             target_indices = min(range(len(freq_array)), key=lambda i: abs(freq_array[i] - self.__shear_freq))
+            offset = 2 * np.abs(fft_result[0, range(fft_result.shape[1])]) / N
 
         oscillation_frequency = np.mean(np.abs(freq_array[target_indices]))
         max_magnitude = 2 * np.abs(fft_result[target_indices, range(fft_result.shape[1])]) / N
@@ -299,7 +300,7 @@ class Analysis:
         plt.plot(self.__coordinate_array, phase_delay_derivative)
         plt.show()'''
         # ---------------------------------------------------------------------------------------------------------------
-        return oscillation_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part
+        return oscillation_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part, offset
 
     # Calculate Viscosity and Shear Rate.
     def rheologyViscosity(self, min_viscosity: int | float = 150, max_viscosity: int | float = 10000,
@@ -324,19 +325,19 @@ class Analysis:
         print("\033[1mCalculation Start:")
         print('------------------------------------------------------')
         for window in range(self.__number_of_windows + 1):
-            oscillation_frequency, _, _, phase_delay_derivative, real_part, imag_part = \
+            oscillation_frequency, _, _, phase_delay_derivative, real_part, imag_part, offset = \
                 self.fftInUSR(window_num=window, derivative_smoother_factor=smooth_level)
-            # self.__shear_freq = oscillation_frequency if self.__shear_freq is None else self.__shear_freq
-            self.__shear_freq = oscillation_frequency
+
             # Determine whether the frequency of the input container matches the experimental results.
-            '''if np.abs(oscillation_frequency - self.__shear_freq) > \
-                    np.abs(
-                        oscillation_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
-                    and not self.__ignoreUSRException and not ignoreException:
-                raise USRException(
-                    "The defined vibration frequency of the cylinder does not match the results of the "
-                    "experimental data! [" + f"{oscillation_frequency:.3g}" + ", " + str(
-                        self.__shear_freq) + "]")'''
+            if self.__shear_freq is not None and self.__pipe_TDXangle is None:
+                if np.abs(oscillation_frequency - self.__shear_freq) > \
+                        np.abs(
+                            oscillation_frequency * ExceptionConfig['Allowable magnification of frequency difference']) \
+                        and not self.__ignoreUSRException and not ignoreException:
+                    raise USRException(
+                        "The defined vibration frequency of the cylinder does not match the results of the "
+                        "experimental data! [" + f"{oscillation_frequency:.3g}" + ", " + str(
+                            self.__shear_freq) + "]")
 
             # print title
             print(f"{'slice':<{8}}{'time_range':<{16}}{'vessel_freq':<{8}}")
@@ -352,6 +353,10 @@ class Analysis:
             param_1 = real_part_derivative - (real_part / self.__coordinate_array)
             param_2 = imag_part_derivative - (imag_part / self.__coordinate_array)
             shear_rate_for_now_window = np.sqrt(param_1 ** 2 + param_2 ** 2)
+            if self.__shear_freq is not None:
+                offset_shear_rate = Tools.derivative(offset, self.__coordinate_array,
+                                                     derivative_smoother_factor=5)
+                shear_rate_for_now_window += abs(offset_shear_rate)
             effective_shear_rate.extend(shear_rate_for_now_window)
 
             effective_viscosity_for_now_window = [0] * len(self.__coordinate_array)
@@ -478,8 +483,8 @@ class Analysis:
 
         coordinate_series = self.__coordinate_array * 0.001
         for window in range(self.__number_of_windows + 1):
-            oscillation_frequency, _, _, _, real_part, imag_part = self.fftInUSR(window_num=window,
-                                                                                 derivative_smoother_factor=smooth_level)
+            oscillation_frequency, _, _, _, real_part, imag_part, _ = self.fftInUSR(window_num=window,
+                                                                                    derivative_smoother_factor=smooth_level)
             # Calculate effective shear rate.
             real_part_derivative = Tools.derivative(real_part * 0.001, coordinate_series,
                                                     derivative_smoother_factor=5)
