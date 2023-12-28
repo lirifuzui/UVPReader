@@ -1,3 +1,5 @@
+from random import uniform
+
 import numpy as np
 from scipy.special import jv
 
@@ -534,10 +536,38 @@ class Analysis:
         self.__viscoelastic_delta = np.array(delta)
         return self.__shear_rate, self.__viscosity_Pas, self.__viscoelastic_delta, cost_function
 
-    def rheologyViscocity_UIR(self, min_viscosity: int | float = 150, max_viscosity: int | float = 15000,
+    def rheologyViscocity_UIR(self, density, min_viscosity: int | float = 150, max_viscosity: int | float = 15000,
                               min_pressuredrop: int | float = 0, max_pressuredrop: int | float = 1000,
-                              smooth_level: int = 11, ignoreException=False):
-        None
+                              smooth_level: int = 11, search_cycles: int = 50, ignoreException=False):
+        # 目前只能用于牛顿流体
+        # density _kg/m3
+        # max_viscosity _cSt
+        if len(self.__coordinate_array) < 20:
+            raise USRException("The number of channels is less than 20!")
+        if self.__pipe_TDXangle is None:
+            raise ValueError("You must define the Pipeline Geometry first!")
+        for window in range(self.__number_of_windows + 1):
+            oscillation_frequency, _, _, _, real_part, imag_part, _ = self.fftInUSR(window_num=window,
+                                                                                    derivative_smoother_factor=smooth_level)
+            for _ in range(search_cycles):
+                real_alpha = round(uniform(min_pressuredrop, max_pressuredrop), 1)
+                visc = round(uniform(min_pressuredrop, max_pressuredrop), 1)
+
+                F = 0
+                for coordinate_index in range(len(self.__coordinate_array)):
+                    # 随机搜索
+                    Dr_re_u = Tools.derivative(Tools.derivative(self.__coordinate_array, real_part) *
+                                               self.__coordinate_array[coordinate_index], self.__coordinate_array)[
+                                  coordinate_index] / self.__coordinate_array[coordinate_index]
+                    Dr_im_u = Tools.derivative(Tools.derivative(self.__coordinate_array, imag_part) *
+                                               self.__coordinate_array[coordinate_index], self.__coordinate_array)[
+                                  coordinate_index] / self.__coordinate_array[coordinate_index]
+
+                    Re = - oscillation_frequency * imag_part[
+                        coordinate_index] - real_alpha / density * 1000 - Dr_re_u * visc
+                    Im = oscillation_frequency * real_part[coordinate_index] - Dr_im_u * visc
+
+                    f =
 
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]
