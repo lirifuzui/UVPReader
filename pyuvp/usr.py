@@ -536,10 +536,11 @@ class Analysis:
         self.__viscoelastic_delta = np.array(delta)
         return self.__shear_rate, self.__viscosity_Pas, self.__viscoelastic_delta, cost_function
 
-    def rheologyViscocity_UIR(self, density, min_viscosity: int | float = 150, max_viscosity: int | float = 15000,
+    def rheologyViscocity_UIR(self, density, min_viscosity: int | float = 150, max_viscosity: int | float = 1500,
                               min_pressuredrop: int | float = 0, max_pressuredrop: int | float = 1000,
-                              smooth_level: int = 11, search_cycles: int = 50, ignoreException=False):
+                              smooth_level: int = 11, search_cycles: int = 2000, ignoreException=False):
         # 目前只能用于牛顿流体
+        # pressure _Pa
         # density _kg/m3
         # max_viscosity _cSt
         if len(self.__coordinate_array) < 20:
@@ -549,9 +550,14 @@ class Analysis:
         for window in range(self.__number_of_windows + 1):
             oscillation_frequency, _, _, _, real_part, imag_part, _ = self.fftInUSR(window_num=window,
                                                                                     derivative_smoother_factor=smooth_level)
+            F_list = []
+            Alpha_list = []
+            Visc_list = []
             for _ in range(search_cycles):
                 real_alpha = round(uniform(min_pressuredrop, max_pressuredrop), 1)
-                visc = round(uniform(min_pressuredrop, max_pressuredrop), 1)
+                visc = round(uniform(min_viscosity, max_viscosity), 1)
+                Alpha_list.append(real_alpha)
+                Visc_list.append(visc)
 
                 F = 0
                 for coordinate_index in range(len(self.__coordinate_array)):
@@ -566,8 +572,15 @@ class Analysis:
                     Re = - oscillation_frequency * imag_part[
                         coordinate_index] - real_alpha / density * 1000 - Dr_re_u * visc
                     Im = oscillation_frequency * real_part[coordinate_index] - Dr_im_u * visc
-
-                    f =
+                    F += Re ** 2 + Im ** 2
+                F_list.append(F)
+            # +++++++++++++++++++++++++++++++++++++++++++++++++
+            print(len(F_list), len(Alpha_list), len(Visc_list))
+            import matplotlib.pyplot as plt
+            plt.figure()
+            plt.scatter(Alpha_list, Visc_list, c = F_list, cmap='viridis', marker='o', alpha=0.8)
+            plt.colorbar(label='Values')
+            plt.show()
 
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]
