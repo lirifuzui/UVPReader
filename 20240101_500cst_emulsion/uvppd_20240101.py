@@ -7,8 +7,8 @@ from pyuvp import ForMetflowUvp
 
 Volume_fraction = ["5p"]
 # Duty = ["65", "70", "75"]
-Duty = ["60", "70", "80"]
-pressure_0 = [[422.9580273, 424.4983852, 424.8387448]]
+Duty = ["60", "65", "70", "75", "80"]
+pressure_0 = [[422.9580273, 130.1262049, 133.1574688, 131.7361953, 424.8387448]]
 
 for i, volume_f in enumerate(Volume_fraction):
     plt.figure()
@@ -33,7 +33,7 @@ for i, volume_f in enumerate(Volume_fraction):
 
         vel = data.velTables[0] * 2
         coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
-        coords_origin = coords_origin - 32
+        coords_origin = coords_origin - 30
         coords = coords_origin[11:165]
         vel = np.mean(vel, axis=0)
         vel = vel[11:165]

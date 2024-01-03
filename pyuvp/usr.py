@@ -582,6 +582,9 @@ class Analysis:
             plt.colorbar(label='Values')
             plt.show()
 
+    def rheologyViscosity_UIR(self):
+        None
+
     def velTableTheta(self, window_num=OFF):
         return self.__vel_data[window_num]
 
