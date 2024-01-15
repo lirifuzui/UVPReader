@@ -25,6 +25,8 @@ for i, volume_f in enumerate(Volume_fraction):
 
         def velosity_perfile(r, K, n):
             term1 = np.power(delta_P / (2 * K * L), 1 / n)
+            
+            
             term2 = np.power(Rudio, 1 + 1 / n) / (1 + 1 / n)
             term3 = 1 - np.power(r / Rudio, 1 + 1 / n)
 
@@ -58,6 +60,7 @@ for i, volume_f in enumerate(Volume_fraction):
             L = 0.46
             delta_P = np.mean(pressure)
             print("delta_P:" + str(delta_P))
+
 
 
             def velosity_perfile(r, miu):
