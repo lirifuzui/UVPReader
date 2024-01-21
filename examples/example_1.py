@@ -75,7 +75,7 @@ plt.colorbar()
 plt.show()
 
 plt.figure()
-plt.xlabel(r'$ \phi(r)[\pi] $')
+plt.xlabel(r'$ \phi(r)[\pchoose_volume_f] $')
 plt.ylabel(r'r/R')
 plt.grid()
 plt.plot(phase_delay*180/np.pi, coordinates_r/cylinder_r)

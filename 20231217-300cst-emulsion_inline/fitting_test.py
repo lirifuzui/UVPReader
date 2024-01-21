@@ -9,18 +9,17 @@ Volume_fraction = ["5p", "10p", "15p", "20p", "25p", "30p"]
 Duty = ["60", "65", "70", "75", "80"]
 pressure_0 = [-216, -266, -273, -649.6, -652.8, -486.02]
 
-i = 1
-j = 3
+choose_volume_f = 1
+choose_duty = 3
 
-
-volume_f = Volume_fraction[i]
-duty = Duty[j]
-
+# 读压力
+volume_f = Volume_fraction[choose_volume_f]
+duty = Duty[choose_duty]
 print(volume_f + duty)
 csv_file_path = volume_f + duty + 'duty.csv'
 df = pd.read_csv(csv_file_path)
 pressure = df.iloc[1:, 6].values
-pressure = (np.array(pressure) - pressure_0[i]) * 10
+pressure = (np.array(pressure) - pressure_0[choose_volume_f]) * 10
 Rudio = 0.025
 L = 0.46
 delta_P = np.mean(pressure)
@@ -31,8 +30,14 @@ def velosity_perfile(r, miu):
     return delta_P / (4 * miu * L) * (Rudio ** 2 - (r) ** 2)
 
 
+# 读速度剖面
 data = ForMetflowUvp.readUvpFile(volume_f + "-" + duty + "duty.mfprof")
 data.defineSoundSpeed(1020)
+
+
+# 试试参数合不合适？
+set_miu = 0.391
+set_pressure = 0
 
 vel = data.velTables[0] * 2
 coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
@@ -44,6 +49,6 @@ curve_coords = coords_origin[51:125]
 curve_vel = vel[51:125]
 
 plt.scatter(coords / 1000, vel / 1000)
-plt.plot(coords / 1000, velosity_perfile(coords / 1000, 0.391))
+plt.plot(coords / 1000, velosity_perfile(coords / 1000, set_miu))
 plt.grid()
 plt.show()

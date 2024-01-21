@@ -117,11 +117,11 @@ ArgDelay_array :np.ndarray = np.array(ArgDelay_list)
 def deriv_of_func(array_y,array_x):
     #计算并输出函数的导数序列
     deriv_list = []
-    for i in range(2,len(array_x)-2):
-        Temp_array_y = array_y[i-2:i+3]
-        Temp_array_x = array_x[i-2:i+3]
-        formula_1 = sum([( Temp_array_y[j]-np.mean( Temp_array_y))*(Temp_array_x[j]-np.mean(Temp_array_x)) for j in range(5)])
-        formula_2 = sum([(Temp_array_x[j]-np.mean(Temp_array_x))**2 for j in range(5)])
+    for choose_volume_f in range(2,len(array_x)-2):
+        Temp_array_y = array_y[choose_volume_f-2:choose_volume_f+3]
+        Temp_array_x = array_x[choose_volume_f-2:choose_volume_f+3]
+        formula_1 = sum([( Temp_array_y[choose_duty]-np.mean( Temp_array_y))*(Temp_array_x[choose_duty]-np.mean(Temp_array_x)) for choose_duty in range(5)])
+        formula_2 = sum([(Temp_array_x[choose_duty]-np.mean(Temp_array_x))**2 for choose_duty in range(5)])
         deriv_list.append(formula_1/formula_2)
     array_x_for_deriv_y_array = array_x[2:-2]
     return np.array(deriv_list),array_x_for_deriv_y_array
@@ -208,7 +208,7 @@ position_r_for_ArgDelay_array = position_r_array[1:-1]
 #==================输出相位滞后位置函数图像====================================
 #============================================================================
 plt.figure()
-plt.xlabel(r'$ \phi(r)[\pi] $')
+plt.xlabel(r'$ \phi(r)[\pchoose_volume_f] $')
 plt.ylabel(r'r/R')
 plt.grid ()
 plt.plot(ArgDelay_array*180/np.pi,position_r_array/cylinder_r)

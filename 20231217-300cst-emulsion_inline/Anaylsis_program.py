@@ -17,7 +17,7 @@ for i, volume_f in enumerate(Volume_fraction):
         csv_file_path = volume_f + duty + 'duty.csv'
         df = pd.read_csv(csv_file_path)
         pressure = df.iloc[1:, 6].values
-        pressure = (np.array(pressure) - pressure_0[i]) * 10
+        pressure = (np.array(pressure) - pressure_0[choose_volume_f]) * 10
         Rudio = 0.025
         L = 0.46
         delta_P = np.mean(pressure)

@@ -1,0 +1,141 @@
+Index: .idea/inspectionProfiles/Project_Default.xml
+===================================================================
+diff --git a/.idea/inspectionProfiles/Project_Default.xml b/.idea/inspectionProfiles/Project_Default.xml
+deleted file mode 100644
+--- a/.idea/inspectionProfiles/Project_Default.xml	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
++++ /dev/null	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
+@@ -1,12 +0,0 @@
+-<component name="InspectionProjectProfileManager">
+-  <profile version="1.0">
+-    <option name="myName" value="Project Default" />
+-    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+-      <option name="ignoredErrors">
+-        <list>
+-          <option value="E501" />
+-        </list>
+-      </option>
+-    </inspection_tool>
+-  </profile>
+-</component>
+\ No newline at end of file
+Index: .idea/modules.xml
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+deleted file mode 100644
+--- a/.idea/modules.xml	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
++++ /dev/null	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/UVP.iml" filepath="$PROJECT_DIR$/.idea/UVP.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+deleted file mode 100644
+--- a/.idea/vcs.xml	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
++++ /dev/null	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="VcsDirectoryMappings">
+-    <mapping directory="" vcs="Git" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/inspectionProfiles/profiles_settings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/inspectionProfiles/profiles_settings.xml b/.idea/inspectionProfiles/profiles_settings.xml
+deleted file mode 100644
+--- a/.idea/inspectionProfiles/profiles_settings.xml	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
++++ /dev/null	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
+@@ -1,6 +0,0 @@
+-<component name="InspectionProjectProfileManager">
+-  <settings>
+-    <option name="USE_PROJECT_PROFILE" value="false" />
+-    <version value="1.0" />
+-  </settings>
+-</component>
+\ No newline at end of file
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
++++ /dev/null	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
+@@ -1,3 +0,0 @@
+-# 默认忽略的文件
+-/shelf/
+-/workspace.xml
+Index: .idea/UVP.iml
+===================================================================
+diff --git a/.idea/UVP.iml b/.idea/UVP.iml
+deleted file mode 100644
+--- a/.idea/UVP.iml	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
++++ /dev/null	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="PYTHON_MODULE" version="4">
+-  <component name="NewModuleRootManager">
+-    <content url="file://$MODULE_DIR$">
+-      <excludeFolder url="file://$MODULE_DIR$/venv" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+deleted file mode 100644
+--- a/.idea/misc.xml	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
++++ /dev/null	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
+@@ -1,4 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (uvpreader)" project-jdk-type="Python SDK" />
+-</project>
+\ No newline at end of file
+Index: 20231217-300cst-emulsion_inline/fitting_test.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import matplotlib.pyplot as plt\r\nimport numpy as np\r\nimport pandas as pd\r\nfrom scipy.optimize import curve_fit\r\n\r\nfrom pyuvp import ForMetflowUvp\r\nVolume_fraction = [\"5p\", \"10p\", \"15p\", \"20p\", \"25p\", \"30p\"]\r\n# Duty = [\"65\", \"70\", \"75\"]\r\nDuty = [\"60\", \"65\", \"70\", \"75\", \"80\"]\r\npressure_0 = [-216, -266, -273, -649.6, -652.8, -486.02]\r\n\r\ni = 1\r\nj = 3\r\n\r\n\r\nvolume_f = Volume_fraction[i]\r\nduty = Duty[j]\r\n\r\nprint(volume_f + duty)\r\ncsv_file_path = volume_f + duty + 'duty.csv'\r\ndf = pd.read_csv(csv_file_path)\r\npressure = df.iloc[1:, 6].values\r\npressure = (np.array(pressure) - pressure_0[i]) * 10\r\nRudio = 0.025\r\nL = 0.46\r\ndelta_P = np.mean(pressure)\r\nprint(\"delta_P:\" + str(delta_P))\r\n\r\n\r\ndef velosity_perfile(r, miu):\r\n    return delta_P / (4 * miu * L) * (Rudio ** 2 - (r) ** 2)\r\n\r\n\r\ndata = ForMetflowUvp.readUvpFile(volume_f + \"-\" + duty + \"duty.mfprof\")\r\ndata.defineSoundSpeed(1020)\r\n\r\nvel = data.velTables[0] * 2\r\ncoords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)\r\ncoords_origin = coords_origin - 28.7\r\ncoords = coords_origin[11:165]\r\nvel = np.mean(vel, axis=0)\r\nvel = vel[11:165]\r\ncurve_coords = coords_origin[51:125]\r\ncurve_vel = vel[51:125]\r\n\r\nplt.scatter(coords / 1000, vel / 1000)\r\nplt.plot(coords / 1000, velosity_perfile(coords / 1000, 0.375))\r\nplt.grid()\r\nplt.show()
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/20231217-300cst-emulsion_inline/fitting_test.py b/20231217-300cst-emulsion_inline/fitting_test.py
+--- a/20231217-300cst-emulsion_inline/fitting_test.py	(revision 495c3370fec12ad6bc71eef15400e614d1779578)
++++ b/20231217-300cst-emulsion_inline/fitting_test.py	(date 1705590164162)
+@@ -36,7 +36,7 @@
+ 
+ vel = data.velTables[0] * 2
+ coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
+-coords_origin = coords_origin - 28.7
++coords_origin = coords_origin - 29.2
+ coords = coords_origin[11:165]
+ vel = np.mean(vel, axis=0)
+ vel = vel[11:165]
+@@ -44,6 +44,6 @@
+ curve_vel = vel[51:125]
+ 
+ plt.scatter(coords / 1000, vel / 1000)
+-plt.plot(coords / 1000, velosity_perfile(coords / 1000, 0.375))
++plt.plot(coords / 1000, velosity_perfile(coords / 1000, 0.391))
+ plt.grid()
+ plt.show()
+\ No newline at end of file

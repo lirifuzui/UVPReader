@@ -125,7 +125,7 @@ plt.show()
 alpha = Calculation_and_SortinOut_AlphaFunction(cylinder_R,0.5,1000,position_r_array)
 
 plt.figure()
-plt.xlabel(r'$ \alpha(r) [\pi] $')
+plt.xlabel(r'$ \alpha(r) [\pchoose_volume_f] $')
 plt.ylabel('r/R')
 plt.grid ()
 plt.plot(alpha,position_r_array/cylinder_r)

@@ -111,8 +111,8 @@ ax1.set_xticks(np.arange(0, Nosc * 1.01 / f0, step=0.5 / f0), minor=True)
 plt.yticks(np.arange(0, ws + Nxi * Dxi * 1.01, step=50))
 ax1.set_yticks(np.arange(0, ws + Nxi * Dxi * 1.01, step=10), minor=True)
 plt.xlabel(r"$t$ [s]", fontsize=14)
-plt.ylabel(r"$\xi$ [mm]", fontsize=14)
-plt.text(1.15, 0.5, r"$u_{\xi}$ [mm/s]", horizontalalignment="center",
+plt.ylabel(r"$\xchoose_volume_f$ [mm]", fontsize=14)
+plt.text(1.15, 0.5, r"$u_{\xchoose_volume_f}$ [mm/s]", horizontalalignment="center",
          verticalalignment="center", rotation='vertical',
          transform=ax1.transAxes, fontsize=14)
 

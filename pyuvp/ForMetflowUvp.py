@@ -357,14 +357,14 @@ class readUvpFile:
                 if self.__measurement_info['AmplitudeStored']:
                     uvpDatafile.seek(Start * (self.__measurement_info['NumberOfChannels'] * 2), 1)
 
-                for i in range(Start, End):
+                for choose_volume_f in range(Start, End):
                     uvpDatafile.seek(16, 1)
                     if self.__measurement_info['DoNotStoreDoppler'] != 1:
                         encode_vel_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
-                        self.__raw_vel_arr[i] = unpack(datatype, encode_vel_data)
+                        self.__raw_vel_arr[choose_volume_f] = unpack(datatype, encode_vel_data)
                     if self.__measurement_info['AmplitudeStored']:
                         encode_echo_data = uvpDatafile.read(self.__measurement_info['NumberOfChannels'] * 2)
-                        self.__raw_echo_arr[i] = unpack(datatype, encode_echo_data)
+                        self.__raw_echo_arr[choose_volume_f] = unpack(datatype, encode_echo_data)
 
         threads = []
         profiles_per_thread = self.__measurement_info['NumberOfProfiles'] // self.__num_threads
