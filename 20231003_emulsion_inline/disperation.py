@@ -7,7 +7,7 @@ plt.figure(figsize=(7, 6))
 plt.rcParams['axes.linewidth'] = 2
 plt.tick_params(axis='both', which='both', width=1.5, length=6)
 
-files = ['5p/5p_d.csv', '10p/10p_d.csv', '15p/15p_d.csv', '25p/25p_d.csv', '30p/30p_d.csv']
+files = ['5p_01.csv', '10p_01.csv', '15p_01.csv', '20p_01.csv', '25p_01.csv', '30p_01.csv']
 for file in files:
     df = pd.read_csv(file, header=None)
     data = df.iloc[:, 0]
@@ -20,6 +20,7 @@ for file in files:
     # 绘制密度分布函数图
     plt.step(D, freq, where='mid', label='Density')
     D_ba = np.mean(data)
+    print("D_ba = " + str(D_ba))
     phi_m0 = 0.45
     part_1 = 0
     part_2 = 0

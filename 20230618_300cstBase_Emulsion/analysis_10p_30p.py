@@ -1,23 +1,25 @@
 import matplotlib.pyplot as plt
-
+import numpy as np
 from pyuvp import ForMetflowUvp
 
 File = [
-    ["10p_05hz90deg.mfprof", "10p_05hz150deg.mfprof", "10p_1hz60deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"],
-    ["15p_05hz90deg.mfprof","15p_05hz150deg.mfprof","15p_1hz60deg_2.mfprof", "15p_1hz90deg_2.mfprof", "15p_1hz120deg.mfprof"],
-    ["20p_1hz90deg.mfprof","20p_1hz60deg.mfprof","20p_05hz120deg.mfprof","20p_05hz90deg.mfprof","20p_05hz150deg.mfprof",],
-    ["25p_1hz90deg.mfprof","25p_1hz60deg.mfprof","25p_05hz120deg.mfprof","25p_05hz90deg.mfprof","25p_05hz150deg.mfprof",],
-    ["30p_1hz60deg.mfprof","30p_1hz90deg.mfprof","30p_05hz90deg.mfprof","30p_05hz150deg.mfprof","30p_05hz120deg.mfprof",],
+    ["10p_05hz90deg.mfprof","10p_05hz120deg.mfprof","10p_05hz150deg.mfprof", "10p_1hz60deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"],
+    ["20p_1hz90deg.mfprof","20p_1hz120deg.mfprof","20p_1hz60deg.mfprof","20p_05hz120deg.mfprof","20p_05hz90deg.mfprof","20p_05hz150deg.mfprof",],
+    ["30p_1hz90deg.mfprof","30p_1hz120deg.mfprof","30p_1hz60deg.mfprof","30p_05hz90deg.mfprof","30p_05hz150deg.mfprof","30p_05hz120deg.mfprof",],
 ]
 
-plt.figure(figsize=(7, 6))
+plt.figure(figsize=(5, 6))
 # 设置坐标轴刻度线条粗度
 plt.rcParams['axes.linewidth'] = 3
-plt.tick_params(axis='both', which='both', width=1.5, length=6)
+plt.tick_params(axis='both', direction='in',which='both', width=1.5, length=6)
 plt.xlabel(r'x')
 plt.ylabel(r'y')
+
+# plt.ylim(450,1200)
+# plt.xlim(12, 18)
+
 result = []
-files = File[0]
+files = File[2]
 Visc = []
 Shear_rate = []
 Coord = []
@@ -27,20 +29,19 @@ for file in files:
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()
-    analysis.channelRange(85, 95)
-    analysis.cylinderGeom(77, 106.77, 10.62)
+    analysis.channelRange(74, 89)
+    analysis.cylinderGeom(77, 56.53, 8.48)
     analysis.slicing(1)
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
     visc, shearrate = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
 
-    '''visc_t = visc.reshape((6, 30))
-    shearrate_t = shearrate.reshape((6, 30))
-    visc = np.sum(visc_t, axis=0) / 41
-    shearrate = np.sum(shearrate_t, axis=0) / 41
-    plt.scatter(shearrate, visc, label=file)'''
     plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
+    # plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file, color = "black")
+    Visc.extend(visc)
 
-plt.grid()
+mean_V = np.average(Visc)
+plt.axhline(y=mean_V, color='red', linestyle='--', label='Mean')
+# plt.grid()
 plt.legend()
 plt.show()
