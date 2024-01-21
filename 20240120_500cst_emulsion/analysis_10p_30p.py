@@ -3,9 +3,9 @@ import numpy as np
 from pyuvp import ForMetflowUvp
 
 File = [
-    ["10p_05hz150deg.mfprof", "10p_1hz60deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"],
-    ["20p_1hz60deg.mfprof","20p_05hz120deg.mfprof","20p_05hz90deg.mfprof","20p_05hz150deg.mfprof",],
-    ["30p_1hz60deg.mfprof","30p_05hz90deg.mfprof","30p_05hz150deg.mfprof","30p_05hz120deg.mfprof",],
+    ["10p_05hz90deg.mfprof", "10p_05hz120deg.mfprof", "10p_05hz150deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"],
+    ["20p_1hz90deg.mfprof","20p_1hz60deg.mfprof","20p_05hz90deg.mfprof","20p_05hz150deg.mfprof",],
+    ["30p_1hz60deg.mfprof","30p_05hz120deg.mfprof",],
 ]
 
 plt.figure(figsize=(5, 6))
@@ -15,8 +15,7 @@ plt.tick_params(axis='both', direction='in',which='both', width=1.5, length=6)
 plt.xlabel(r'x')
 plt.ylabel(r'y')
 
-plt.ylim(250,800)
-plt.xlim(12, 18)
+plt.ylim(200,1200)
 
 result = []
 files = File[2]
@@ -29,19 +28,19 @@ for file in files:
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()
-    analysis.channelRange(87, 96)
-    analysis.cylinderGeom(77, 106.77, 10.62)
+    analysis.channelRange(74, 83)
+    analysis.cylinderGeom(77, 56.53, 8.48)
     analysis.slicing(20)
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
     visc, shearrate = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
 
-    # plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
-    plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file, color = "black")
+    plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file)
+    # plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file, color = "black")
     Visc.extend(visc)
 
 mean_V = np.average(Visc)
 plt.axhline(y=mean_V, color='red', linestyle='--', label='Mean')
 # plt.grid()
-# plt.legend()
+plt.legend()
 plt.show()

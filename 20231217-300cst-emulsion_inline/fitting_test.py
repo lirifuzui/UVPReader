@@ -36,7 +36,7 @@ data.defineSoundSpeed(1020)
 
 vel = data.velTables[0] * 2
 coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
-coords_origin = coords_origin - 28.7
+coords_origin = coords_origin - 29.2
 coords = coords_origin[11:165]
 vel = np.mean(vel, axis=0)
 vel = vel[11:165]
@@ -44,6 +44,6 @@ curve_coords = coords_origin[51:125]
 curve_vel = vel[51:125]
 
 plt.scatter(coords / 1000, vel / 1000)
-plt.plot(coords / 1000, velosity_perfile(coords / 1000, 0.375))
+plt.plot(coords / 1000, velosity_perfile(coords / 1000, 0.391))
 plt.grid()
 plt.show()

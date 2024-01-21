@@ -29,8 +29,8 @@ for file in files:
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()
-    analysis.channelRange(74, 89)
-    analysis.cylinderGeom(77, 56.53, 8.48)
+    analysis.channelRange(85, 95)
+    analysis.cylinderGeom(77, 106.77, 10.62)
     analysis.slicing(1)
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
