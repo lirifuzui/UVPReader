@@ -1,0 +1,70 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" project-jdk-name=\"Python 3.11 (UVPReader)\" project-jdk-type=\"Python SDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 891414adae50cb62e5a8b060a1c78e15261ff7f7)
++++ b/.idea/misc.xml	(date 1682320467200)
+@@ -1,4 +1,4 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (UVPReader)" project-jdk-type="Python SDK" />
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11" project-jdk-type="Python SDK" />
+ </project>
+\ No newline at end of file
+Index: rigid_body/test1.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from pyuvp import uvp, usr\r\nimport matplotlib.pyplot as plt\r\nimport numpy as np\r\n\r\ndata = uvp.readData(\"05hz45deg.mfprof\")\r\nanalysis = data.createUSRAnalysis()\r\n\r\nanalysis.cylinderGeom(72.5, 41, 11.7)\r\nanalysis.coordsClean(156, 179)\r\nu_theta = analysis.velTableTheta()\r\ncoordinates_r = analysis.coordSeries\r\ntimes = analysis.timeSeries()\r\nx = [i for i in range(len(coordinates_r))]\r\nvibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.doFFT()\r\nplt.plot(phase_delay_derivative, coordinates_r)\r\nplt.grid()\r\nplt.show()\r\n\r\nu = np.transpose(u_theta[0:50, :])\r\ntime = times[0:50]\r\nplt.figure()\r\nplt.ylabel('R')\r\nplt.xlabel('t [s]')\r\n#plt.ylim(0.65, 1)\r\nplt.contourf(time, coordinates_r, u, cmap=\"bwr\", levels=20)\r\nplt.colorbar()\r\nplt.show()\r\n\r\nanalysis.timeSlicing(4)\r\nvisc, shearrate = analysis.calculate_Viscosity_ShearRate(ignoreException=True)\r\n\r\nplt.figure()\r\nplt.xlabel(r'Shear Rate $\\gamma_{\\mathrm{eff}}$ ')\r\nplt.ylabel(r'Viscosity $\\nu_{\\mathrm{eff}}$')\r\nplt.ylim(0, 800)\r\nplt.grid()\r\nplt.scatter(shearrate, visc)\r\nplt.show()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/rigid_body/test1.py b/rigid_body/test1.py
+--- a/rigid_body/test1.py	(revision 891414adae50cb62e5a8b060a1c78e15261ff7f7)
++++ b/rigid_body/test1.py	(date 1682320652042)
+@@ -2,11 +2,11 @@
+ import matplotlib.pyplot as plt
+ import numpy as np
+ 
+-data = uvp.readData("05hz45deg.mfprof")
++data = uvp.readData("1hz30deg.mfprof")
+ analysis = data.createUSRAnalysis()
+ 
+ analysis.cylinderGeom(72.5, 41, 11.7)
+-analysis.coordsClean(156, 179)
++analysis.coordsClean(156, 175)
+ u_theta = analysis.velTableTheta()
+ coordinates_r = analysis.coordSeries
+ times = analysis.timeSeries()
+@@ -32,7 +32,7 @@
+ plt.figure()
+ plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
+ plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
+-plt.ylim(0, 800)
++plt.ylim(100, 500)
+ plt.grid()
+ plt.scatter(shearrate, visc)
+ plt.show()
+Index: .idea/UVP.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"PYTHON_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\">\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <excludeFolder url=\"file://$MODULE_DIR$/venv\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/UVP.iml b/.idea/UVP.iml
+--- a/.idea/UVP.iml	(revision 891414adae50cb62e5a8b060a1c78e15261ff7f7)
++++ b/.idea/UVP.iml	(date 1682320467178)
+@@ -4,7 +4,7 @@
+     <content url="file://$MODULE_DIR$">
+       <excludeFolder url="file://$MODULE_DIR$/venv" />
+     </content>
+-    <orderEntry type="inheritedJdk" />
++    <orderEntry type="jdk" jdkName="Python 3.11" jdkType="Python SDK" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>
+ </module>
+\ No newline at end of file

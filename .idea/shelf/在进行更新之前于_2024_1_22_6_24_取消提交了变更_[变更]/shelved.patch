@@ -1,0 +1,213 @@
+Index: 20240116_500cst_emuslion_inline/analysis_delay.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/20240116_500cst_emuslion_inline/analysis_delay.py b/20240116_500cst_emuslion_inline/analysis_delay.py
+new file mode 100644
+--- /dev/null	(date 1704257306537)
++++ b/20240116_500cst_emuslion_inline/analysis_delay.py	(date 1704257306537)
+@@ -0,0 +1,48 @@
++import matplotlib.pyplot as plt
++import numpy as np
++
++from pyuvp import ForMetflowUvp
++
++files = ['30p-10hz-5070duty.mfprof']
++
++'''plt.figure()
++# 设置坐标轴刻度线条粗度
++plt.rcParams['axes.linewidth'] = 3
++plt.tick_params(axis='both', which='both', width=1.5, length=6)
++plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
++plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
++plt.ylim(0, 800)'''
++# plt.xlim(5, 12)
++Visc = []
++for file in files:
++    data = ForMetflowUvp.readUvpFile(file)
++    # data.redefineSoundSpeed(1029)
++    vel_origin = data.velTables[0]
++    coords_origin = data.coordinateArrays[0]
++    analysis = data.createUSRAnalysis(num_processes=1)
++    analysis.channelRange(35, 60)
++    analysis.pipeGeom(30, 25, 4.7, 1)
++
++    analysis.slicing(5)
++
++    visc, shearrate = analysis.rheologyViscosity(min_viscosity=300, max_viscosity=1000, smooth_level=13,
++                                                 ignoreException=True)
++    plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file, color="black")
++    Visc.append(visc)
++    coord = analysis.coordSeries
++plt.axhline(y=np.average(Visc), color='red', linestyle='--')
++# plt.grid()
++# plt.legend()
++plt.show()
++
++Visc = np.array(Visc)
++print(np.average(Visc))
++ave = np.average(Visc, axis=0)
++'''y_r = ave/300
++k = 1/300
++phi_m = 0.637
++y = y_r*((2*y_r + 5*k)/(2+5*k))**(3/2)
++phi_FA = phi_m/((9/(8*y)+1)**3)
++plt.figure()
++plt.plot(coord ,phi_FA)
++plt.show()'''
+Index: 20240116_500cst_emuslion_inline/Anaylsis_program.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/20240116_500cst_emuslion_inline/Anaylsis_program.py b/20240116_500cst_emuslion_inline/Anaylsis_program.py
+new file mode 100644
+--- /dev/null	(date 1705843094203)
++++ b/20240116_500cst_emuslion_inline/Anaylsis_program.py	(date 1705843094203)
+@@ -0,0 +1,85 @@
++import matplotlib.pyplot as plt
++import numpy as np
++import pandas as pd
++from scipy.optimize import curve_fit
++
++from pyuvp import ForMetflowUvp
++
++Volume_fraction = ["5p_", "10p_", "15p_", "20p_", "25p_"]
++# Duty = ["65", "70", "75"]
++Duty = ["60", "65", "70", "75", "80"]
++pressure_0 = [681.51, 427.78, 427.17, 493.07, 665.88, -486.02]
++
++for i, volume_f in enumerate(Volume_fraction):
++    plt.figure()
++    for duty in Duty:
++        print(volume_f + duty)
++        csv_file_path = volume_f + duty + 'duty.csv'
++        df = pd.read_csv(csv_file_path)
++        pressure = df.iloc[1:, 6].values
++        pressure = (np.array(pressure) - pressure_0[i]) * 10
++        Rudio = 0.025
++        L = 0.46
++        delta_P = np.mean(pressure)
++        print("delta_P:" + str(delta_P))
++
++
++        def velosity_perfile(r, miu):
++            return delta_P / (4 * miu * L) * (Rudio ** 2 - (r) ** 2)
++
++
++        data = ForMetflowUvp.readUvpFile(volume_f + duty + "duty.mfprof")
++        data.defineSoundSpeed(1020)
++
++        vel = data.velTables[0] * 2
++        coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
++        coords_origin = coords_origin - 29.7
++        coords = coords_origin[11:126]
++        vel = np.mean(vel, axis=0)
++        vel = vel[11:126]
++        curve_coords = coords_origin[41:80]
++        curve_vel = vel[41:80]
++        params, covariance = curve_fit(velosity_perfile, curve_coords / 1000, curve_vel / 1000, p0 = 0.5)
++
++        plt.scatter(coords / 1000, vel / 1000)
++        plt.plot(coords / 1000, velosity_perfile(coords / 1000, params[0]))
++        print("visco:" + str(params[0]))
++
++    ''' try:
++            print(volume_f + duty)
++            csv_file_path = volume_f + duty + 'duty.csv'
++            df = pd.read_csv(csv_file_path)
++            pressure = df.iloc[1:, 6].values
++            pressure = (np.array(pressure) - pressure_0[i]) * 10
++            Rudio = 0.025
++            L = 0.46
++            delta_P = np.mean(pressure)
++            print("delta_P:" + str(delta_P))
++
++
++
++            def velosity_perfile(r, miu):
++                return delta_P / (4 * miu * L) * (Rudio ** 2 - (r) ** 2)
++
++
++            data = ForMetflowUvp.readUvpFile(volume_f + "-" + duty + "duty.mfprof")
++            data.defineSoundSpeed(1020)
++
++            vel = data.velTables[0] * 2
++            coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
++            coords_origin = coords_origin - 28.7
++            coords = coords_origin[11:165]
++            vel = np.mean(vel, axis=0)
++            vel = vel[11:165]
++            curve_coords = coords_origin[51:125]
++            curve_vel = vel[51:125]
++            params, covariance = curve_fit(velosity_perfile, curve_coords / 1000, curve_vel / 1000, p0=0.5)
++
++            plt.scatter(coords / 1000, vel / 1000)
++            plt.plot(coords / 1000, velosity_perfile(coords / 1000, params[0]))
++            print("visco:" + str(params[0]))
++        except:
++            continue'''
++    print('===============================')
++    plt.grid()
++    plt.show()
+Index: 20240116_500cst_emuslion_inline/fitting_test.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/20240116_500cst_emuslion_inline/fitting_test.py b/20240116_500cst_emuslion_inline/fitting_test.py
+new file mode 100644
+--- /dev/null	(date 1705303113290)
++++ b/20240116_500cst_emuslion_inline/fitting_test.py	(date 1705303113290)
+@@ -0,0 +1,49 @@
++import matplotlib.pyplot as plt
++import numpy as np
++import pandas as pd
++from scipy.optimize import curve_fit
++
++from pyuvp import ForMetflowUvp
++Volume_fraction = ["5p", "10p", "15p", "20p", "25p", "30p"]
++# Duty = ["65", "70", "75"]
++Duty = ["60", "65", "70", "75", "80"]
++pressure_0 = [-216, -266, -273, -649.6, -652.8, -486.02]
++
++i = 1
++j = 3
++
++
++volume_f = Volume_fraction[i]
++duty = Duty[j]
++
++print(volume_f + duty)
++csv_file_path = volume_f + duty + 'duty.csv'
++df = pd.read_csv(csv_file_path)
++pressure = df.iloc[1:, 6].values
++pressure = (np.array(pressure) - pressure_0[i]) * 10
++Rudio = 0.025
++L = 0.46
++delta_P = np.mean(pressure)
++print("delta_P:" + str(delta_P))
++
++
++def velosity_perfile(r, miu):
++    return delta_P / (4 * miu * L) * (Rudio ** 2 - (r) ** 2)
++
++
++data = ForMetflowUvp.readUvpFile(volume_f + "-" + duty + "duty.mfprof")
++data.defineSoundSpeed(1020)
++
++vel = data.velTables[0] * 2
++coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
++coords_origin = coords_origin - 28.7
++coords = coords_origin[11:165]
++vel = np.mean(vel, axis=0)
++vel = vel[11:165]
++curve_coords = coords_origin[51:125]
++curve_vel = vel[51:125]
++
++plt.scatter(coords / 1000, vel / 1000)
++plt.plot(coords / 1000, velosity_perfile(coords / 1000, 0.375))
++plt.grid()
++plt.show()
+\ No newline at end of file
