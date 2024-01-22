@@ -26,7 +26,7 @@ L = 0.46
 
 for i,file in enumerate(File):
     data = ForMetflowUvp.readUvpFile(file)
-    data.defineSoundSpeed(1008)
+    data.defineSoundSpeed(2000)
 
 
 

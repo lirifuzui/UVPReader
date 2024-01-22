@@ -1,7 +1,5 @@
 import os
-import threading
 from datetime import datetime
-from multiprocessing import cpu_count
 from struct import unpack
 
 import numpy as np
@@ -229,7 +227,7 @@ class readUvpFile:
         self.__new_sound_speed = new_sound_speed
         sound_speed = self.__measurement_info['SoundSpeed']
         max_depth = self.__measurement_info['MaximumDepth']
-        doppler_coefficient = sound_speed / (max_depth * 2.0) / 256.0 * 1000.0
+        doppler_coefficient = new_sound_speed / (max_depth * 2.0) / 256.0 * 1000.0
         sounds_speed_coefficient = new_sound_speed / (self.__measurement_info['Frequency'] * 2.0)
 
         if self.__measurement_info['UseMultiplexer']:
@@ -317,26 +315,15 @@ class readUvpFile:
             uvpDatafile = open(file_path, 'rb')
         except FileNotFoundError:
             raise FileException("File not found.")
-        try:
-            # Executive multithreading,maximum 2 multithreading.
-            if self.__num_threads >= 2:
-                thread1 = threading.Thread(target=self.__read_params_part_I(uvpDatafile))
-                thread2 = threading.Thread(target=self.__read_params_part_II(uvpDatafile))
-                thread1.start()
-                thread2.start()
-                thread1.join()
-                thread2.join()
-            else:
-                self.__read_params_part_I(uvpDatafile)
-                self.__read_params_part_II(uvpDatafile)
-            # read velocity file_data and echo_data file_data
-            self.__raw_vel_arr = np.zeros((self.__measurement_info['NumberOfProfiles'],
-                                           self.__measurement_info['NumberOfChannels']))
-            self.__raw_echo_arr = np.zeros((self.__measurement_info['NumberOfProfiles'],
-                                            self.__measurement_info['NumberOfChannels']))
-        except np.core._exceptions._ArrayMemoryError:
-            raise FileException("'.mfprof' file may be corrupted or altered."
-                                "'Number of Profiles' and 'Number of Channels' are beyond normal limits.")
+
+        self.__read_params_part_I(uvpDatafile)
+        self.__read_params_part_II(uvpDatafile)
+        # read velocity file_data and echo_data file_data
+        self.__raw_vel_arr = np.zeros((self.__measurement_info['NumberOfProfiles'],
+                                       self.__measurement_info['NumberOfChannels']))
+        self.__raw_echo_arr = np.zeros((self.__measurement_info['NumberOfProfiles'],
+                                        self.__measurement_info['NumberOfChannels']))
+
         uvpDatafile.seek(104, 0)
         datatype = '{}h'.format(self.__measurement_info['NumberOfChannels'])
         for i in range(self.__measurement_info['NumberOfProfiles']):
