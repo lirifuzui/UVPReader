@@ -5,17 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a94281e6-81a5-4b72-b123-722bf105160c" name="变更" comment="2024.01.22.01">
-      <change afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20230422_300cst_CiliconOil/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230422_300cst_CiliconOil/test1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20230426_1000cst_CillionOil/test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230426_1000cst_CillionOil/test2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/Anaylsis_program.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/Anaylsis_program.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/fitting_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/fitting_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GenUSRdata.py" beforeDir="false" afterPath="$PROJECT_DIR$/GenUSRdata.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/example_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/example_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/相位滞后分析/First_ReadData_and_FFT.py" beforeDir="false" afterPath="$PROJECT_DIR$/相位滞后分析/First_ReadData_and_FFT.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/相位滞后分析/Second_Anaylsis_the_Data.py" beforeDir="false" afterPath="$PROJECT_DIR$/相位滞后分析/Second_Anaylsis_the_Data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/Anaylsis_program.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/analysis_delay.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/fitting_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_1_18_19_20____2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2024_1_18_19_20____2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_1_22_1_35____.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2024_1_22_1_35____.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,17 +61,15 @@
       <recent name="C:\Work file\python\Now_UVP" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.analysis_10p_30p">
+  <component name="RunManager">
     <configuration name="analysis_10p_30p" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/20240120_500cst_emulsion" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -90,7 +85,6 @@
     </configuration>
     <configuration name="fitting_test" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
