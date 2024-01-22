@@ -1,16 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+from pyuvp import ForMetflowUvp
 from pyuvp import usr
 
 # example of single tdx.
 # Viscosity analysis using USR, 1 Hz_120 deg.
 # Read the data in the ".mfprof" file
-data = uvp.readUvpFile(r'example_1.mfprof')  # 'data' is an instantiate object, cannot be print
+data = ForMetflowUvp.readUvpFile(r'example_1.mfprof')  # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
-data.__multiplying_coefficient()
+data.defineSoundSpeed(2000)
 
-# -------------------------------------------------------------
+# ------------------------------------------------------------
 # return datas.
 use_mux = data.muxStatus  # return 'OFF'
 u_xi = data.velTables[0]  # return a two-dimensional numpy matrix
@@ -52,14 +52,12 @@ coordinates_r = analysis.coordSeries                   # return a one-dimensiona
 times = analysis.timeSeries(window_num=0)               # return a one-dimensional numpy matrix
 
 # do fft
-vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part = analysis.fftInUSR(
+vibration_frequency, max_magnitude, phase_delay, phase_delay_derivative, real_part, imag_part, offset = analysis.fftInUSR(
     window_num=0)
 
 # Calculate effective shear rate and viscosity.
-viscosity, shear_rate = analysis.viscosity(30000, 1, 15, ignoreException=False)
-# Return shear rate and viscosity.
-shear_rate = analysis.shearRate
-viscosity = analysis.viscosity
+viscosity, shear_rate = analysis.rheologyViscosity(150, 30000, 1, 15, ignoreException=False)
+
 print(len(shear_rate),len(viscosity))
 
 # -------------------------------------------------------------

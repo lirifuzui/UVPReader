@@ -53,16 +53,6 @@ class readUvpFile:
         # Each item of the list contains the same coordinate series.
         self.__coords_arr_tdxs = []
 
-        # Number of calling threads
-        def check_value(input_value, threshold):
-            if input_value > threshold:
-                raise ValueError("The number of calling threads exceeds")
-        try:
-            check_value(num_threads, cpu_count())
-            self.__num_threads = num_threads
-        except ValueError as e:
-            print(e)
-
         # Run the "__read_data" function and store the data in the corresponding class variables.
         self.__read_data(file_path)
 

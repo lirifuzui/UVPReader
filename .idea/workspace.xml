@@ -6,8 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="a94281e6-81a5-4b72-b123-722bf105160c" name="变更" comment="2024.01.22.02">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p_vicocity.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p_vicocity.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp/usr.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyuvp/usr.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +142,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705902053610</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="2024.01.22.02">
+      <created>1705903671554</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1705903671554</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
