@@ -45,7 +45,7 @@ plt.boxplot(result, 1, positions=positions, widths=0.008, showfliers=False)
 
 
 K = 1 / 300
-y_r = np.array([i / 20 for i in range(28, 70)])
+y_r = np.array([i / 20 for i in range(24, 70)])
 y = y_r*((2*y_r + 5*K)/(2+5*K))**(3/2)
 phi_m = 0.48
 phi = phi_m / (9 / (8 * y) + 1) ** 3
@@ -54,7 +54,5 @@ y_r = np.array([i / 20 for i in range(20, 32)])
 y = y_r*((2*y_r + 5*K)/(2+5*K))**(3/2)
 phi = phi_m / (9 / (8 * y) + 1) ** 3
 plt.plot(phi, y_r, label='Frankel and Acrivos', color = "red",linestyle='--')
-
-
 
 plt.show()

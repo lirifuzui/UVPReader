@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a94281e6-81a5-4b72-b123-722bf105160c" name="变更" comment="2024.01.22.02">
+      <change afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/draw_figure.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p_vicocity.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p_vicocity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/example_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyuvp/usr.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyuvp/usr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/Anaylsis_program.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/Anaylsis_program.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/fitting_test.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,20 +41,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.analysis_10p_30p.executor&quot;: &quot;Run&quot;,
-    &quot;Python.fitting_test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Work file/Now_Pros/UVPReader&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.analysis_10p_30p.executor": "Run",
+    "Python.fitting_test.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/zheng/Desktop/python_project/uvpreader/20240116_500cst_emuslion_inline",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\zheng\Desktop\python_project\uvpreader\20240116_500cst_emuslion_inline" />
       <recent name="C:\Work file\python\Now_UVP" />
     </key>
   </component>
@@ -149,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705903671554</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="2024.01.22.02">
+      <created>1705956743991</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1705956743991</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
