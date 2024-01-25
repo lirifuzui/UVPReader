@@ -7,7 +7,7 @@ from pyuvp import ForMetflowUvp
 
 Volume_fraction = ["5p", "10p", "15p", "20p", "25p", "30p"]
 # Duty = ["65", "70", "75"]
-Duty = ["60", "65", "70", "75", "80", "85"]
+Duty = ["60", "65", "70", "75", "80"]
 pressure_0 = [681.51, 427.78, 427.17, 493.07, 665.88, 667.27]
 
 for i, volume_f in enumerate(Volume_fraction):

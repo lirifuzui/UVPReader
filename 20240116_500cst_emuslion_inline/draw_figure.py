@@ -14,17 +14,13 @@ plt.xlim(-0.025, 0.025)
 plt.xlabel(r'R')
 plt.ylabel(r'V')
 
-CHOOSE = 3
+CHOOSE = -1
 
-if CHOOSE == -2:
-    File = ['5p_65duty.mfprof','5p_65duty.mfprof', '5p-70duty.mfprof', '5p-75duty.mfprof', '5p-80duty.mfprof']
-    miu = [0.381, 0.355, 0.331, 0.339]
-    delta_P = [105.34, 134.62, 162.51, 193.08]
 
 if CHOOSE == -1:
-    File  = ['10p-65duty.mfprof','10p-70duty.mfprof','10p-75duty.mfprof','10p-80duty.mfprof']
-    miu = [0.421,0.391,0.383,0.382]
-    delta_P = [112.53,149.62,186.51,215.08]
+    File  = ['10p_60duty.mfprof','10p_65duty.mfprof','10p_70duty.mfprof','10p_75duty.mfprof','10p_80duty.mfprof']
+    miu = [0.639,0.594,0.607,0.578,0.603]
+    delta_P = [115,167.83,238.21,280.02,338.84]
 
 if CHOOSE == 0:
     File  = ['15p-65duty.mfprof','15p-70duty.mfprof','15p-75duty.mfprof','15p-80duty.mfprof']
@@ -74,5 +70,5 @@ for i,file in enumerate(File):
 
 print('===============================')
 # plt.grid()
-plt.legend()
+# plt.legend()
 plt.show()
