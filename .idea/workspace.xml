@@ -4,10 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a94281e6-81a5-4b72-b123-722bf105160c" name="变更" comment="2024.01.25.01">
+    <list default="true" id="a94281e6-81a5-4b72-b123-722bf105160c" name="变更" comment="2024.01.25.02">
+      <change afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_error.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_viscosity_r.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/error.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/draw_error.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/draw_viscosity_r.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/error.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_1_18_19_20____2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2024_1_18_19_20_取消提交了更改_[变更]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/analysis_delay.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/analysis_delay.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/Anaylsis_program.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/Anaylsis_program.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/draw_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/draw_figure.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240120_500cst_emulsion/analysis_10p_30p.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240120_500cst_emulsion/analysis_10p_30p.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +65,7 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\zheng\Desktop\python_project\uvpreader\20240116_500cst_emuslion_inline" />
+      <recent name="C:\Users\zheng\Desktop\python_project\uvpreader\20231217-300cst-emulsion_inline" />
       <recent name="C:\Work file\python\Now_UVP" />
     </key>
   </component>
@@ -160,7 +172,14 @@
       <option name="project" value="LOCAL" />
       <updated>1706137355604</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="2024.01.25.02">
+      <created>1706177049569</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1706177049569</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -179,6 +198,7 @@
     <MESSAGE value="2024.01.22.01" />
     <MESSAGE value="2024.01.22.02" />
     <MESSAGE value="2024.01.25.01" />
-    <option name="LAST_COMMIT_MESSAGE" value="2024.01.25.01" />
+    <MESSAGE value="2024.01.25.02" />
+    <option name="LAST_COMMIT_MESSAGE" value="2024.01.25.02" />
   </component>
 </project>

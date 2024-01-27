@@ -3,15 +3,15 @@ import numpy as np
 
 from pyuvp import ForMetflowUvp
 
-files = ['30p-10hz-5070duty.mfprof']
+files = ['10p-10hz-5070duty.mfprof','10p-05hz-5070duty.mfprof']
 
-'''plt.figure()
+plt.figure()
 # 设置坐标轴刻度线条粗度
 plt.rcParams['axes.linewidth'] = 3
 plt.tick_params(axis='both', which='both', width=1.5, length=6)
 plt.xlabel(r'Shear Rate $\gamma_{\mathrm{eff}}$ ')
 plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
-plt.ylim(0, 800)'''
+plt.ylim(0, 800)
 # plt.xlim(5, 12)
 Visc = []
 for file in files:
@@ -20,15 +20,15 @@ for file in files:
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis(num_processes=1)
-    analysis.channelRange(35, 60)
+    analysis.channelRange(25, 80)
     analysis.pipeGeom(30, 25, 4.7, 1)
 
-    analysis.slicing(5)
+    analysis.slicing(20)
 
-    visc, shearrate = analysis.rheologyViscosity(min_viscosity=300, max_viscosity=1000, smooth_level=13,
+    visc, shearrate = analysis.rheologyViscosity(min_viscosity=100, max_viscosity=1000, smooth_level=21,
                                                  ignoreException=True)
     plt.scatter(shearrate, visc, s=5, alpha=0.3, label=file, color="black")
-    Visc.append(visc)
+    Visc.extend(visc)
     coord = analysis.coordSeries
 plt.axhline(y=np.average(Visc), color='red', linestyle='--')
 # plt.grid()
