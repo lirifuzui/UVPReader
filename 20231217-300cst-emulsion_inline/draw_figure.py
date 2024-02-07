@@ -13,6 +13,7 @@ plt.xlabel(r'R')
 plt.ylabel(r'V')
 
 CHOOSE = 3
+offset = 28.3
 
 if CHOOSE == -2:
     File = ['5p-65duty.mfprof', '5p-70duty.mfprof', '5p-75duty.mfprof', '5p-80duty.mfprof']
@@ -61,13 +62,11 @@ for i,file in enumerate(File):
 
     vel = data.velTables[0] * 2
     coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
-    coords_origin = coords_origin - 28.7
-    coords = coords_origin[11:154]
+    coords_origin = coords_origin - offset
+    coords = coords_origin[11:170]
     vel = np.mean(vel, axis=0)
-    vel = vel[11:154]
-
-
-    plt.scatter(coords / 1000, vel / 1000, s=8, alpha=0.7, label=file,color = colors[i])
+    vel = vel[11:170]
+    plt.scatter(coords[::3] / 1000, vel[::3] / 1000, s=24, alpha=0.7, label=file, color=colors[i], marker="o")
     plt.plot(coords / 1000, velosity_perfile(coords / 1000, miu[i]),color = colors[i], label=file)
 
     vel_curve = velosity_perfile(coords / 1000, miu[i])
@@ -78,5 +77,5 @@ for i,file in enumerate(File):
 
 print('===============================')
 # plt.grid()
-plt.legend()
+#plt.legend()
 plt.show()

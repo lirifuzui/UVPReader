@@ -7,7 +7,7 @@ plt.figure(figsize=(5.2, 6))
 # 设置坐标轴刻度线条粗度
 plt.rcParams['axes.linewidth'] = 3
 plt.tick_params(axis='both', direction='in', which='both', width=1.5, length=6)
-# plt.ylim(0,0.016)
+plt.ylim(0,1.3)
 ax = plt.gca()
 ax.xaxis.set_ticks_position('bottom')
 ax.yaxis.set_ticks_position('right')

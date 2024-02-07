@@ -5,7 +5,7 @@ from pyuvp import ForMetflowUvp
 File = [
     ["10p_05hz90deg.mfprof", "10p_05hz120deg.mfprof", "10p_05hz150deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"],
     ["20p_1hz90deg.mfprof","20p_1hz60deg.mfprof","20p_05hz90deg.mfprof","20p_05hz150deg.mfprof",],
-    ["30p_05hz150deg.mfprof",],
+    ["30p_05hz150deg.mfprof","30p_05hz120deg.mfprof","30p_05hz90deg.mfprof",],
 ]
 
 plt.figure(figsize=(5, 6))
