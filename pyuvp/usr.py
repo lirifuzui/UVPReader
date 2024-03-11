@@ -135,7 +135,7 @@ class Analysis:
             max_vel = 2 * np.pi * self.__shear_freq * self.__radius * (vibration_params[1] * np.pi / 180)
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data
             self.__coordinate_array, self.__temp_coords = self.__temp_coords, self.__coordinate_array
-            _, max_magnitude, _, _, _, _ = self.fftInUSR()
+            _, max_magnitude, _, _, _, _, _ = self.fftInUSR()
             wall_coordinate = self.__coordinate_array[np.argmax(max_magnitude)]
             self.__coordinate_array, self.__temp_coords = self.__temp_coords, self.__coordinate_array
             self.__vel_data, self.__temp_vel = self.__temp_vel, self.__vel_data

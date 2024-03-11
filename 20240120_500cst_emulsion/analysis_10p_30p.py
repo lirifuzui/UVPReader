@@ -5,7 +5,7 @@ from pyuvp import ForMetflowUvp
 File = [
     ["10p_05hz90deg.mfprof", "10p_05hz120deg.mfprof", "10p_05hz150deg.mfprof", "10p_1hz90deg.mfprof", "10p_1hz120deg.mfprof"],
     ["20p_1hz90deg.mfprof","20p_1hz60deg.mfprof","20p_05hz90deg.mfprof","20p_05hz150deg.mfprof",],
-    ["30p_1hz60deg.mfprof","30p_05hz120deg.mfprof",],
+    ["30p_05hz150deg.mfprof","30p_05hz120deg.mfprof","30p_05hz90deg.mfprof",],
 ]
 
 plt.figure(figsize=(5, 6))
@@ -14,9 +14,10 @@ plt.rcParams['axes.linewidth'] = 3
 plt.tick_params(axis='both', direction='in',which='both', width=1.5, length=6)
 plt.xlabel(r'x')
 plt.ylabel(r'y')
-
-plt.ylim(200,1200)
-
+plt.xscale('log')
+plt.yscale('log')
+plt.ylim(100,10000)
+plt.xlim(1,100)
 result = []
 files = File[2]
 Visc = []
@@ -28,9 +29,9 @@ for file in files:
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()
-    analysis.channelRange(74, 83)
+    analysis.channelRange(78, 120)
     analysis.cylinderGeom(77, 56.53, 8.48)
-    analysis.slicing(20)
+    analysis.slicing(50)
     u_theta = analysis.velTableTheta()
     coordinates_r = analysis.coordSeries
     visc, shearrate = analysis.rheologyViscosity(smooth_level=9, ignoreException=True)
