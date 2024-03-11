@@ -20,7 +20,7 @@ for files in File:
     Shear_rate = []
     Coord = []
     for file in files:
-        data = ForMetflowUvp.readUvpFile(file)
+        data = ForMetflowUvp.readFile(file)
         # data.redefineSoundSpeed(1029)
         vel_origin = data.velTables[0]
         coords_origin = data.coordinateArrays[0]

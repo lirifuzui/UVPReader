@@ -27,7 +27,7 @@ plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 # plt.xlim(5, 12)
 Visc = []
 for file in files:
-    data = ForMetflowUvp.readUvpFile(file)
+    data = ForMetflowUvp.readFile(file)
     # data.redefineSoundSpeed(1029)
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]

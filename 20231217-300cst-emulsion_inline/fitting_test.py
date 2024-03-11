@@ -31,7 +31,7 @@ def velosity_perfile(r, miu):
 
 
 # 读速度剖面
-data = ForMetflowUvp.readUvpFile(volume_f + "-" + duty + "duty.mfprof")
+data = ForMetflowUvp.readFile(volume_f + "-" + duty + "duty.mfprof")
 data.defineSoundSpeed(1020)
 
 

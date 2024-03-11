@@ -8,7 +8,7 @@ plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 plt.ylim(0, 2000)
 
 for file in files:
-    data = uvp.readUvpFile(file,num_threads=20)
+    data = uvp.readFile(file, num_threads=20)
     vel_origin = data.velTables[0]
 
     analysis = data.createUSRAnalysis()

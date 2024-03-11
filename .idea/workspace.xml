@@ -4,10 +4,58 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a94281e6-81a5-4b72-b123-722bf105160c" name="变更" comment="2024.01.22.02">
+    <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.01.01.1">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2023_4_30_22_06____.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2023_4_30_22_06____.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2023_4_30_22_06____1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2023_4_30_22_06____1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_1_18_19_20____2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_1_22_1_35____.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_1_22_6_24____.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2024_1_18_19_20_取消提交了更改_[变更]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2024_1_22_1_35_取消提交了更改_[变更]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2024_1_22_6_24_取消提交了变更_[变更]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230422_300cst_CiliconOil/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230422_300cst_CiliconOil/test1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230426_1000cst_CillionOil/test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230426_1000cst_CillionOil/test2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230427_true_10p_Emulsion/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230427_true_10p_Emulsion/analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230429_true_20p_Emulsion/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230429_true_20p_Emulsion/analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230511_true_10p_Emulsion/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230511_true_10p_Emulsion/analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230512_true_10p_Emulsion/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230512_true_10p_Emulsion/analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230521_largevessel_15p_Emulsion/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230521_largevessel_15p_Emulsion/analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230526_none_p_test_Emulison/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230526_none_p_test_Emulison/analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p_vicocity.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230618_300cstBase_Emulsion/analysis_10p_30p_vicocity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230905_300cst_Emulsion/analysis_20230905.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230905_300cst_Emulsion/analysis_20230905.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230910_inline_test/steally.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230910_inline_test/steally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20230927_emulsion_inline/steally.py" beforeDir="false" afterPath="$PROJECT_DIR$/20230927_emulsion_inline/steally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231003_emulsion_inline/10p/steally.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231003_emulsion_inline/10p/steally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231003_emulsion_inline/15p/steally.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231003_emulsion_inline/15p/steally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231003_emulsion_inline/20p/steally.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231003_emulsion_inline/20p/steally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231003_emulsion_inline/25p/steally.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231003_emulsion_inline/25p/steally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231003_emulsion_inline/30p/steally.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231003_emulsion_inline/30p/steally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231003_emulsion_inline/500sct_re/steally.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231003_emulsion_inline/500sct_re/steally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231003_emulsion_inline/5p/steally.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231003_emulsion_inline/5p/steally.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/Anaylsis_program.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/Anaylsis_program.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/analysis_delay.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/analysis_delay.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_figure.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/fitting_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/fitting_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231222_UIR_test/UIR_searchM.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231222_UIR_test/UIR_searchM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20231222_UIR_test/UIR_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231222_UIR_test/UIR_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240101_500cst_emulsion/UIR_20240101.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240101_500cst_emulsion/UIR_20240101.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240101_500cst_emulsion/analysis_20240101.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240101_500cst_emulsion/analysis_20240101.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240101_500cst_emulsion/uvppd_20240101.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240101_500cst_emulsion/uvppd_20240101.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/Anaylsis_program.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/Anaylsis_program.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/analysis_delay.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/analysis_delay.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/fitting_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/fitting_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240120_500cst_emulsion/analysis_10p_30p.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240120_500cst_emulsion/analysis_10p_30p.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20240120_500cst_emulsion/analysis_10p_30p_vicocity.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240120_500cst_emulsion/analysis_10p_30p_vicocity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UVP_LIST/readdata.canvas" beforeDir="false" afterPath="$PROJECT_DIR$/UVP_LIST/readdata.canvas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp/usr.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyuvp/usr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp/usr_safe.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyuvp/usr_safe.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_program.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_program.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +104,7 @@
       <recent name="C:\Work file\python\Now_UVP" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.analysis_10p_30p">
     <configuration name="analysis_10p_30p" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -70,6 +118,28 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/20240120_500cst_emulsion/analysis_10p_30p.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="example_1" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\ZHENG WENQING\Desktop\UVPReader\venv\Scripts\python.exe" />
+      <option name="SDK_NAME" value="Python 3.11 (UVPReader)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/example_1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -110,7 +180,6 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
-      <changelist id="a94281e6-81a5-4b72-b123-722bf105160c" name="变更" comment="" />
       <created>1669471195537</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />

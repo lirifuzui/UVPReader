@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pyuvp
 
 start = time.time()
-data = pyuvp.ForMetflowUvp.readUvpFile("1000min.mfprof", num_threads=2, is_output=False)
+data = pyuvp.ForMetflowUvp.readFile("1000min.mfprof", num_threads=2, is_output=False)
 data.defineSoundSpeed(1000)
 vel = data.velTables[0]
 times = data.timeArrays[0]

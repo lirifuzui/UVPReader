@@ -25,7 +25,7 @@ Rudio = 0.025
 L = 0.46
 
 for i,file in enumerate(File):
-    data = ForMetflowUvp.readUvpFile(file)
+    data = ForMetflowUvp.readFile(file)
     data.defineSoundSpeed(2000)
 
 

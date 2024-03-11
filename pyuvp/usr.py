@@ -53,7 +53,7 @@ class Statistic:
 
 
 class Analysis:
-    def __init__(self, datas: pyuvp.ForMetflowUvp.readUvpFile = None, tdx_num: int = OFF,
+    def __init__(self, datas: pyuvp.ForMetflowUvp.readFile = None, tdx_num: int = OFF,
                  vel_data: list[np.ndarray] | None = None,
                  time_series: list[np.ndarray] | None = None, coordinate_series: list[np.ndarray] | None = None,
                  ignoreException=False,
@@ -62,7 +62,7 @@ class Analysis:
         analysis class for creating rheological analyzes from Uvp datas.
 
         Parameters:
-            - datas: pyuvp.uvp.readUvpFile object containing the data for analysis. Default is None.
+            - datas: pyuvp.uvp.readFile object containing the data for analysis. Default is None.
             - tdx_num: int, data index. Default is OFF.
             - vel_data: list[np.ndarray] | None, list of velocity data. Default is None.
             - time_series: list[np.ndarray] | None, list of time series. Default is None.

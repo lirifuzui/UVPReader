@@ -31,7 +31,7 @@ def velosity_perfile(r, miu):
     return delta_P / (4 * miu * L) * (Rudio ** 2 - (r) ** 2)
 
 
-data = ForMetflowUvp.readUvpFile(volume_f + "-" + duty + "duty.mfprof")
+data = ForMetflowUvp.readFile(volume_f + "-" + duty + "duty.mfprof")
 data.defineSoundSpeed(1020)
 
 vel = data.velTables[0] * 2

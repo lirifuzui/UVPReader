@@ -13,7 +13,7 @@ plt.ylim(500, 2000)
 slice_num = 40
 
 for file in files:
-    data = uvp.readUvpFile(file)
+    data = uvp.readFile(file)
     data.defineSoundSpeed(1029)
     vel_origin = data.velTables[0]
 
