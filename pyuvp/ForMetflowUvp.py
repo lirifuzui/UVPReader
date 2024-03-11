@@ -42,6 +42,8 @@ class readFile:
         # If the sound speed needs to be changed, the new sound speed is stored here.
         self.__new_sound_speed = None
 
+        self.__coords_arr_tdxs = []
+
         # Velocity, echo, and time series data are each stored in a list.
         # Each item in the list corresponds to data from a tdx.
         # Notice! When using mux, the time delay set by the user should be at least 200 ms due to signal output conversion.
