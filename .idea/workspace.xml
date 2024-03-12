@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.03.11.01">
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/分割条.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/部分可见的折叠.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_3_11_16_51____.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2024_3_11_16_51____.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/根据菜单选择界面.py" beforeDir="false" afterPath="$PROJECT_DIR$/UIUsr/FlowView/根据菜单选择界面.py" afterDir="false" />
     </list>
@@ -41,39 +42,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.Anaylsis_program.executor": "Run",
-    "Python.analysis_10p_30p.executor": "Run",
-    "Python.analysis_20240101.executor": "Run",
-    "Python.fitting_test.executor": "Run",
-    "Python.分割条.executor": "Run",
-    "Python.根据菜单选择界面.executor": "Run",
-    "Python.菜单选择.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Work file/Now_Pros/UVPReader",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.Anaylsis_program.executor&quot;: &quot;Run&quot;,
+    &quot;Python.analysis_10p_30p.executor&quot;: &quot;Run&quot;,
+    &quot;Python.analysis_20240101.executor&quot;: &quot;Run&quot;,
+    &quot;Python.fitting_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.分割条.executor&quot;: &quot;Run&quot;,
+    &quot;Python.根据菜单选择界面.executor&quot;: &quot;Run&quot;,
+    &quot;Python.菜单选择.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Work file/Now_Pros/UVPReader&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Work file\python\Now_UVP" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.analysis_10p_30p">
     <configuration name="根据菜单选择界面" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/UIUsr/FlowView" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -89,14 +88,12 @@
     </configuration>
     <configuration name="Anaylsis_program" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/20240116_500cst_emuslion_inline" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -135,7 +132,6 @@
     </configuration>
     <configuration name="analysis_10p_30p" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -157,14 +153,12 @@
     </configuration>
     <configuration name="analysis_20240101" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/20240101_500cst_emulsion" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -179,7 +173,6 @@
       <method v="2" />
     </configuration>
     <configuration name="example_1" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -202,7 +195,6 @@
     </configuration>
     <configuration name="fitting_test" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
