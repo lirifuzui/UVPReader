@@ -7,14 +7,13 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QTreeWidget, QTreeWidge
 Font_size = 14
 
 
-class Project_process_QTreeV(QTreeView):
+class Project_process_QTV(QTreeView):
     def __init__(self):
         super().__init__()
         self.model = QStandardItemModel()
         self.setModel(self.model)
         self.setHeaderHidden(True)  # 隐藏列表标题
-        self.setMinimumWidth(200)  # 设置最小宽为180
-        self.setMaximumWidth(340)  # 设置最大宽为260
+        self.setMinimumWidth(200)  # 设置最小宽为200
         self.setStyleSheet(
             'QTreeView { background-color: rgba(255, 255, 255, 1); border: 3px solid transparent; }'
         )  # 设置背景样式
@@ -23,7 +22,7 @@ class Project_process_QTreeV(QTreeView):
         # =======================================================================
         # 添加 geomtry 项
         self.item_geom = QStandardItem("Geomtry")
-        icon_geom = QIcon("Icon/icon_tree_geom.jpg")
+        icon_geom = QIcon("Icon_Tree_ProjectProcess/icon_geom.jpg")
         self.item_geom.setIcon(icon_geom)
         self.item_geom.setCheckable(False)
         self.item_geom.setEditable(False)
@@ -33,6 +32,8 @@ class Project_process_QTreeV(QTreeView):
         self.expand(self.model.indexFromItem(self.item_geom))  # 默认展开
         # 添加 geomtry 项中的子项 cylinder container 项
         self.item_cylinder = QStandardItem("Container(cylinder)")
+        icon_cylinder = QIcon("Icon_Tree_ProjectProcess/icon_cylinder.jpg")
+        self.item_cylinder.setIcon(icon_cylinder)
         self.item_cylinder.setCheckable(True)
         self.item_cylinder.setEditable(False)
         self.item_geom.appendRow(self.item_cylinder)
@@ -40,6 +41,8 @@ class Project_process_QTreeV(QTreeView):
         self.item_cylinder.setCheckState(Qt.Unchecked)
         # 添加 geomtry 项中的子项 pipeline 项
         self.item_pipeline = QStandardItem("Pipeline")
+        icon_pipeline = QIcon("Icon_Tree_ProjectProcess/icon_pipeline.jpg")
+        self.item_pipeline.setIcon(icon_pipeline)
         self.item_pipeline.setCheckable(True)
         self.item_pipeline.setEditable(False)
         self.item_geom.appendRow(self.item_pipeline)
@@ -49,6 +52,8 @@ class Project_process_QTreeV(QTreeView):
         # ------------------------------------------------------
         # 添加 data 项
         self.item_data = QStandardItem("Data")
+        icon_data = QIcon("Icon_Tree_ProjectProcess/icon_data.jpg")
+        self.item_data.setIcon(icon_data)
         self.item_data.setCheckable(False)
         self.item_data.setEditable(False)
         self.model.appendRow(self.item_data)
@@ -57,6 +62,8 @@ class Project_process_QTreeV(QTreeView):
         self.expand(self.model.indexFromItem(self.item_data))  # 默认展开
         # 添加 data 项中的子项 Load
         self.item_load_data = QStandardItem("Load")
+        icon_load_data = QIcon("Icon_Tree_ProjectProcess/icon_load_data.jpg")
+        self.item_load_data.setIcon(icon_load_data)
         self.item_load_data.setCheckable(True)
         self.item_load_data.setEditable(False)
         self.item_data.appendRow(self.item_load_data)
@@ -64,6 +71,8 @@ class Project_process_QTreeV(QTreeView):
         self.item_load_data.setCheckState(Qt.Unchecked)
         # 添加 data 项中的子项 Measurement
         self.item_measure = QStandardItem("Measure")
+        icon_measure = QIcon("Icon_Tree_ProjectProcess/icon_measure.jpg")
+        self.item_measure.setIcon(icon_measure)
         self.item_measure.setCheckable(True)
         self.item_measure.setEditable(False)
         self.item_data.appendRow(self.item_measure)
@@ -73,6 +82,8 @@ class Project_process_QTreeV(QTreeView):
         # ------------------------------------------------------
         # 添加 analysis 项
         self.item_analysis = QStandardItem("Analysis")
+        icon_analysis = QIcon("Icon_Tree_ProjectProcess/icon_analysis.jpg")
+        self.item_analysis.setIcon(icon_analysis)
         self.item_analysis.setCheckable(True)
         self.item_analysis.setEditable(False)
         self.model.appendRow(self.item_analysis)
@@ -82,6 +93,8 @@ class Project_process_QTreeV(QTreeView):
         # ------------------------------------------------------
         # 添加 fields 项
         self.item_fields = QStandardItem("Fields")
+        icon_fields = QIcon("Icon_Tree_ProjectProcess/icon_fields.jpg")
+        self.item_fields.setIcon(icon_fields)
         self.item_fields.setCheckable(True)
         self.item_fields.setEditable(False)
         self.model.appendRow(self.item_fields)
@@ -91,6 +104,8 @@ class Project_process_QTreeV(QTreeView):
         # ------------------------------------------------------
         # 添加 results 项
         self.item_results = QStandardItem("Results")
+        icon_results = QIcon("Icon_Tree_ProjectProcess/icon_results.jpg")
+        self.item_results.setIcon(icon_results)
         self.item_results.setCheckable(True)
         self.item_results.setEditable(False)
         self.model.appendRow(self.item_results)
@@ -112,10 +127,10 @@ class Project_process_QTreeV(QTreeView):
                 self.item_measure.setFlags(Qt.ItemFlags(int("110001", 2)))
             elif self.item_load_data.checkState() == Qt.Checked:
                 self.item_data.setCheckState(Qt.Checked)
-                self.item_measure.setFlags(Qt.ItemIsUserCheckable)
+                self.item_measure.setFlags(Qt.ItemFlags(int("000000", 2)))
             elif self.item_measure.checkState() == Qt.Checked:
                 self.item_data.setCheckState(Qt.Checked)
-                self.item_load_data.setFlags(Qt.ItemIsUserCheckable)
+                self.item_load_data.setFlags(Qt.ItemFlags(int("000000", 2)))
 
         if item == self.item_cylinder or item == self.item_pipeline:
             if self.item_cylinder.checkState() == Qt.Unchecked and self.item_pipeline.checkState() == Qt.Unchecked:
@@ -125,16 +140,16 @@ class Project_process_QTreeV(QTreeView):
                 self.item_pipeline.setFlags(Qt.ItemFlags(int("110001", 2)))
             elif self.item_cylinder.checkState() == Qt.Checked:
                 self.item_geom.setCheckState(Qt.Checked)
-                self.item_pipeline.setFlags(Qt.ItemIsUserCheckable)
+                self.item_pipeline.setFlags(Qt.ItemFlags(int("000000", 2)))
             elif self.item_pipeline.checkState() == Qt.Checked:
                 self.item_geom.setCheckState(Qt.Checked)
-                self.item_cylinder.setFlags(Qt.ItemIsUserCheckable)
+                self.item_cylinder.setFlags(Qt.ItemFlags(int("000000", 2)))
 
     # =======================================================================
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = Project_process_QTreeV()
+    window = Project_process_QTV()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

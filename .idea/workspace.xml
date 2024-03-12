@@ -4,14 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.03.12.1">
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon/icon_tree_geom.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_ProjectProcess.py" afterDir="false" />
+    <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.03.13.1">
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_cylinder.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_data.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_fields.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_geom.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_load_data.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_measure.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_pipeline.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/FlowView.pyproject" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/FlowView.pyproject.user" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/FlowView.pyproject.user.c7ae055" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon/icon_tree_geom.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_analysis.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_ProjectProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_Tree_ProjectProcess.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +52,7 @@
     "Python.Anaylsis_program.executor": "Run",
     "Python.UI_ProjectProcess.executor": "Run",
     "Python.UI_ProjectProcessList.executor": "Run",
+    "Python.UI_Tree_ProjectProcess.executor": "Run",
     "Python.analysis_10p_30p.executor": "Run",
     "Python.analysis_20240101.executor": "Run",
     "Python.fitting_test.executor": "Run",
@@ -60,12 +64,14 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Work file/Now_Pros/UVPReader",
+    "last_opened_file_path": "C:/Work file/Now_Pros/UVPReader/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess",
     "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Work file\Now_Pros\UVPReader\UIUsr\FlowView\GUI\Icon_Tree_ProjectProcess" />
+      <recent name="C:\Work file\Now_Pros\UVPReader\UIUsr\FlowView\GUI\Icon_ProjectProcess" />
       <recent name="C:\Work file\python\Now_UVP" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -305,7 +311,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710244765532</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="24.03.13.1">
+      <option name="closed" value="true" />
+      <created>1710260402425</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1710260402425</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -325,6 +339,7 @@
     <MESSAGE value="2024.01.22.02" />
     <MESSAGE value="24.03.11.01" />
     <MESSAGE value="24.03.12.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="24.03.12.1" />
+    <MESSAGE value="24.03.13.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="24.03.13.1" />
   </component>
 </project>
