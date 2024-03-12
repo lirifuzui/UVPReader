@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.03.11.01">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2023_4_30_22_06____.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2023_4_30_22_06____.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2023_4_30_22_06____1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2023_4_30_22_06____1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/分割条.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyuvp/ForMetflowUvp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/根据菜单选择界面.py" beforeDir="false" afterPath="$PROJECT_DIR$/UIUsr/FlowView/根据菜单选择界面.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +47,7 @@
     "Python.analysis_10p_30p.executor": "Run",
     "Python.analysis_20240101.executor": "Run",
     "Python.fitting_test.executor": "Run",
+    "Python.分割条.executor": "Run",
     "Python.根据菜单选择界面.executor": "Run",
     "Python.菜单选择.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -86,29 +87,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="菜单选择" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="UVP" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/UIUsr/FlowView" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/UIUsr/FlowView/菜单选择.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="Anaylsis_program" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
       <option name="ENV_FILES" value="" />
@@ -124,6 +102,29 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/20240116_500cst_emuslion_inline/Anaylsis_program.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="菜单选择" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="UVP" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/UIUsr/FlowView" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/UIUsr/FlowView/菜单选择.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -273,7 +274,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710139313916</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="24.03.11.01">
+      <option name="closed" value="true" />
+      <created>1710144642064</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1710144642064</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

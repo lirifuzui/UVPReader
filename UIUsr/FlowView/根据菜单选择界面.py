@@ -1,7 +1,10 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QTreeWidget, QTreeWidgetItem, QWidget, QVBoxLayout, \
-    QPushButton, QLabel, QStackedWidget, QHBoxLayout
 
+from PySide6.QtGui import QFont, QPainter, QColor
+from PySide6.QtWidgets import QApplication, QMainWindow, QTreeWidget, QTreeWidgetItem, QWidget, QVBoxLayout, \
+    QPushButton, QLabel, QStackedWidget, QHBoxLayout, QSplitter, QSplitterHandle
+
+project_name = 'New project'
 
 class MyWindow(QMainWindow):
     def __init__(self):
@@ -12,14 +15,40 @@ class MyWindow(QMainWindow):
     def init_ui(self):
         # 创建一个 QTreeWidget 作为左侧的菜单
         menu_tree_widget = QTreeWidget(self)
-        menu_tree_widget.setHeaderLabels(['菜单'])
+        menu_tree_widget.setHeaderLabels(['\'' + project_name + '\''])
+
+        menu_tree_widget.setFixedWidth(180)
+        menu_tree_widget.setMaximumWidth(600)
+        menu_tree_widget.setMinimumWidth(20)
+
 
         # 添加菜单项
-        item1 = QTreeWidgetItem(menu_tree_widget)
-        item1.setText(0, '菜单1')
+        data = QTreeWidgetItem(menu_tree_widget)
+        data.setText(0, 'Data')
+
+        flow_field = QTreeWidgetItem(menu_tree_widget)
+        flow_field.setText(0, 'Flow field')
 
         item2 = QTreeWidgetItem(menu_tree_widget)
         item2.setText(0, '菜单2')
+
+
+        # 创建菜单的字体
+        header_font = QFont()
+        header_font.setPointSize(10)  # 设置字体大小
+        menu_tree_widget.headerItem().setFont(0, header_font)
+
+        font1 = QFont()
+        font1.setPointSize(11)  # 设置字体大小
+        data.setFont(0, font1)
+        flow_field.setFont(0, font1)
+
+
+        # 使用CSS样式表来设置背景透明度和边框透明
+        menu_tree_widget.setStyleSheet(
+            'QTreeWidget { background-color: rgba(255, 255, 255, 0.5); border: 0px solid transparent; }'
+            'QHeaderView::section { background-color: rgba(255, 255, 255, 0.5); border: 0px solid transparent: }'
+        )
 
         # 设置单击菜单时，显示相应的窗口
         menu_tree_widget.itemClicked.connect(self.on_menu_item_clicked)
@@ -43,18 +72,22 @@ class MyWindow(QMainWindow):
         layout2.addWidget(QLabel('标签2'))
         stacked_widget.addWidget(page2)
 
-        # 创建主布局
-        main_layout = QHBoxLayout()
-        main_layout.addWidget(menu_tree_widget)
-        main_layout.addWidget(stacked_widget)
 
-        # 设置窗口容器的布局
-        window_container.setLayout(main_layout)
 
-        # 设置主窗口的中心部分为窗口容器
-        self.setCentralWidget(window_container)
+        # 创建一个 QSplitter 用于分隔左侧菜单和右侧窗口
+        splitter = QSplitter(self)
+        splitter.addWidget(menu_tree_widget)
+        splitter.addWidget(window_container)
 
-        self.setWindowTitle('菜单和窗口')
+        self.setCentralWidget(splitter)
+
+        # 设置窗口标题
+        self.setWindowTitle('NewVUP - \'' + project_name + '\'')
+
+        # 设置窗口初始大小为全屏
+        self.showMaximized()
+
+        splitter.setSizes([180, 1])
 
     def on_menu_item_clicked(self, item, column):
         # 获取菜单项的文本
