@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.03.12.1" />
+    <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.03.12.1">
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon/icon_tree_geom.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_ProjectProcess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/FlowView.pyproject" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/FlowView.pyproject.user" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/FlowView.pyproject.user.c7ae055" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/main.py" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,6 +47,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.Anaylsis_program.executor": "Run",
+    "Python.UI_ProjectProcess.executor": "Run",
+    "Python.UI_ProjectProcessList.executor": "Run",
     "Python.analysis_10p_30p.executor": "Run",
     "Python.analysis_20240101.executor": "Run",
     "Python.fitting_test.executor": "Run",
@@ -57,6 +67,10 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Work file\python\Now_UVP" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Work file\Now_Pros\UVPReader\UIUsr\FlowView\GUI\Icon" />
+      <recent name="C:\Work file\Now_Pros\UVPReader\UIUsr\FlowView\GUI" />
     </key>
   </component>
   <component name="RunManager">
@@ -283,7 +297,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710244068404</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="24.03.12.1">
+      <option name="closed" value="true" />
+      <created>1710244765532</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1710244765532</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
