@@ -48,6 +48,15 @@ class Project_process_QTV(QTreeView):
         self.item_geom.appendRow(self.item_pipeline)
         self.item_pipeline.setFont(self.item_font)
         self.item_pipeline.setCheckState(Qt.Unchecked)
+        # 添加 geomtry 项中的子项 custom 项
+        self.item_custom = QStandardItem("Custom")
+        icon_custom = QIcon("Icon_Tree_ProjectProcess/icon_custom.jpg")
+        self.item_custom.setIcon(icon_pipeline)
+        self.item_custom.setCheckable(True)
+        self.item_custom.setEditable(False)
+        self.item_geom.appendRow(self.item_custom)
+        self.item_custom.setFont(self.item_font)
+        self.item_custom.setCheckState(Qt.Unchecked)
 
         # ------------------------------------------------------
         # 添加 data 项
@@ -119,7 +128,7 @@ class Project_process_QTV(QTreeView):
     # 制作逻辑，如果完成了一些项，另一些想将被锁定
     def __onStateChanged(self, item):
         # 制作逻辑，如果Load和Measurement中任意一个被选中，就会锁定另一个,同时 Data 会被选中
-        if item == self.item_load_data or item == self.item_measure:
+        if item in (self.item_load_data, self.item_measure):
             if self.item_load_data.checkState() == Qt.Unchecked and self.item_measure.checkState() == Qt.Unchecked:
                 self.item_data.setCheckState(Qt.Unchecked)
                 self.item_load_data.setFlags(Qt.ItemFlags(int("110001", 2)))
@@ -132,18 +141,25 @@ class Project_process_QTV(QTreeView):
                 self.item_data.setCheckState(Qt.Checked)
                 self.item_load_data.setFlags(Qt.ItemFlags(int("000000", 2)))
 
-        if item == self.item_cylinder or item == self.item_pipeline:
-            if self.item_cylinder.checkState() == Qt.Unchecked and self.item_pipeline.checkState() == Qt.Unchecked:
+        elif item in (self.item_cylinder, self.item_pipeline, self.item_custom):
+            if self.item_cylinder.checkState() == Qt.Unchecked and self.item_pipeline.checkState() == Qt.Unchecked and \
+                    self.item_custom.checkState() == Qt.Unchecked:
                 self.item_geom.setCheckState(Qt.Unchecked)
                 self.item_cylinder.setFlags(Qt.ItemFlags(int("110001", 2)))
-                # 位数从右到左，（1）、可编辑（2）、可拖拽（4）、可放入（8）、可勾选（16）、可交互（32）
                 self.item_pipeline.setFlags(Qt.ItemFlags(int("110001", 2)))
+                self.item_custom.setFlags(Qt.ItemFlags(int("110001", 2)))
             elif self.item_cylinder.checkState() == Qt.Checked:
                 self.item_geom.setCheckState(Qt.Checked)
                 self.item_pipeline.setFlags(Qt.ItemFlags(int("000000", 2)))
+                self.item_custom.setFlags(Qt.ItemFlags(int("000000", 2)))
             elif self.item_pipeline.checkState() == Qt.Checked:
                 self.item_geom.setCheckState(Qt.Checked)
                 self.item_cylinder.setFlags(Qt.ItemFlags(int("000000", 2)))
+                self.item_custom.setFlags(Qt.ItemFlags(int("000000", 2)))
+            elif self.item_custom.checkState() == Qt.Checked:
+                self.item_geom.setCheckState(Qt.Checked)
+                self.item_cylinder.setFlags(Qt.ItemFlags(int("000000", 2)))
+                self.item_pipeline.setFlags(Qt.ItemFlags(int("000000", 2)))
 
     # =======================================================================
 

@@ -5,16 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.03.13.1">
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_cylinder.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_data.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_fields.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_geom.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_load_data.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_measure.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_pipeline.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_custom.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_3_12_20_39____.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2024_3_12_20_39____.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon/icon_tree_geom.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess/icon_analysis.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_ProjectProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_Tree_ProjectProcess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_Tree_ProjectProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_Tree_ProjectProcess.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,12 +59,13 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Work file/Now_Pros/UVPReader/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess",
+    "last_opened_file_path": "C:/Users/ZHENG WENQING/Desktop/UVPReader/UIUsr/FlowView/GUI/Icon_Tree_ProjectProcess",
     "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ZHENG WENQING\Desktop\UVPReader\UIUsr\FlowView\GUI\Icon_Tree_ProjectProcess" />
       <recent name="C:\Work file\Now_Pros\UVPReader\UIUsr\FlowView\GUI\Icon_Tree_ProjectProcess" />
       <recent name="C:\Work file\Now_Pros\UVPReader\UIUsr\FlowView\GUI\Icon_ProjectProcess" />
       <recent name="C:\Work file\python\Now_UVP" />
@@ -82,7 +78,6 @@
   <component name="RunManager">
     <configuration name="根据菜单选择界面" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -104,7 +99,6 @@
     </configuration>
     <configuration name="Anaylsis_program" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -149,7 +143,6 @@
     </configuration>
     <configuration name="analysis_10p_30p" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -171,7 +164,6 @@
     </configuration>
     <configuration name="analysis_20240101" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -192,7 +184,6 @@
       <method v="2" />
     </configuration>
     <configuration name="example_1" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -215,7 +206,6 @@
     </configuration>
     <configuration name="fitting_test" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
