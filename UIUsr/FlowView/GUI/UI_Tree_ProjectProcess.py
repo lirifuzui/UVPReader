@@ -1,8 +1,7 @@
 import sys
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont, QStandardItemModel, QStandardItem, QColor, QIcon
-from PySide6.QtWidgets import QApplication, QMainWindow, QTreeWidget, QTreeWidgetItem, QWidget, QVBoxLayout, \
-    QPushButton, QLabel, QStackedWidget, QHBoxLayout, QSplitter, QFrame, QTreeView
+from PySide6.QtGui import QFont, QStandardItemModel, QStandardItem, QIcon
+from PySide6.QtWidgets import QApplication, QTreeView
 
 Font_size = 14
 
@@ -129,7 +128,7 @@ class Project_process_QTV(QTreeView):
     def __onStateChanged(self, item):
         # 制作逻辑，如果Load和Measurement中任意一个被选中，就会锁定另一个,同时 Data 会被选中
         if item in (self.item_load_data, self.item_measure):
-            if self.item_load_data.checkState() == Qt.Unchecked and self.item_measure.checkState() == Qt.Unchecked:
+            if all(item.checkState() == Qt.Unchecked for item in (self.item_load_data, self.item_measure)):
                 self.item_data.setCheckState(Qt.Unchecked)
                 self.item_load_data.setFlags(Qt.ItemFlags(int("110001", 2)))
                 # 位数从右到左，（1）、可编辑（2）、可拖拽（4）、可放入（8）、可勾选（16）、可交互（32）
@@ -142,8 +141,8 @@ class Project_process_QTV(QTreeView):
                 self.item_load_data.setFlags(Qt.ItemFlags(int("000000", 2)))
 
         elif item in (self.item_cylinder, self.item_pipeline, self.item_custom):
-            if self.item_cylinder.checkState() == Qt.Unchecked and self.item_pipeline.checkState() == Qt.Unchecked and \
-                    self.item_custom.checkState() == Qt.Unchecked:
+            if all(item.checkState() == Qt.Unchecked for item in (self.item_cylinder, self.item_pipeline, self.item_custom)):
+                self.item_geom.setCheckState(Qt.Unchecked)
                 self.item_geom.setCheckState(Qt.Unchecked)
                 self.item_cylinder.setFlags(Qt.ItemFlags(int("110001", 2)))
                 self.item_pipeline.setFlags(Qt.ItemFlags(int("110001", 2)))

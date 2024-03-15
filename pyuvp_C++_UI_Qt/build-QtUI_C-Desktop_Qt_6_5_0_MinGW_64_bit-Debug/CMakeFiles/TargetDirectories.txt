@@ -1,0 +1,9 @@
+C:/Users/ZHENG WENQING/Desktop/UVPReader/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C.dir
+C:/Users/ZHENG WENQING/Desktop/UVPReader/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+C:/Users/ZHENG WENQING/Desktop/UVPReader/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/ZHENG WENQING/Desktop/UVPReader/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
+C:/Users/ZHENG WENQING/Desktop/UVPReader/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/install.dir
+C:/Users/ZHENG WENQING/Desktop/UVPReader/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
+C:/Users/ZHENG WENQING/Desktop/UVPReader/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
+C:/Users/ZHENG WENQING/Desktop/UVPReader/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C_autogen_timestamp_deps.dir
+C:/Users/ZHENG WENQING/Desktop/UVPReader/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C_autogen.dir
