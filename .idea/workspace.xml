@@ -5,15 +5,429 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.03.11.01">
-      <change afterPath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/QtUI_C_ja_JP.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/main.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/mainwindow.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/mainwindow.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/mainwindow.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_3_13_7_50____.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2024_3_13_7_50____.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_Tree_ProjectProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/UIUsr/FlowView/GUI/UI_Tree_ProjectProcess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/QtUI_C_ja_JP.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/main.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/mainwindow.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/mainwindow.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/QtUI_C/mainwindow.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/query/cache-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/query/cmakeFiles-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/query/codemodel-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/reply/cache-v2-826a7396662681bfdffe.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/reply/cmakeFiles-v1-7b1a4e10e8aedd08e596.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/reply/codemodel-v2-09fba372efeffc0e15b3.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/reply/directory-.-Debug-422feaedbbd3a8693e71.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/reply/index-2024-03-15T08-10-13-0337.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/reply/target-QtUI_C-Debug-7eae295c94eee68e6193.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/reply/target-QtUI_C_autogen-Debug-168a273c9275af54a759.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.cmake/api/v1/reply/target-QtUI_C_autogen_timestamp_deps-Debug-4804798a6b6d0a7bd9ac.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.ninja_deps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.ninja_log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qt/QtDeploySupport.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/QApplication.10DA7A8367D85813.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/QLocale.9E4417DC4292DD6F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/QMainWindow.7490C412D3640CEB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/QTranslator.4ED1E5FBA53451D7.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/__stddef_max_align_t.h.59BC3ECCE229061D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/_mingw.h.9063BC30453243F3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/_mingw_ddk.h.570FD4D1B2D32B52.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/_mingw_mac.h.080D111F344D4537.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/_mingw_off_t.h.53E87FB5C0C92D32.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/_mingw_secapi.h.26DB93C57E58A36E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/_mingw_stat64.h.0CD59C248F52BD72.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/_timeval.h.6D8772AD9AE270D6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/algorithm.B63A1AB804A0418E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/algorithmfwd.h.B818E34A708CBED6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/align.h.4C4EF99306C09C24.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/aligned_buffer.h.91DE6B7F31D201E0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/alloc_traits.h.1FD3C3694528EE54.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/alloc_traits.h.E9BA17BEE07A2BAA.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/allocated_ptr.h.95627CC6742827C3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/allocator.h.93BF9A1F82F6688C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/array.25E9866757CEF9AF.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/assert.h.849CBFAA20ACB2EF.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/assertions.h.538DFC7564A8C64A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/atomic.3D5D6F43342AFCB2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/atomic_base.h.9E887311C28BEF8A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/atomic_lockfree_defines.h.6B04184F5D993264.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/atomic_word.h.862F6C953145A517.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/atomicity.h.42C1A32322C8EB2F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/auto_ptr.h.1589B15250F603E2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/basic_string.h.3EA6F3E3C03CF711.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/basic_string.tcc.4EF75573B7A58625.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/bessel_function.tcc.F4D1EEEA8259DA3B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/beta_function.tcc.5B375847E4658250.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/binders.h.B49A7B8E474AC3F5.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/bit.FA145B867C105A18.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/c++allocator.h.7BC47500EE33DF83.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/c++config.h.B085AC53D731EE26.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/c++locale.h.33CE091015F064AE.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cctype.C3800EC1562A5645.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cerrno.8115E69FEB2597E4.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/char_traits.h.B438352A03EE1153.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/charconv.h.1ACAF5CE5EA79A5A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/chrono.AB49B1B7797201CB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/clocale.48D2F5BD9B538AAE.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cmath.A0A08F382EA62983.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/concept_check.h.412FA04EC187BA84.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/concurrence.h.2E032C229A38C6E1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/corecrt.h.CF79803002814E3C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/corecrt_startup.h.8C9FE57DD784911C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/corecrt_stdio_config.h.8E05F7291AC6AE26.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/corecrt_wstdlib.h.2AFF082516D86A01.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cpp_type_traits.h.18CE80C3AA2F2928.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cpu_defines.h.17425A30C8B0664B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/crtdefs.h.51BBD55D5C4996FB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cstddef.6685BE0C46EA418C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cstdint.6545973F0DAAC1CC.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cstdio.B7ED95DE322D94D3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cstdlib.77936E530E4CBA75.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cstring.E6FEDAD33AD83F79.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ctime.3B2F9094CD80A030.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ctype.h.611A3F47BDEB2D65.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cwchar.27013598EC683F3C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cxxabi_forced.h.E77F2604EB0DAA11.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/cxxabi_init_exception.h.6F553FB2B0A16EB0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/debug.h.3B94537C772B05E1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ell_integral.tcc.50F5CBA6850ED7C6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/enable_special_members.h.0EE7AEAFFAA54AB8.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/erase_if.h.5ED97EE9FDED5F46.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/errno.h.9CB9214B6A17A893.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/error_constants.h.3FDD171936ECCFC3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/exception.6CCD2F6D147520EB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/exception.h.6347ADACB335B5B2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/exception_defines.h.6FAB1758E9C4F6FC.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/exception_ptr.h.3542983D810679A8.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/execution_defs.h.C022BE8934A12FEF.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/exp_integral.tcc.60FCA382E9E1B598.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/functexcept.h.17A8E88336176AA3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/functional.54F2E4FEBE22653C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/functional_hash.h.C1C97364870BE6F2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/gamma.tcc.EC07CEE7A1297F11.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/glue_algorithm_defs.h.2782462FE805E0DE.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/glue_memory_defs.h.70C303086177FE43.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/glue_numeric_defs.h.5DCAFA9C87700946.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/gthr-default.h.B70A0C3097F7041C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/gthr.h.918C1160108EB1DA.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/hash_bytes.h.044334B0B76180BD.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/hashtable.h.2122BA1A87DDCE40.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/hashtable_policy.h.721E14586A5D8388.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/hypergeometric.tcc.EEF1326F1BE89202.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/initializer_list.5F11F1A8B9365F6E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/invoke.h.DB988924DCB1B33E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ios_base.h.5D8E18D464E980AD.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/iosfwd.A6CAEB762BA80B81.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/iterator.5E36C4D27739EA8A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/legendre_function.tcc.7F022B20841CA149.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/limits.ED72BFAE94F0CAA1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/limits.h.2346397CC38F271E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/limits.h.38647169D52F47DF.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/list.9F7075085305CCB5.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/list.tcc.F065556DD02680CA.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/locale.h.A50B231BCE4CBACB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/locale_classes.h.94E0B5A3D9E31223.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/locale_classes.tcc.14A953226B5DAF1F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/localefwd.h.D670E8AF8022AE56.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/main.cpp.11B0F7BF7111562F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/mainwindow.cpp.56D3837DBAAA6C85.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/mainwindow.h.F7E3737C99B69A34.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/malloc.h.FCB1E249A822903C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/map.8700A04635D17E47.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/math.h.D3FDF466545391C1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/memory.64A021376A3B0C13.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/memoryfwd.h.F7C4CE916424A343.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/mm_malloc.h.38B98523D3EA7394.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/modified_bessel_func.tcc.BBD76B1C161D6214.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/move.h.8A42797221F44408.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/nested_exception.h.04645FA1191819F2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/new.A8D5623A48B0AEF0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/new_allocator.h.03D78830EF7AA0B0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/node_handle.h.745CD093144EBD43.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/numeric.D1D20A2639EF01AE.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/numeric_traits.h.26AEAFDBE52E59FB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/optional.38EBC242B4B3B6A4.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/os_defines.h.231BACF2B6B32144.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ostream_insert.h.8C311B0603DA2182.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/parse_numbers.h.FE137A42D4C9EF4B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/poly_hermite.tcc.754C21845C92A640.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/poly_laguerre.tcc.A7C7C079797F3D4A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/postypes.h.14EE9B3E8530EE71.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/predefined_ops.h.4A8594C536F6C091.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/process.h.548655B1B24C8632.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/pstl_config.h.618EC91951039E1E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/pthread.h.6E22B1265CAC4982.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/pthread_compat.h.D4DFA7CAFDC214F1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/pthread_signal.h.BA858CD111F13891.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/pthread_time.h.1582937A482E3241.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/pthread_unistd.h.99BBA73226EB5CA4.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ptr_traits.h.DD6BE8AE72BE105A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/q20functional.h.412210807A4D2FA2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qaction.h.A3DD5D57E711D76F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qalgorithms.h.2F35816925A4E3A2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qanystringview.h.C777E2232FD151BB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qapplication.h.51C2BA694C22A3B3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qarraydata.h.89C7C128D01211F7.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qarraydataops.h.95843BB7DDD36686.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qarraydatapointer.h.A8BF974D8355FAC9.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qassert.h.423E3B9ECE2E2281.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qatomic.h.E12322CCC03C7487.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qatomic_cxx11.h.09086D8F32A92E83.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qbasicatomic.h.6E0D35C3E7A687F1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qbindingstorage.h.BAE5C11E1BE741B4.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qbitmap.h.B7EA637BA80BDC56.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qbrush.h.530FA006C8086712.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qbytearray.h.1E12B1C79FA644E3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qbytearrayalgorithms.h.6FEAC15BEC123E6F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qbytearraylist.h.0D27F94D44151E9B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qbytearrayview.h.D4B5FB3767390BB0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qchar.h.342185B604958372.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcolor.h.EEEEA3E87F159206.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcompare.h.BADC184D6D3CE394.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcompare_impl.h.801B8B9F09BD6BF5.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcompilerdetection.h.83F6863AAE4C8D89.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qconfig.h.48E1BA90F5010270.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qconstructormacros.h.CC5A1BDC6233C5C8.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcontainerfwd.h.0CA8BFB13979E19C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcontainerinfo.h.EB2C6CFD4F311E9D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcontainertools_impl.h.657208BE4A8A9B64.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcontiguouscache.h.23C47B17C26498A5.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcoreapplication.h.42EB9CE8BBE99B7F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcoreapplication_platform.h.A4D89F6E5018B1F7.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcoreevent.h.A6EF0938BD6732C6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qcursor.h.E1106A58CC621B62.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qdarwinhelpers.h.1F8F447283052D31.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qdatastream.h.FF77A4FB5FFD3D14.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qdebug.h.8B4D1A94241E9011.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qeventloop.h.B6F6FC164FB6695F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qexceptionhandling.h.C6BA5FF59D96F2EB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qflags.h.E647272E9F4740E9.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qfloat16.h.6411E3837B8D9657.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qfont.h.63F599A4D1CCBD8D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qfontinfo.h.F8A86151D79E8B3E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qfontmetrics.h.1B98F6482FC3D0F3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qforeach.h.635BA81924EA88CC.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qfunctionpointer.h.EB44AD5EF13D01C1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qgenericatomic.h.0E8196A2C098B32B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qglobal.h.5643CEAB15FD9428.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qglobalstatic.h.16450C92EC547709.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qguiapplication.h.230B0907BD3D43C4.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qguiapplication_platform.h.2FEF41690ED80302.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qhash.h.6A826DA465B7F42A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qhashfunctions.h.51998E959C99E3E0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qicon.h.17A7EFB58C5A04B2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qimage.h.AFE6040B5FD07AB0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qinputmethod.h.2548966548A1912E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qiodevicebase.h.C9418606196741D7.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qiterable.h.EDBC461D4C3AC653.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qiterator.h.9E30B228E93747C3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qkeysequence.h.00D45540CF611DF2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qline.h.73FE84F4248BEF0E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qlist.h.07AA6161E502AAEA.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qlocale.h.60E3FEEC2774838D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qlogging.h.61E568FC0A258561.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qmainwindow.h.E1B51044FF0FE885.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qmalloc.h.F46B923911BAFE81.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qmap.h.B9699C5796957BB1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qmargins.h.6D786D1A18EE4D07.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qmath.h.A3DA7959210FCEF6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qmetacontainer.h.CC4747CB027719F3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qmetatype.h.438094DE9B28820C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qminmax.h.06A4649BD5FB5AE2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qnamespace.h.08AD3EEC33A4CE21.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qnativeinterface.h.7D43FA5033ABEED6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qnumeric.h.8999DBF3FBADF418.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qobject.h.C4707AAE217E8C9F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qobject_impl.h.BF6BBD804137CCD6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qobjectdefs.h.324904EE4BE79232.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qobjectdefs.h.52552309B4975986.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qobjectdefs_impl.h.53C9EF4C2F187137.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qoverload.h.C73F400480D2EF7D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qpaintdevice.h.01E866C8C7762489.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qpair.h.F6DDFF21906FDEBB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qpalette.h.D19EF029CC8407FF.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qpixelformat.h.2B98BF7499C14A7A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qpixmap.h.1667F6F0D114AB84.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qpoint.h.349DE993C2681760.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qpolygon.h.6095868D0E37B7C8.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qprocessordetection.h.8C8B833B4202DDBD.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qrect.h.94E6656D5FC5964E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qrefcount.h.51CF4CEEA50AC127.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qregion.h.82DDCF0FA7E348FC.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qrgb.h.735DCEBFC928D688.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qrgba64.h.310104111E28B412.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qscopedpointer.h.302BD07599AA75DE.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qscopeguard.h.9DD79B63A4F6DD61.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qset.h.E0C9FE3D44FB98B0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qshareddata.h.F2CA151EAAC9062B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qshareddata_impl.h.9C7199CF921EBBD8.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qsharedpointer.h.A8D11082A6707149.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qsharedpointer_impl.h.839BFF04674A3A3D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qsize.h.9D225E9B1F3A09A3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qsizepolicy.h.7211F37FBB4413B4.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qstring.h.7479CF4F9473CCB8.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qstringalgorithms.h.EFD26682BFED2C98.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qstringconverter_base.h.4389AF4725278018.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qstringfwd.h.90F43F145F855267.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qstringlist.h.600AAD8390C35F0B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qstringliteral.h.D994938DF8A19EEE.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qstringmatcher.h.4248981B803E9C37.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qstringtokenizer.h.E982A52CD9337EDD.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qstringview.h.EB047B01016E9CC1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qswap.h.EFD7D0528B759C7F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qsysinfo.h.910AEFA38306522C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qsystemdetection.h.EFA71B6E58F16254.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtabwidget.h.FDF249E448708735.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtaggedpointer.h.5AD89C246B7DCFB0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtclasshelpermacros.h.2AB4CD5BF7F75C88.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtconfigmacros.h.AFF4B24E9B308DA9.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtcore-config.h.1FF96C5FFB1EEF3A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtcoreexports.h.01785F551DDD7F19.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtdeprecationmarkers.h.4362ABE3B83CD081.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtenvironmentvariables.h.E6623013C49A7C36.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtextstream.h.E6AEC525437A685B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtgui-config.h.AF135C2B19C6AABB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtguiexports.h.C51B29602E4B85FB.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtguiglobal.h.5C63ED1B2C8F26A6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtmetamacros.h.967EA0F30572A600.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtnoop.h.3999FB6CD908695E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtpreprocessorsupport.h.D3EE9DFBF5429856.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtransform.h.003645EAE3ECE7F9.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtranslator.h.8E0E5D8F2A436362.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtresource.h.20B0B9A0240FB0B0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qttranslation.h.CC6D46C90F60D2B4.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qttypetraits.h.184EC9E8E814DEC2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtversion.h.7FF046A3DD59C05D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtversionchecks.h.2889BBF33FED6E09.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtwidgets-config.h.CE7C50E9E9D2D792.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtwidgetsexports.h.FA067C83734C7592.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtwidgetsglobal.h.CE96549AC8A62BD1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtypeinfo.h.D3EE8C0FB661CD2F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qtypes.h.7CF0ABA79CCEE5A6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qutf8stringview.h.4389B7E934944674.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qvariant.h.E2ED2F925CC2FA4D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qvarlengtharray.h.7F09974FB7B0450A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qversiontagging.h.6BD756F3594EC70E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qwidget.h.F2B890BFE5788DA7.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qwindowdefs.h.C07E9E4D6FE517E3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qwindowdefs_win.h.F48E757F857EFDC4.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qxptype_traits.h.271D36DD9CADD71B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/range_access.h.DBA0DC31F8FAB6D9.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ratio.B3DEDD7141BA261D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/refwrap.h.59F884F6F3D2F5DF.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/riemann_zeta.tcc.A6DCDC4ED6F840C6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/shared_ptr.h.68992A1576396FB9.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/shared_ptr_atomic.h.8E21CDEAB2CB0092.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/shared_ptr_base.h.8B9E1B90955C5A83.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/signal.h.A33F8F7F5B7492C2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/specfun.h.504AD9D0B2270980.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/special_function_util.h.080B76279391F171.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/std_abs.h.A8E681575AB26214.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/std_function.h.73AD2529EE7BFDF6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdarg.h.7C23A54E8F1808F0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdbool.h.C213D81A8BA578F6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stddef.h.B289E7631EC0246B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdexcept.17627E2DA674B96A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdint.h.1F946C5C715873EE.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdint.h.33F9C737F2FAA1D3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdio.h.38586BCA99051192.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdio_s.h.8061CBF28DF89A2C.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdlib.h.8D1B849F925680B2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdlib.h.D92D616567CD7C26.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stdlib_s.h.7339488D62437CC2.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_algo.h.5FCBF7AD2C39CA69.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_algobase.h.1FC215A54552113D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_bvector.h.6D71D49D9B7DFC37.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_construct.h.2115DED7B6B48E12.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_function.h.7AA784877DC3C96E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_heap.h.F16E2E2BA134A775.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_iterator.h.02F4896DC76FA048.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_iterator_base_funcs.h.A6795C2EA8A9B6EC.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_iterator_base_types.h.0AC872A679C614BD.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_list.h.4F732471E14F1E13.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_map.h.169186F18F6403BE.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_multimap.h.6CEB5291DF5FE3CA.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_numeric.h.9CBFE6ED9B867060.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_pair.h.70C5E29C32591536.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_raw_storage_iter.h.4FD711A69F43C097.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_relops.h.2EB7BAF40896FA63.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_tempbuf.h.72F780832F9AEC43.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_tree.h.6DA6C35CACB0A85E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_uninitialized.h.FD9EBBB08537D2BA.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stl_vector.h.6760409A3CC06C3D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stream_iterator.h.04A38524C2347C98.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/streambuf.76776BBBF64C19DC.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/streambuf.tcc.F65DE088D3155712.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/streambuf_iterator.h.7A741CDD50DD371B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/string.0FAB06F7A6B7FE94.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/string.h.DD656C88A98DFFA0.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/string_conversions.h.366B11A8540BE20D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/string_s.h.3F6D0AA44CAA2977.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/string_view.163187C18809B48B.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/string_view.tcc.F58C450763973E11.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/stringfwd.h.D6779A547A10EB5E.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/swprintf.inl.FD7DE59279BE564F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/system_error.63DF5F530AD2B8F8.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/time.h.A1743B2410D17FC3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/timeb.h.3BD0B6AE3923456D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/timeb_s.h.304E7F8020D14FB1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/tuple.2FC5ACF5359CC6D4.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/type_traits.EF1DD7E3AB38D0D3.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/type_traits.h.9451E829FD38CE9F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/typeinfo.FED1A1799E7A2CA6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/types.h.53DDDF7F7C6025B6.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/uniform_int_dist.h.C93710E20161FAEC.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/unique_ptr.h.1E0FA4B852FA8CF1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/unordered_map.C6090430DAC9DB4A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/unordered_map.h.11671F6AA00D664F.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/uses_allocator.h.773760631A23EFDD.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/utility.66741444D7C6F204.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/vadefs.h.64CC1240B69E39D1.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/vadefs.h.97E788B4C80AAD55.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/variant.D45F3D6257C9556D.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/vector.1D2414C733323237.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/vector.tcc.0244E487C66A7E45.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/version.6EA018B9BB0B5C7A.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/wchar.h.8A9B623EE88F2D70.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/wchar_s.h.B3CDC53001A7B5AA.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc_clangd/compile_commands.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/3.24.2/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/3.24.2/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/3.24.2/CMakeRCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/3.24.2/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/3.24.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/3.24.2/CompilerIdCXX/a.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/CMakeOutput.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C.dir/QtUI_C_autogen/mocs_compilation.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C.dir/main.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C.dir/mainwindow.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C_autogen.dir/AutogenInfo.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C_autogen.dir/AutogenUsed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C_autogen.dir/ParseCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/QtUI_C_ja_JP.ts_lst_file" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/VerifyGlobs.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/clean_additional.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/cmake.verify_globs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/d/5d637474675c4377b1ce8195bd98794620ca4cda0216a1b383c46f8d02ed4eb4.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/rules.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/QtUI_C.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/QtUI_C_autogen/EWIEGA46WW/moc_mainwindow.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/QtUI_C_autogen/EWIEGA46WW/moc_mainwindow.cpp.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/QtUI_C_autogen/deps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/QtUI_C_autogen/include/ui_mainwindow.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/QtUI_C_autogen/moc_predefs.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/QtUI_C_autogen/mocs_compilation.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/QtUI_C_autogen/timestamp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/Testing/Temporary/LastTest.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/build.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyuvp_C++_UI_Qt/build-QtUI_C-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/qtcsettings.cmake" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,9 +493,10 @@
       <recent name="C:\Work file\Now_Pros\UVPReader\UIUsr\FlowView\GUI" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.analysis_10p_30p">
     <configuration name="根据菜单选择界面" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
+      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -103,6 +518,7 @@
     </configuration>
     <configuration name="Anaylsis_program" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
+      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -147,6 +563,7 @@
     </configuration>
     <configuration name="analysis_10p_30p" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
+      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -168,6 +585,7 @@
     </configuration>
     <configuration name="analysis_20240101" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
+      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -188,6 +606,7 @@
       <method v="2" />
     </configuration>
     <configuration name="example_1" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -210,6 +629,7 @@
     </configuration>
     <configuration name="fitting_test" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
+      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
