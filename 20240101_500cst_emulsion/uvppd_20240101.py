@@ -29,7 +29,7 @@ for i, volume_f in enumerate(Volume_fraction):
 
 
         data = ForMetflowUvp.readFile(volume_f + duty + "duty.mfprof")
-        data.defineSoundSpeed(1020)
+        data._data_show(1020)
 
         vel = data.velTables[0] * 2
         coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)

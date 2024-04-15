@@ -10,7 +10,7 @@ plt.ylim(0, 3000)
 
 for file in files:
     data = uvp.readFile(file)
-    data.defineSoundSpeed(1066)
+    data._data_show(1066)
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()

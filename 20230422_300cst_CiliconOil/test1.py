@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import pyuvp
 files = ["05hz45deg.mfprof","05hz60deg.mfprof","1hz40deg.mfprof","1hz30deg.mfprof"]
 
 plt.figure()
@@ -10,7 +10,8 @@ plt.xlim(3,15)
 plt.grid()
 
 for file in files:
-    data = uvp.readFile(file)
+    data = pyuvp.ForMetflowUvp.readFile(file)
+    data.defineSoundspeed(980)
     analysis = data.createUSRAnalysis()
 
     analysis.cylinderGeom(72.5, 38, 11.7)
@@ -35,7 +36,7 @@ for file in files:
     plt.colorbar()
     plt.show()'''
 
-    visc, shearrate = analysis.viscosity(ignoreException=True)
+    visc, shearrate = analysis.rheologyViscosity(ignoreException=True)
     plt.scatter(shearrate, visc)
 
 plt.show()

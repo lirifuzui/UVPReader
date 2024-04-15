@@ -15,7 +15,7 @@ for n, file in enumerate(files):
 
     # 文件数据
     data = uvp.readFile(str(file) + ".mfprof")
-    data.defineSoundSpeed(1010)
+    data._data_show(1010)
     vel = data.velTables[0] * 2
     coords_origin = data.coordinateArrays[0] * np.cos(30 / 180 * np.pi)
     coords = []

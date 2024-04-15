@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import pyuvp
 files = ["05hz60deg.mfprof","05hz75deg.mfprof","1hz45deg.mfprof","1hz30deg.mfprof"]
 
 plt.figure()
@@ -8,7 +8,7 @@ plt.ylabel(r'Viscosity $\nu_{\mathrm{eff}}$')
 plt.ylim(0, 2000)
 
 for file in files:
-    data = uvp.readFile(file, num_threads=20)
+    data = pyuvp.ForMetflowUvp.readFile(file)
     vel_origin = data.velTables[0]
 
     analysis = data.createUSRAnalysis()

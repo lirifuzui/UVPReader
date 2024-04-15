@@ -8,7 +8,7 @@ files = ['sample_duty50-701hz.mfprof']
 Visc = []
 for file in files:
     data = ForMetflowUvp.readFile(file)
-    data.defineSoundSpeed(1029)
+    data._data_show(1029)
     vel_origin = data.velTables[0]
     coords_origin = data.coordinateArrays[0]
     analysis = data.createUSRAnalysis()

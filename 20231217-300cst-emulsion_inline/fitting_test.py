@@ -32,7 +32,7 @@ def velosity_perfile(r, miu):
 
 # 读速度剖面
 data = ForMetflowUvp.readFile(volume_f + "-" + duty + "duty.mfprof")
-data.defineSoundSpeed(1020)
+data._data_show(1020)
 
 
 # 试试参数合不合适？

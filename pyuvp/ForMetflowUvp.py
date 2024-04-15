@@ -193,30 +193,35 @@ class readFile:
         mux_config = [list(map(float, item.split())) for item in mux_config_params_list[index_3 + 1:]]
         self.__mux_config_params['MultiplexerConfiguration'] = mux_config
 
-    def defineSoundSpeed(self, new_sound_speed) -> None:
+    def defineSoundspeed(self, new_sound_speed) -> None:
         """
-        Defines the sound speed and modifies the data accordingly.
+                Defines the sound speed and modifies the data accordingly.
 
-        Args:
-            new_sound_speed (float): The new sound speed value to be set.
+                Args:
+                    new_sound_speed (float): The new sound speed value to be set.
 
-        Returns:
-            None
+                Returns:
+                    None
 
-        Note:
-            - This method assumes that the necessary attributes and configuration parameters are already set
-              before calling this function.
-            - The modified data will be stored in the internal attribute [self.__vel_arr_tdxs], [self.__echo_arr_tdxs],
-              [self.__time_arr_tdxs], and [self.__coords_arr_tdxs] for each transducer (if applicable).
-              They can be accessed through class methods [self.velTables], [self.echoTables], [self.timeArrays],
-              and [self.coordinateArrays].
-        """
+                Note:
+                    - This method assumes that the necessary attributes and configuration parameters are already set
+                      before calling this function.
+                    - The modified data will be stored in the internal attribute [self.__vel_arr_tdxs], [self.__echo_arr_tdxs],
+                      [self.__time_arr_tdxs], and [self.__coords_arr_tdxs] for each transducer (if applicable).
+                      They can be accessed through class methods [self.velTables], [self.echoTables], [self.timeArrays],
+                      and [self.coordinateArrays].
+                """
+        if self.__new_sound_speed == None:
+            self.__new_sound_speed = new_sound_speed
+            self.__vel_arr_tdxs = [vel * (self.__new_sound_speed / self.__measurement_info['SoundSpeed']) for vel in self.__vel_arr_tdxs]
+            self.__coords_arr_tdxs = [coords  * (self.__new_sound_speed / self.__measurement_info['SoundSpeed']) for coords in self.__coords_arr_tdxs]
 
-        self.__new_sound_speed = new_sound_speed
+
+    def _data_show(self) -> None:
         sound_speed = self.__measurement_info['SoundSpeed']
         max_depth = self.__measurement_info['MaximumDepth']
-        doppler_coefficient = new_sound_speed / (max_depth * 2.0) / 256.0 * 1000.0
-        sounds_speed_coefficient = new_sound_speed / (self.__measurement_info['Frequency'] * 2.0)
+        doppler_coefficient = sound_speed / (max_depth * 2.0) / 256.0 * 1000.0
+        sounds_speed_coefficient = sound_speed / (self.__measurement_info['Frequency'] * 2.0)
 
         if self.__measurement_info['UseMultiplexer']:
             # Data initialization for multiplexer.
@@ -290,7 +295,7 @@ class readFile:
         channel_distance = self.__measurement_info['ChannelDistance']
         coordinate_series = np.arange(start_channel,
                                       start_channel + num_channels * channel_distance - channel_distance * 0.5,
-                                      channel_distance) * (new_sound_speed / sound_speed)
+                                      channel_distance)
 
         if self.__mux_config_params['Table']:
             num_tables = int(self.__mux_config_params['Table'])
@@ -326,7 +331,7 @@ class readFile:
         uvpDatafile.close()
 
         # Resolution the velocity file_data, echo_data file_data, time series and coordinate series.
-        self.defineSoundSpeed(self.__measurement_info['SoundSpeed'])
+        self._data_show()
         # Output Data.
         if self.__is_output is True:
             self.__output_files()

@@ -6,7 +6,7 @@ import pyuvp
 
 start = time.time()
 data = pyuvp.ForMetflowUvp.readFile("1000min.mfprof", num_threads=2, is_output=False)
-data.defineSoundSpeed(1000)
+data._data_show(1000)
 vel = data.velTables[0]
 times = data.timeArrays[0]
 coords = data.coordinateArrays[0]

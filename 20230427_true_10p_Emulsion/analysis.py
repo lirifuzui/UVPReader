@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pyuvp
 
 # files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof","05hz60deg03.mfprof","10p_05hz90deg.mfprof","10p_05hz120deg.mfprof","10p_05hz150deg.mfprof"]
 # files = ["1hz30deg.mfprof","1hz45deg.mfprof","1hz60deg02.mfprof"]
@@ -13,8 +14,8 @@ plt.ylim(500, 2000)
 slice_num = 40
 
 for file in files:
-    data = uvp.readFile(file)
-    data.defineSoundSpeed(1029)
+    data = pyuvp.ForMetflowUvp.readFile(file)
+    data.defineSoundspeed(1029)
     vel_origin = data.velTables[0]
 
     analysis = data.createUSRAnalysis()
