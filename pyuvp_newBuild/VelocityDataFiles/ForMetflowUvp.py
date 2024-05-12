@@ -18,18 +18,16 @@ class FileException(Exception):
 class readFile:
     def __init__(self, file_path, is_output=False):
         """
-        Reads the '.mfprof' file containing profile data and parameter values from 'MET-FLOW uvp for OptekFirmware'
-        and stores them in an instance variable.
+        读取"MET-FLOW uvp for OptekFirmware"软件输出的".mfprof"文件中存储的一切数据，并保存在类变量中
 
         Args:
-            file_path (str): The path to the input file.
-            is_output (bool): Flag indicating whether to enable output. Defaults to False.
+            file_path (str): 输入文件的路径。
+            is_output (bool): 选择是否将读取的数据结果写入".csv"文件中。[False / True]
 
         Example:
-            data = pyuvp.uvp.readFile("file_path", True)
+            data = pyuvp.VelocityDataFiles.ForMetflowUvp.readFile("file_path", True)
         """
-        # Defines the output files location.
-        # If file_path is not a full path, write the output file to the "temp" folder.
+
         self.__is_output = is_output
         current_time = datetime.now()
         output_folder_name = current_time.strftime("%Y%m%d%H%M%S")

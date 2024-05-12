@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from pyuvp import usr
+from pyuvp import ForMetflowUvp
 
 # example of single tdx.
 # Viscosity analysis using USR, 0.5 Hz_120 deg.
 # Read the data in the ".mfprof" file
-data = uvp.readFile(r'example_2.mfprof')  # 'data' is an instantiate object, cannot be print
+data = ForMetflowUvp.readFile(r'example_2.mfprof')  # 'data' is an instantiate object, cannot be print
 # The sound speed can be corrected by the function 'resetSoundSpeed'.
 data.__multiplying_coefficient()
 
