@@ -1,0 +1,6 @@
+﻿  Building Custom Rule C:/Users/ZHENG WENQING/Desktop/C++Project/UVP_Reader/CMakeLists.txt
+  Reader_bindings.cpp
+  ReadMetFlowFiles.cpp
+  正在生成代码...
+    正在创建库 C:/Users/ZHENG WENQING/Desktop/C++Project/UVP_Reader/build/Debug/readuvpfiles.lib 和对象 C:/Users/ZHENG WENQING/Desktop/C++Project/UVP_Reader/build/Debug/readuvpfiles.exp
+  readuvpfiles.vcxproj -> C:\Users\ZHENG WENQING\Desktop\C++Project\UVP_Reader\build\Debug\readuvpfiles.cp311-win_amd64.pyd

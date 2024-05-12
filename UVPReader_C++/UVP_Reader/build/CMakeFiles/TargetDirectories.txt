@@ -1,0 +1,4 @@
+C:/Users/ZHENG WENQING/Desktop/C++Project/UVP_Reader/build/CMakeFiles/readuvpfiles.dir
+C:/Users/ZHENG WENQING/Desktop/C++Project/UVP_Reader/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/ZHENG WENQING/Desktop/C++Project/UVP_Reader/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/ZHENG WENQING/Desktop/C++Project/UVP_Reader/build/pybind11/CMakeFiles/ALL_BUILD.dir
