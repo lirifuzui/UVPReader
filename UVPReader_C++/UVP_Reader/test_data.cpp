@@ -1,9 +1,40 @@
 ﻿#include "ReadMetFlowFiles.h"
 #include <iostream>
+#include <thread>
+#include <chrono>
+
+
+
+//时间戳测试
+/*
+ULONGLONG FileTimeToMilliseconds(const FILETIME& ft) {
+    ULARGE_INTEGER ull;
+    ull.LowPart = ft.dwLowDateTime;
+    ull.HighPart = ft.dwHighDateTime;
+    return ull.QuadPart / 10000; // 100 nanoseconds to milliseconds
+}
+FILETIME GetCurrentTimestamp() {
+    FILETIME currentTimestamp;
+    GetSystemTimeAsFileTime(&currentTimestamp);
+    return currentTimestamp;
+}
+int main() {
+    FILETIME currentTimestamp = GetCurrentTimestamp();
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+    FILETIME fivesceondTimestamp = GetCurrentTimestamp();
+    ULONGLONG diffMilliseconds;
+    diffMilliseconds = FileTimeToMilliseconds(fivesceondTimestamp) - FileTimeToMilliseconds(currentTimestamp);
+
+    // 输出时间差
+    std::cout << "时间差为：" << diffMilliseconds << " 毫秒" << std::endl;
+    return 0;
+}
+*/
+
 
 int main() {
     // 创建readFile对象并指定文件名
-    ReadMetFlowFiles reader("C:/Users/ZHENG WENQING/Desktop/UVPReader/examples/example_2.mfprof");
+    ReadMetFlowFiles reader("C:/Work file/Now_Pros/UVPReader/examples/example_1.mfprof");
 
 
     std::cout << "Signum:" << reader.settings.signum << std::endl;
@@ -22,15 +53,28 @@ int main() {
     std::cout << "fileTimeSecond:" << reader.settings.startTime.wSecond << std::endl;
     std::cout << "fileTimeMillisecond:" << reader.settings.startTime.wMilliseconds << std::endl;
     
+    std::cout << "\nTimeline:" <<reader.porfile_start_times[0] << std::endl;
+    std::cout << "Timeline:" << reader.porfile_start_times[1] << std::endl;
+    std::cout << "Timeline:" << reader.porfile_start_times[2] << std::endl;
+    std::cout << "Timeline:" << reader.porfile_start_times[3] << std::endl;
+    std::cout << "Timeline:" << reader.porfile_start_times[4] << std::endl;
+    std::cout << "Timeline:" << reader.porfile_start_times[5] << std::endl;
+    std::cout << "Timeline:" << reader.porfile_start_times[6] << std::endl;
+    std::cout << "Timeline:" << reader.porfile_start_times[7] << std::endl;
 
-    std::cout << "\nstartTimeHour:" << reader.profile_header.profileTime.wHour << std::endl;
-    std::cout << "startTimeMinute:" << reader.profile_header.profileTime.wMinute << std::endl;
-    std::cout << "startTimeSecond:" << reader.profile_header.profileTime.wSecond << std::endl;
-    std::cout << "startTimeMillisecond:" << reader.profile_header.profileTime.wMilliseconds << std::endl;
-    
-    std::cout << "\ntransducer:" << reader.profile_header.transducer << std::endl;
+    std::cout << "\nTransducers:" << reader.profile_transducers[0] << std::endl;
+    std::cout << "Transducers:" << reader.profile_transducers[1] << std::endl;
+    std::cout << "Transducers:" << reader.profile_transducers[2] << std::endl;
+    std::cout << "Transducers:" << reader.profile_transducers[3] << std::endl;
+    std::cout << "Transducers:" << reader.profile_transducers[4] << std::endl;
+    std::cout << "Transducers:" << reader.profile_transducers[5] << std::endl;
+    std::cout << "Transducers:" << reader.profile_transducers[6] << std::endl;
 
-    std::cout << "\nstatus:" << reader.profile_header.status << std::endl;
+    std::cout << "\nFrequency:" << reader.settings.Frequency << std::endl;
+    std::cout << "StartChannel:" << reader.settings.StartChannel << std::endl;
+    std::cout << "RawDataMin:" << reader.settings.RawDataMin << std::endl;
+    std::cout << "FlowMapping: " << (reader.settings.FlowMapping ? "true" : "false") << std::endl;
+    std::cout << "PeriodEnhNCycles:" << reader.settings.PeriodEnhNCycles << std::endl;
 
     return 0;
 }
