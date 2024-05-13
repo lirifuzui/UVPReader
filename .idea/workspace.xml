@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="876d6495-ab11-4caf-a6ab-721346a2baff" name="变更" comment="24.04.16.01">
+      <change afterPath="$PROJECT_DIR$/.idea/UVPReader.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_viscosity_phi.py" beforeDir="false" afterPath="$PROJECT_DIR$/20231217-300cst-emulsion_inline/draw_viscosity_phi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/draw_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/20240116_500cst_emuslion_inline/draw_figure.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UVPReader_C++/UVP_Reader/ReadMetFlowFiles.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UVPReader_C++/UVP_Reader/ReadMetFlowFiles.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UVPReader_C++/UVP_Reader/ReadMetFlowFiles.h" beforeDir="false" afterPath="$PROJECT_DIR$/UVPReader_C++/UVP_Reader/ReadMetFlowFiles.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UVPReader_C++/UVP_Reader/test_data.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UVPReader_C++/UVP_Reader/test_data.cpp" afterDir="false" />
@@ -82,7 +81,6 @@
   <component name="RunManager" selected="Python.analysis_10p_30p">
     <configuration name="根据菜单选择界面" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -104,7 +102,6 @@
     </configuration>
     <configuration name="Anaylsis_program" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -149,7 +146,6 @@
     </configuration>
     <configuration name="analysis_10p_30p" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -171,7 +167,6 @@
     </configuration>
     <configuration name="analysis_20240101" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -192,7 +187,6 @@
       <method v="2" />
     </configuration>
     <configuration name="example_1" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -215,7 +209,6 @@
     </configuration>
     <configuration name="fitting_test" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="UVP" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>

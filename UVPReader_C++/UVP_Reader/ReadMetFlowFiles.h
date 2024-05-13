@@ -9,8 +9,11 @@
 
 #include <string>
 #include <vector>
+#include <numbers>
 
 #include <windows.h>
+#include <omp.h>
+
 
 //定义保存测量参数的结构体
 struct Settings {
@@ -89,17 +92,18 @@ private:
 public:
     Settings settings; //实例化参数设置的结构体
 
-    std::vector<int32_t> profile_status;
-    std::vector<int32_t> profile_transducers; //记录每个速度剖面的传感器编号
-    std::vector<ULONGLONG> porfile_start_times; //每个速度剖面数据的记录时间，100纳秒位单位
+    std::vector<int32_t> profilesStatus;
+    std::vector<int32_t> profilesTransducerNumber; //记录每个速度剖面的传感器编号
+    std::vector<ULONGLONG> porfilesStartTime; //每个速度剖面数据的记录时间，100纳秒位单位
+
+    std::vector<std::vector<int16_t>> dopplerValues; // 记录全部的多普勒数据
 
 private:
     //临时参数
-    std::string file_path; // 保存文件路径
-    FILETIME start_time; //保存读取的windows文件时间
-
-    std::vector<std::vector<int16_t>> doppler_values; // 记录全部的多普勒数据
-    std::vector<std::vector<int16_t>> amplitude_values; //记录全部的反射强度数据
+    std::string file_path; // 读取的.mfprof文件的路径
+    
+    std::vector<std::vector<double>> velocityValues; //记录全部的速度数据
+    std::vector<std::vector<int16_t>> amplitudeValues; //记录全部的反射强度数据
 
 
 
