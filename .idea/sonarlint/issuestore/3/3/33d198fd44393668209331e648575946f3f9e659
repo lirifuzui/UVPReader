@@ -1,13 +1,0 @@
-
-vpython:S5890,"_Assign to "position_xi_list" a value of type "float" instead of "list" or update its type hint.(ğ÷ät
-€python:S1542;"\Rename function "_PhaseDelay_Continuity" to match the regular expression ^[a-z_][a-z0-9_]*$.(öè˜€ÿÿÿÿÿ8²¯–ğ0
-Hpython:S1481<")Remove the unused local variable "times".(¸İ³Û8²¯–ğ0
-xpython:S5890J"ZAssign to "AmpMax_list" a value of type "float" instead of "list" or update its type hint.(ÊıÎ8²¯–ğ0
-€python:S5890K"\Assign to "ArgDelay_list" a value of type "float" instead of "list" or update its type hint.(®ÀµÙùÿÿÿÿ8²¯–ğ0
-python:S5890L"[Assign to "Velreal_list" a value of type "float" instead of "list" or update its type hint.(×ş‰Ğıÿÿÿÿ8²¯–ğ0
-python:S5890M"[Assign to "Velimag_list" a value of type "float" instead of "list" or update its type hint.(œÑÍÃşÿÿÿÿ8²¯–ğ0
-6python:S125r"Remove this commented out code.(ÃÓôÅ
-upython:S117Œ"]Rename this local variable "Temp_array_x" to match the regular expression ^[_a-z][a-z0-9_]*$.(°İşï
-upython:S117‹"]Rename this local variable "Temp_array_y" to match the regular expression ^[_a-z][a-z0-9_]*$.(öá›Î
-‚python:S5890™"]Assign to "ShearRate_list" a value of type "float" instead of "list" or update its type hint.(ôØõÕûÿÿÿÿ8²¯–ğ0
-7python:S125´"Remove this commented out code.(ÃÓôÅ
