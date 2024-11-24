@@ -62,10 +62,7 @@ viscosity, shear_rate = analysis.rheologyViscosity(
     max_viscosity = 2000,
     viscosity_range_tolerance = 1,
     smooth_level = 15,
-    ignoreException=False)
-# Return shear rate and viscosity.
-shear_rate = analysis.shearRate
-viscosity = analysis.viscosity
+    ignoreException=True)
 print(len(shear_rate),len(viscosity))
 
 # -------------------------------------------------------------

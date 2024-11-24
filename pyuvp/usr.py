@@ -292,8 +292,8 @@ class Analysis:
 
         phase_delay_derivative = Tools.derivative(phase_delay, self.__coordinate_array, derivative_smoother_factor)
 
-        real_part = 2 * fft_result[target_indices, range(fft_result.shape[1])].real / N
-        imag_part = 2 * fft_result[target_indices, range(fft_result.shape[1])].imag / N
+        real_part = fft_result[target_indices, range(fft_result.shape[1])].real / N
+        imag_part = fft_result[target_indices, range(fft_result.shape[1])].imag / N
 
         # 测试---------------------------------------------------------------------------------------------------------
         '''import matplotlib.pyplot as plt
